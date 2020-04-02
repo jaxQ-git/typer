@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class TyperApplication {
-
+    ///First commit
     public static void main(String[] args) {
         SpringApplication.run(TyperApplication.class, args);
     }
