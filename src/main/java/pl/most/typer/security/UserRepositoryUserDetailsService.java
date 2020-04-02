@@ -1,6 +1,7 @@
 package pl.most.typer.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.most.typer.data.UserRepository;
@@ -16,10 +17,10 @@ public class UserRepositoryUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    @Override
-    public UserDetails loadByUserName(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsername(username);
-        return  user.orElseThrow(() -> new UsernameNotFoundException("Użytkownik '" +username + "' nie został znaleziony!" ));
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findByUsername(username);
+        return  user.orElseThrow(() -> new UsernameNotFoundException("User '" +username + "' not found!" ));
     }
 }
