@@ -22,11 +22,14 @@ public class TyperApplication {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-                userRepository.save(new User(
+                //Generate default user
+                User s = new User(
                         "user",
                         new BCryptPasswordEncoder().encode("user"),
                         "test@test.pl"
-                ));
+                );
+                s.setEnabled(true);
+                userRepository.save(s);
             }
         };
     }

@@ -16,16 +16,16 @@
     <form method="POST" th:action="@{/register}" id="registerForm">
 
         <label for="username">Username: </label>
-        <input type="text" name="username"/><br/>
+        <input type="text" value="test" name="username"/><br/>
 
         <label for="password">Password: </label>
-        <input type="password" name="password"/><br/>
+        <input type="password" value="test" name="password"/><br/>
 
         <label for="confirm">Confirm password: </label>
-        <input type="password" name="confirm"/><br/>
+        <input type="password" value="test" name="confirm"/><br/>
 
         <label for="fullname">Email: </label>
-        <input type="text" name="mail"/><br/>
+        <input type="text" placeholder="example@mail.com" name="mail"/><br/>
 
         <input type="submit" value="Register"/>
     </form>

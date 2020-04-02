@@ -45,11 +45,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/","/**").permitAll()
                 /**
+                 * Formularz logowania
+                 */
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                //domyślna strona po zalogowaniu
+                .defaultSuccessUrl("/")
+                //Obsługa wylogowania
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                /**
                  * Autoryzacja dostępu do bazy danych
                  */
                 .and()
                 .csrf()
-                .ignoringAntMatchers("/h2/**")
+                .ignoringAntMatchers("/h2-console/**")
 
                 .and()
                 .headers()

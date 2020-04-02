@@ -2,21 +2,21 @@ package pl.most.typer.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.most.typer.data.UserRepository;
+import pl.most.typer.service.RegistrationService;
+
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/register")
+@CrossOrigin("*")
 public class RegistrationController {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    RegistrationService registrationService;
 
-    public RegistrationController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
     }
 
     @GetMapping
@@ -26,8 +26,13 @@ public class RegistrationController {
 
     @PostMapping
     public String processRegistration(RegistrationForm registrationForm){
-        User user = registrationForm.toUser(passwordEncoder);
-        User saved = userRepository.save(user);
+        registrationService.register(registrationForm);
+        return "redirect:/login";
+    }
+
+    @GetMapping(value="/confirm")
+    public String confirmRegistration(@RequestParam(value = "key") UUID key) {
+        registrationService.confirmUser(key.toString());
         return "redirect:/login";
     }
 }
