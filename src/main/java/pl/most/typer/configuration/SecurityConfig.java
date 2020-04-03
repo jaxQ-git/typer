@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.most.typer.model.role.RoleType;
 
 @Configuration
 @EnableWebSecurity
@@ -19,7 +20,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("customUserDetailsService")
     @Autowired()
     private UserDetailsService userDetailsService;
-
 
 
     @Bean
@@ -40,7 +40,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                  * Autoryzacja ścieżek dostępu
                  */
                 .authorizeRequests()
-                .antMatchers("/","/**").permitAll()
+                .antMatchers("/rest/hello/secured/**").hasRole(RoleType.ADMIN.name())
+                .antMatchers("/", "/**").permitAll()
                 /**
                  * Formularz logowania
                  */

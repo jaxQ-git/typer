@@ -33,7 +33,7 @@ public class TyperApplication {
                         "test@test.pl"
                 );
                 s.setEnabled(true);
-                s.getRoles().add(roleRepository.findByRoleType(RoleType.USER.name()));
+                s.getRoles().add(roleRepository.findByRoleType(RoleType.ADMIN));
                 userRepository.save(s);
             }
 

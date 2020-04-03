@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private String token;
     private boolean isEnabled;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
 
@@ -41,7 +41,7 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles()
                 .stream()
-                .map(role -> new SimpleGrantedAuthority("" + role.getRoleType()))
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleType()))
                 .collect(Collectors.toList());
     }
 

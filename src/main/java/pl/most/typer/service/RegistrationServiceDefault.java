@@ -39,7 +39,7 @@ public class RegistrationServiceDefault implements RegistrationService {
         Optional<User> userOptional = userRepository.findByToken(key);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setIsEnabled(true);
+            user.setEnabled(true);
             user.setToken(null);
             userRepository.save(user);
         }
