@@ -1,10 +1,10 @@
-package pl.most.typer.security;
+package pl.most.typer.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import pl.most.typer.data.UserRepository;
+import pl.most.typer.repository.UserRepository;
 import pl.most.typer.model.User;
 
 import java.util.Optional;

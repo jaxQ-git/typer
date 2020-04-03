@@ -1,10 +1,9 @@
-package pl.most.typer.security;
+package pl.most.typer.controller;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.most.typer.data.UserRepository;
+import pl.most.typer.model.dto.RegistrationForm;
 import pl.most.typer.service.RegistrationService;
 
 import java.util.UUID;

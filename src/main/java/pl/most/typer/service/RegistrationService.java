@@ -1,8 +1,6 @@
 package pl.most.typer.service;
 
-import pl.most.typer.security.RegistrationForm;
-
-import java.util.UUID;
+import pl.most.typer.model.dto.RegistrationForm;
 
 public interface RegistrationService {
 

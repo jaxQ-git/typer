@@ -1,4 +1,4 @@
-package pl.most.typer.security;
+package pl.most.typer.model.dto;
 
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;

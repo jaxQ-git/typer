@@ -2,9 +2,9 @@ package pl.most.typer.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.most.typer.data.UserRepository;
+import pl.most.typer.repository.UserRepository;
 import pl.most.typer.model.User;
-import pl.most.typer.security.RegistrationForm;
+import pl.most.typer.model.dto.RegistrationForm;
 
 import java.util.Optional;
 
