@@ -8,7 +8,7 @@ public interface RegistrationService {
             "Jeszcze tylko jeden krok...\n" +
             "Aby aktywować konto, kliknij poniższy link:";
     String MAIL_SUBJECT = "Aktywuj swoje konto";
-    void register(RegistrationForm registrationForm);
+    boolean register(RegistrationForm registrationForm);
 
     void confirmUser(String key);
 }
