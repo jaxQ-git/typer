@@ -5,15 +5,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pl.most.typer.data.UserRepository;
+import pl.most.typer.model.User;
 
 import java.util.Optional;
 
 @Service
-public class UserRepositoryUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private UserRepository userRepository;
 
-    public UserRepositoryUserDetailsService(UserRepository userRepository) {
+    public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

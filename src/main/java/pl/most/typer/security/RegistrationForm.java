@@ -2,6 +2,9 @@ package pl.most.typer.security;
 
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pl.most.typer.model.User;
+import pl.most.typer.model.role.Role;
+import pl.most.typer.model.role.RoleType;
 
 import java.util.UUID;
 
@@ -13,7 +16,7 @@ public class RegistrationForm {
     private final String mail;
 
     public User toUser(PasswordEncoder passwordEncoder) {
-        User newUser = new User(
+        User newUser = User.createUser(
                 username,
                 passwordEncoder.encode(password),
                 mail);

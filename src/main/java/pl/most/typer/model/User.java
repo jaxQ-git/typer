@@ -1,4 +1,4 @@
-package pl.most.typer.security;
+package pl.most.typer.model;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -7,34 +7,42 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.most.typer.model.role.Role;
+import pl.most.typer.model.role.RoleType;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.Arrays;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 @Data
 @Entity
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class User implements UserDetails {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private final String username;
-    private final String password;
+    private String lastName;//Czy to jest tu potrzebne?
     private final String mail;
+    private final String password;
     private String token;
-    private boolean enabled;
+    private boolean isEnabled;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private Collection<Role> roles = new ArrayList<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+        return getRoles()
+                .stream()
+                .map(role -> new SimpleGrantedAuthority("" + role.getRoleType()))
+                .collect(Collectors.toList());
     }
 
 
@@ -55,6 +63,12 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return isEnabled;
     }
+
+    public static User createUser(String username,String password, String mail) {
+        User user = new User(username,mail,password);
+        return user;
+    }
+
 }

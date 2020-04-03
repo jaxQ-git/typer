@@ -2,6 +2,7 @@ package pl.most.typer.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.most.typer.data.UserRepository;
 import pl.most.typer.service.RegistrationService;
@@ -20,7 +21,8 @@ public class RegistrationController {
     }
 
     @GetMapping
-    public String register(){
+    public String register(Model model){
+        model.addAttribute("text", "To jest coś");
         return "registration";
     }
 

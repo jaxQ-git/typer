@@ -3,11 +3,10 @@ package pl.most.typer.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.most.typer.data.UserRepository;
+import pl.most.typer.model.User;
 import pl.most.typer.security.RegistrationForm;
-import pl.most.typer.security.User;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class RegistrationServiceDefault implements RegistrationService {
@@ -40,7 +39,7 @@ public class RegistrationServiceDefault implements RegistrationService {
         Optional<User> userOptional = userRepository.findByToken(key);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            user.setEnabled(true);
+            user.setIsEnabled(true);
             user.setToken(null);
             userRepository.save(user);
         }

@@ -5,9 +5,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import pl.most.typer.data.RoleRepository;
 import pl.most.typer.data.UserRepository;
-import pl.most.typer.security.User;
+import pl.most.typer.model.User;
+import pl.most.typer.model.role.Role;
+import pl.most.typer.model.role.RoleType;
 
 @SpringBootApplication
 public class TyperApplication {
@@ -18,18 +20,28 @@ public class TyperApplication {
 
 
     @Bean
-    public CommandLineRunner dataLoader(UserRepository userRepository) {
+    public CommandLineRunner dataLoader(UserRepository userRepository, RoleRepository roleRepository) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
+                initializeRoleTypesInDb();
+
                 //Generate default user
-                User s = new User(
+                User s = User.createUser(
                         "user",
                         new BCryptPasswordEncoder().encode("user"),
                         "test@test.pl"
                 );
                 s.setEnabled(true);
+                s.getRoles().add(roleRepository.findByRoleType(RoleType.USER.name()));
                 userRepository.save(s);
+            }
+
+            private void initializeRoleTypesInDb() {
+                for (RoleType roleType : RoleType.values()) {
+                    Role role = new Role(roleType);
+                    roleRepository.save(role);
+                }
             }
         };
     }

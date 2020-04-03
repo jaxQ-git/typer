@@ -13,7 +13,9 @@
 
 <div>
     <h2>Player</h2>
+    <h3 th:text="${text}"></h3>
     <form method="POST" th:action="@{/register}" id="registerForm">
+
 
         <label for="username">Username: </label>
         <input type="text" value="test" name="username"/><br/>
