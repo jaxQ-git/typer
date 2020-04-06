@@ -27,10 +27,14 @@ public class RegistrationServiceDefault implements RegistrationService {
 
 
     @Override
-    public void register(RegistrationForm registrationForm) {
+    public boolean register(RegistrationForm registrationForm) {
+        if (userRepository.findByUsernameOrMail(registrationForm.getUsername(),registrationForm.getMail()).isPresent()) {
+            return false;
+        }
         User user = registrationForm.toUser(passwordEncoder);
         User savedUser = userRepository.save(user);
         sendConfirmationMailMessage(savedUser);
+        return true;
 
     }
 
