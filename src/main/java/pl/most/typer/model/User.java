@@ -8,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.most.typer.model.role.Role;
-import pl.most.typer.model.role.RoleType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,8 +17,8 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class User implements UserDetails {
 
 
@@ -27,7 +26,6 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private final String username;
-    private String lastName;//Czy to jest tu potrzebne?
     private final String mail;
     private final String password;
     private String token;
@@ -66,8 +64,8 @@ public class User implements UserDetails {
         return isEnabled;
     }
 
-    public static User createUser(String username,String password, String mail) {
-        User user = new User(username,mail,password);
+    public static User createUser(String username, String password, String mail) {
+        User user = new User(username, mail, password);
         return user;
     }
 
