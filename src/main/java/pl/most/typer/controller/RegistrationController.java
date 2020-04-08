@@ -38,7 +38,7 @@ public class RegistrationController {
         if (bindingResult.hasErrors()) {
             return "/registration";
         }
-        if (customUserDetailsService.isUserPresent(registrationForm.getMail())) {
+        if (customUserDetailsService.isUserPresent(registrationForm.getUsername(), registrationForm.getMail())) {
             model.addAttribute("exist", true);
             return "/registration";
         }
