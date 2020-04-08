@@ -1,37 +1,58 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ulraq.net.nz/thymeleaf/Layout">
 <head>
-    <title>Typer</title>
+    <title>Typer - Register</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
     <meta charset="utf-8">
 </head>
 
 <body>
+
 <h1>Register</h1>
 
-<div>
-    <h2>Player</h2>
-    <h3 th:text="${text}"></h3>
-    <form method="POST" th:action="@{/register}" id="registerForm">
+<div layout:frament="content" class="container">
 
+    <div class="alert alert-info" th:if="${exist}">
+        <p>User with this email already exist !</p>
+    </div>
 
-        <label for="username">Username: </label>
-        <input type="text" value="test" name="username"/><br/>
+    <form th:action="@{/register}" th:object="${user}" method="post">
 
-        <label for="password">Password: </label>
-        <input type="password" value="test" name="password"/><br/>
+        <div class="form-group">
+            <label for="username" class="form-control-label">Username</label>
+            <input type="text" class="form-control" th:field="*{username}" id="username">
+            <div class="text text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+        </div>
 
-        <label for="confirm">Confirm password: </label>
-        <input type="password" value="test" name="confirm"/><br/>
+        <div class="form-group">
+            <label for="password" class="form-control-label">Password</label>
+            <input type="password" class="form-control" th:field="*{password}" id="password">
+            <div class="text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
 
-        <label for="fullname">Email: </label>
-        <input type="text" placeholder="example@mail.com" name="mail"/><br/>
+        <!--TODO Confirm password validator-->
+        <div class="form-group">
+            <label for="confirm" class="form-control-label">Confirm password</label>
+            <input type="password" class="form-control" value="test" th:field=" *{password}" id="confirm">
+            <div class="text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
 
-        <input type="submit" value="Register"/>
+        <div class="form-group">
+            <label for="email" class="form-control-label">Email</label>
+            <input type="text" class="form-control" th:field="*{mail}" id="email">
+            <div class="text text-danger" th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"></div>
+
+        </div>
+
+        <input type="submit" value="Submit">
+
     </form>
 </div>
 
 </body>
+
 </html>
