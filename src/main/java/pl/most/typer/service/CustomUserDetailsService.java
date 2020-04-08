@@ -25,8 +25,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         return user.orElseThrow(() -> new UsernameNotFoundException("User '" + username + "' not found!"));
     }
 
-    public boolean isUserPresent(String username) {
-        Optional<User> checkIfExist = userRepository.findByUsername(username);
+    public boolean isUserPresent(String username, String mail) {
+        Optional<User> checkIfExist = userRepository.findByUsernameOrMail(username, mail);
         return checkIfExist.isPresent();
     }
 }
