@@ -11,7 +11,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class Team {
+public class Area {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,5 +20,4 @@ public class Team {
     @JsonProperty("id")
     private Integer apiId;
     private String name;
-    private String crestUrl;
 }

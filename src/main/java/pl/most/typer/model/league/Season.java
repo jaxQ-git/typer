@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.security.PrivateKey;
 
 @Data
 @Entity
-public class Team {
+public class Season {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,6 +17,12 @@ public class Team {
     private Long id;
     @JsonProperty("id")
     private Integer apiId;
-    private String name;
-    private String crestUrl;
+
+    private String startDate;
+    private String endDate;
+
+    private Integer currentMatchday;
+
+    @ManyToOne
+    private Team winner;
 }
