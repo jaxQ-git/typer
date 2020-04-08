@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ulraq.net.nz/thymeleaf/Layout">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
 
     <title>Typer</title>
@@ -23,10 +22,10 @@
 
 <body>
 
-<div th:replace="fragments/header :: header"/>
+<div th:replace="fragments/header :: header" />
 
 
-<div class="container-fluid">
+<div style="margin-top: 50px;" class="container-fluid">
     <div class="row">
         <div class="col text-center">
             <h3 class="display-4">Kontakt</h3>
@@ -39,7 +38,7 @@
             <form method="POST" th:action="@{/register}" th:object="${user}" id=" registerForm"
                   oninput='password.setCustomValidity(password.value != confirm.value ? "Passwords do not match." : "")'>
 
-
+<!---->
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="username">Username: </label>
                 <div class="col-sm-8">
@@ -54,18 +53,17 @@
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="password">Password: </label>
                 <div class="col-sm-8">
-                    <input required type="password" class="form-control" th:field=" *{password}" value="test" name="password" id="password"/>
+                    <input required type="password" class="form-control" th:field=" *{password}"
+                           value="test" name="password" id="password" placeholder="Should be at least 4 characters"/>
                 </div>
                 <div class="text text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-
             </div>
-            <!--            TODO Walidacja zgodności haseł-->
+
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label" for="confirm">Confirm password: </label>
                 <div class="col-sm-8">
-                    <input type="password" class="form-control" value="test" name="confirm" id="confirm"/>
+                    <input type="password" class="form-control" name="confirm" id="confirm"/>
                 </div>
-
             </div>
 
             <div class="form-group row">
