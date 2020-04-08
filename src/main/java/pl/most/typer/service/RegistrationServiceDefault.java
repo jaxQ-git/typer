@@ -25,6 +25,10 @@ public class RegistrationServiceDefault implements RegistrationService {
 
 
 
+//TODO Moze niezauwazylem, ale nigdzie nie widzialem obslugiwania roli dla uzytkownikowi przy rejestracji,
+// ewentualnie mozna to tak zostawic, a pozniej stworzyc jakis panel admina, ktory bedzie mial dostep do bazy uzytkownikow
+// i tam moglby danemu nadac role admina, a kazdy inny defaultowo ma user
+
 
     @Override
     public boolean register(RegistrationForm registrationForm) {
