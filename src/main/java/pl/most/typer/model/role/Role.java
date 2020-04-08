@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+@NoArgsConstructor(force = true, access = AccessLevel.PUBLIC)
 @RequiredArgsConstructor
 public class Role {
 
@@ -19,7 +19,6 @@ public class Role {
     private Long id;
     @Enumerated(EnumType.STRING)
     private final RoleType roleType;
-
 
 
 }
