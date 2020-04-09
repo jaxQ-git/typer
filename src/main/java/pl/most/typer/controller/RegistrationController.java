@@ -1,11 +1,20 @@
 package pl.most.typer.controller;
 
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import pl.most.typer.model.dto.RegistrationForm;
+import pl.most.typer.model.league.CompetitionDTO;
+import pl.most.typer.model.league.Standing;
 import pl.most.typer.service.CustomUserDetailsService;
+import pl.most.typer.service.LeagueService;
 import pl.most.typer.service.RegistrationService;
 
 import javax.validation.Valid;
@@ -16,18 +25,21 @@ import java.util.UUID;
 @CrossOrigin("*")
 public class RegistrationController {
 
-    RegistrationService registrationService;
+    private RegistrationService registrationService;
     private CustomUserDetailsService customUserDetailsService;
+    private LeagueService leagueService;
 
 
-    public RegistrationController(RegistrationService registrationService, CustomUserDetailsService customUserDetailsService) {
+    public RegistrationController(RegistrationService registrationService, CustomUserDetailsService customUserDetailsService, LeagueService leagueService) {
         this.registrationService = registrationService;
         this.customUserDetailsService = customUserDetailsService;
+        this.leagueService = leagueService;
     }
 
     @GetMapping
-    public String register(Model model) {
+    public String register(Model model) throws JSONException {
         model.addAttribute("user", new RegistrationForm());
+        leagueService.getStandingInfoFromExternalApi(2001);
         return "registration";
     }
 

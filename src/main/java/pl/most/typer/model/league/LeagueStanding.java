@@ -5,21 +5,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.EnableMBeanExport;
 
 import javax.persistence.*;
-import java.util.Stack;
 
 @Data
 @Entity
-@RequiredArgsConstructor
 public class LeagueStanding {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-    @ManyToOne(fetch = FetchType.EAGER)
+    private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "standing_id")
     private Standing standing;
     private Integer position;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "team_id")
     private Team team;
 
