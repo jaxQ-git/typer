@@ -2,6 +2,8 @@ package pl.most.typer.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.most.typer.model.role.RoleType;
+import pl.most.typer.repository.RoleRepository;
 import pl.most.typer.repository.UserRepository;
 import pl.most.typer.model.User;
 import pl.most.typer.model.dto.RegistrationForm;
@@ -16,11 +18,13 @@ public class RegistrationServiceDefault implements RegistrationService {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
     private EmailService emailService;
+    private RoleRepository roleRepository;
 
-    public RegistrationServiceDefault(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
+    public RegistrationServiceDefault(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.roleRepository = roleRepository;
     }
 
 
@@ -49,6 +53,7 @@ public class RegistrationServiceDefault implements RegistrationService {
             User user = userOptional.get();
             user.setEnabled(true);
             user.setToken(null);
+            user.getRoles().add(roleRepository.findByRoleType(RoleType.USER));
             userRepository.save(user);
         }
     }

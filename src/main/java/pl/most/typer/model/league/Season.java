@@ -12,9 +12,6 @@ import java.security.PrivateKey;
 public class Season {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore
-    private Long id;
     @JsonProperty("id")
     private Integer apiId;
 

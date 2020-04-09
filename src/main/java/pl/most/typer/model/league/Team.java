@@ -14,9 +14,6 @@ import javax.persistence.Id;
 public class Team {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore
-    private Long id;
     @JsonProperty("id")
     private Integer apiId;
     private String name;

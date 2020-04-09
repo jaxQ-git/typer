@@ -11,11 +11,9 @@ import java.util.List;
 @Entity
 public class Competition {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore
-    private Long id;
+
     @JsonProperty("id")
+    @Id
     private Integer apiId;
 
     @ManyToOne(cascade = CascadeType.ALL)
