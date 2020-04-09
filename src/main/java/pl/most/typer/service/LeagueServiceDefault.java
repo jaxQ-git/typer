@@ -6,10 +6,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.most.typer.model.league.Competition;
-import pl.most.typer.model.league.CompetitionDTO;
+import pl.most.typer.model.league.*;
 import pl.most.typer.repository.SeasonRepository;
 import pl.most.typer.repository.StandingRepository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LeagueServiceDefault implements LeagueService {
@@ -40,12 +43,17 @@ public class LeagueServiceDefault implements LeagueService {
             CompetitionDTO competitionDTO = entity.getBody();
             Integer apiId = competitionDTO.getCompetition().getApiId();
             if (competitionService.existsCompetitionByApiId(apiId)) {
+                return;
                 //TODO update the information
             }
             Competition competition = competitionDTO.getCompetition();
             competitionDTO.getSeason().setCompetition(competition);
             competitionDTO.getStandings().forEach(standing -> standing.setCompetition(competition));
             setStandingInLeagueStanding(competitionDTO);
+
+            List<Team> distinctTeams = getDistinctTeams(competitionDTO);
+            distinctTeams.forEach(team -> teamService.saveTeam(team));
+
             competitionService.save(competition);
             competitionDTO.getStandings().forEach(standing -> standingRepository.save(standing));
             seasonRepository.save(competitionDTO.getSeason());
@@ -57,10 +65,21 @@ public class LeagueServiceDefault implements LeagueService {
 
     }
 
-    private void setStandingInLeagueStanding(CompetitionDTO competitionDTO) {
-        competitionDTO.getStandings()
+    private List<Team> getDistinctTeams(CompetitionDTO competitionDTO) {
+        return competitionDTO.getStandings()
                 .stream()
-                .forEach(standing -> standing.getTable().forEach(leagueStanding -> leagueStanding.setStanding(standing)));
+                .filter(standing -> standing.getType().equals("TOTAL"))
+                .map(standing -> standing.getLeagueStandings())
+                .flatMap(leagueStandings -> leagueStandings.stream())
+                .map(leagueStanding -> leagueStanding.getTeam())
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    private void setStandingInLeagueStanding(CompetitionDTO competitionDTO) {
+        competitionDTO.getStandings().forEach(standing -> {
+            standing.getLeagueStandings().forEach(leagueStanding -> leagueStanding.setStanding(standing));
+        });
     }
 
     private HttpEntity<String> getStringHttpEntity() {
@@ -68,4 +87,5 @@ public class LeagueServiceDefault implements LeagueService {
         httpHeaders.set("X-Auth-Token","d6d4a40948f344e78fd1b8a461c4d213");
         return new HttpEntity<>(httpHeaders);
     }
+
 }

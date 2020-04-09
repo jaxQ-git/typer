@@ -20,7 +20,8 @@ public class Standing {
     @JsonProperty("group")
     private String groupName;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "standing")
-    private List<LeagueStanding> table;
+    @JsonProperty("table")
+    private List<LeagueStanding> leagueStandings;
 
     @ManyToOne
     @JoinColumn(name = "competition_id")

@@ -17,7 +17,7 @@ public class LeagueStanding {
     @JoinColumn(name = "standing_id")
     private Standing standing;
     private Integer position;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "team_id")
     private Team team;
 

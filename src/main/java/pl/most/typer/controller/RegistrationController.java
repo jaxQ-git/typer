@@ -39,7 +39,7 @@ public class RegistrationController {
     @GetMapping
     public String register(Model model) throws JSONException {
         model.addAttribute("user", new RegistrationForm());
-        leagueService.getStandingInfoFromExternalApi(2001);
+//        leagueService.getStandingInfoFromExternalApi(2001);
         return "registration";
     }
 
