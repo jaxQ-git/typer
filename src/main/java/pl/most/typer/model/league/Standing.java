@@ -22,5 +22,9 @@ public class Standing {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "standing")
     private List<LeagueStanding> table;
 
+    @ManyToOne
+    @JoinColumn(name = "competition_id")
+    private Competition competition;
+
 
 }

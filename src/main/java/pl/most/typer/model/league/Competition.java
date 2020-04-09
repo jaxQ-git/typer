@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -17,7 +18,7 @@ public class Competition {
     @JsonProperty("id")
     private Integer apiId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Area area;
 
     private String name;
@@ -28,5 +29,10 @@ public class Competition {
 
     private String lastUpdated;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "competition")
+    private List<Season> seasons;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "competition")
+    private List<Standing> standings;
 
 }

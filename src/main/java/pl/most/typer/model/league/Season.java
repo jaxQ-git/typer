@@ -25,4 +25,8 @@ public class Season {
 
     @ManyToOne
     private Team winner;
+
+    @ManyToOne
+    @JoinColumn(name = "competition_id")
+    private Competition competition;
 }
