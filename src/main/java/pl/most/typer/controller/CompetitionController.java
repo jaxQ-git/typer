@@ -1,5 +1,6 @@
 package pl.most.typer.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +26,14 @@ public class CompetitionController {
 
     @GetMapping(value = "/update/{id}")
     public String updateStandingsInfo(@PathVariable(value = "id") Integer id){
-        leagueService.getStandingInfoFromExternalApi(id);
-        return "redirect:/competitions/" + id + "/standings";
+        HttpStatus status  = leagueService.getStandingInfoFromExternalApi(id);
+        if (status.is2xxSuccessful()) {
+            return "redirect:/competitions/standings/"+ id;
+        }
+        else {
+            return "redirect:/";
+        }
+
     }
 
     @GetMapping(value = "/{id}/standings")

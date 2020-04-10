@@ -5,7 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Data
 @Entity
@@ -21,7 +24,9 @@ public class Standing {
     private String groupName;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "standing")
     @JsonProperty("table")
+    @OrderBy("position ASC")
     private List<LeagueStanding> leagueStandings;
+//    private Set<LeagueStanding> leagueStandings = new TreeSet<>(Comparator.comparing(LeagueStanding::getPosition));
 
     @ManyToOne
     @JoinColumn(name = "competition_id")

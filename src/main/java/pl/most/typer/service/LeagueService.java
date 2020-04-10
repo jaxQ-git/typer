@@ -1,7 +1,9 @@
 package pl.most.typer.service;
 
+import org.springframework.http.HttpStatus;
+
 public interface LeagueService {
 
 
-    void getStandingInfoFromExternalApi(Integer leagueId);
+    HttpStatus getStandingInfoFromExternalApi(Integer leagueId);
 }

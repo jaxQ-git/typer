@@ -1,5 +1,6 @@
 package pl.most.typer.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -30,12 +31,12 @@ public class LeagueServiceDefault implements LeagueService {
     }
 
     @Override
-    public void getStandingInfoFromExternalApi(Integer leagueId) {
+    public HttpStatus getStandingInfoFromExternalApi(Integer leagueId) {
         ResponseEntity<CompetitionDTO> entity = footballApiService.getExternalData(Arrays.asList("competitions",leagueId.toString(),"standings"),CompetitionDTO.class);
         if (entity.getStatusCode().is2xxSuccessful()) {
             CompetitionDTO competitionDTO = entity.getBody();
             if (competitionService.existsCompetitionByApiId(competitionDTO.getCompetition().getApiId())) {
-                return;
+                return HttpStatus.OK;
                 //TODO update the information
             }
 
@@ -45,7 +46,10 @@ public class LeagueServiceDefault implements LeagueService {
             standingService.saveAll(competitionDTO.getStandings());
             seasonService.save(competitionDTO.getSeason());
 
-
+            return HttpStatus.CREATED;
+        }
+        else{
+            return HttpStatus.BAD_GATEWAY;
         }
 
 

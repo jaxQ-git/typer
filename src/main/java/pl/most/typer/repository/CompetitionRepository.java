@@ -10,4 +10,6 @@ public interface CompetitionRepository extends CrudRepository<Competition, Long>
     Optional<Competition> findByApiId(Integer apiId);
 
     boolean existsCompetitionByApiId(Integer apiId);
+
+
 }
