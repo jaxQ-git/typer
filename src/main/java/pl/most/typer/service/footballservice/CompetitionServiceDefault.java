@@ -1,4 +1,4 @@
-package pl.most.typer.service;
+package pl.most.typer.service.footballservice;
 
 import org.springframework.stereotype.Service;
 import pl.most.typer.model.league.Competition;
@@ -41,6 +41,20 @@ public class CompetitionServiceDefault implements CompetitionService {
     public List<Standing> getStandingsByCompetition(Integer competitionId, String standingsType) {
         Optional<Competition> optionalCompetition = findByApiId(competitionId);
         return getStandingsByType(optionalCompetition, Optional.of(standingsType));
+    }
+
+    @Override
+    public Optional<Competition> getCompetition(Integer id) {
+        return competitionRepository.findByApiId(id);
+    }
+
+    @Override
+    public String getCompetitionName(Integer id) {
+        Optional<Competition> competition = getCompetition(id);
+        if (competition.isPresent()) {
+            return competition.get().getName();
+        }
+        return null;
     }
 
 

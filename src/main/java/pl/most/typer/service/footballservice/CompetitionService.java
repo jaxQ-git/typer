@@ -1,4 +1,4 @@
-package pl.most.typer.service;
+package pl.most.typer.service.footballservice;
 
 import pl.most.typer.model.league.Competition;
 import pl.most.typer.model.league.Standing;
@@ -17,4 +17,9 @@ public interface CompetitionService {
     List<Standing> getStandingsByCompetition(Integer competitionId);
 
     List<Standing> getStandingsByCompetition(Integer competitionId, String standingsType);
+
+    Optional<Competition> getCompetition(Integer id);
+
+
+    String getCompetitionName(Integer id);
 }
