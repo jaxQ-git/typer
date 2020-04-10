@@ -1,12 +1,12 @@
-package pl.most.typer.service;
+package pl.most.typer.service.footballservice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.most.typer.model.league.*;
-import pl.most.typer.repository.SeasonService;
-import pl.most.typer.repository.StandingRepository;
+import pl.most.typer.repository.footballrepo.SeasonService;
+import pl.most.typer.repository.footballrepo.StandingRepository;
 
 import java.util.Arrays;
 import java.util.List;

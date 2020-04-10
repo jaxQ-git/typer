@@ -1,4 +1,4 @@
-package pl.most.typer.repository;
+package pl.most.typer.repository.accountrepo;
 
 import org.springframework.data.repository.CrudRepository;
 import pl.most.typer.model.role.Role;

@@ -3,7 +3,7 @@ package pl.most.typer.service;
 import org.springframework.stereotype.Service;
 import pl.most.typer.model.league.Competition;
 import pl.most.typer.model.league.Standing;
-import pl.most.typer.repository.CompetitionRepository;
+import pl.most.typer.repository.footballrepo.CompetitionRepository;
 
 import java.util.List;
 import java.util.Optional;

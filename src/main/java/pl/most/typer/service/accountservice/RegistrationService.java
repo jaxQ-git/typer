@@ -1,4 +1,4 @@
-package pl.most.typer.service;
+package pl.most.typer.service.accountservice;
 
 import pl.most.typer.model.dto.RegistrationForm;
 

@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.most.typer.model.league.Standing;
-import pl.most.typer.service.CompetitionService;
-import pl.most.typer.service.LeagueService;
+import pl.most.typer.service.footballservice.CompetitionService;
+import pl.most.typer.service.footballservice.LeagueService;
 
 import java.util.List;
 

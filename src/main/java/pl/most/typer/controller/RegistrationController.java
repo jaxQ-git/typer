@@ -1,21 +1,14 @@
 package pl.most.typer.controller;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import pl.most.typer.model.dto.RegistrationForm;
-import pl.most.typer.model.league.CompetitionDTO;
-import pl.most.typer.model.league.Standing;
-import pl.most.typer.service.CustomUserDetailsService;
-import pl.most.typer.service.LeagueService;
-import pl.most.typer.service.RegistrationService;
+import pl.most.typer.service.accountservice.CustomUserDetailsService;
+import pl.most.typer.service.footballservice.LeagueService;
+import pl.most.typer.service.accountservice.RegistrationService;
 
 import javax.validation.Valid;
 import java.util.UUID;
