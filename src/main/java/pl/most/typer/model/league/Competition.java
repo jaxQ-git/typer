@@ -27,10 +27,12 @@ public class Competition {
 
     private String lastUpdated;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "competition")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "competition", fetch = FetchType.LAZY)
     private List<Season> seasons;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "competition")
+
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "competition")
     private List<Standing> standings;
 
 }

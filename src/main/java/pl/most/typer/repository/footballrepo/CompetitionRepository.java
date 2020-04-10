@@ -1,4 +1,4 @@
-package pl.most.typer.repository;
+package pl.most.typer.repository.footballrepo;
 
 import org.springframework.data.repository.CrudRepository;
 import pl.most.typer.model.league.Competition;
@@ -10,4 +10,6 @@ public interface CompetitionRepository extends CrudRepository<Competition, Long>
     Optional<Competition> findByApiId(Integer apiId);
 
     boolean existsCompetitionByApiId(Integer apiId);
+
+
 }

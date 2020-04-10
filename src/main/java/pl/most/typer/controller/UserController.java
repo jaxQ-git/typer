@@ -3,8 +3,8 @@ package pl.most.typer.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.most.typer.repository.UserRepository;
-import pl.most.typer.service.CustomUserDetailsService;
+import pl.most.typer.repository.accountrepo.UserRepository;
+import pl.most.typer.service.accountservice.CustomUserDetailsService;
 
 @RequestMapping("/rest/hello")
 @RestController
