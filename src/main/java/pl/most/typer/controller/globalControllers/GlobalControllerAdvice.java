@@ -1,4 +1,4 @@
-package pl.most.typer.controller;
+package pl.most.typer.controller.globalControllers;
 
 import lombok.Data;
 import org.springframework.http.ResponseEntity;

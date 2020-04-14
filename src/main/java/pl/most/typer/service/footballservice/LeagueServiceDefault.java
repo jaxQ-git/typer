@@ -8,10 +8,7 @@ import pl.most.typer.model.league.*;
 import pl.most.typer.repository.footballrepo.SeasonService;
 import pl.most.typer.repository.footballrepo.StandingRepository;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -41,9 +38,16 @@ public class LeagueServiceDefault implements LeagueService {
                 .getExternalData(endpoints,filters,CompetitionDTO.class);
         if (entity.getStatusCode().is2xxSuccessful()) {
             CompetitionDTO competitionDTO = entity.getBody();
-            if (competitionService.existsCompetitionByApiId(competitionDTO.getCompetition().getApiId())) {
+            Optional<Competition> competitionFromDB = competitionService.getCompetition(competitionDTO.getCompetition().getApiId());
+            if (competitionFromDB.isPresent()) {
+                if(checkIfExternalCompetitionIsRecent(competitionDTO.getCompetition(),competitionFromDB.get())){
+                    //TODO update the information
+                }
+                else {
+                    //TODO return
+                }
                 return HttpStatus.OK;
-                //TODO update the information
+
             }
 
             setChildFieldInCompetitionDTO(competitionDTO);
@@ -60,6 +64,10 @@ public class LeagueServiceDefault implements LeagueService {
 
 
 
+    }
+
+    private boolean checkIfExternalCompetitionIsRecent(Competition ExtCompetition, Competition competitionFromDB) {
+        return ExtCompetition.getLastUpdated().isAfter(competitionFromDB.getLastUpdated());
     }
 
     private void setChildFieldInCompetitionDTO(CompetitionDTO competitionDTO) {

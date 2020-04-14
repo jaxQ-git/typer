@@ -21,26 +21,18 @@ public class RegistrationController {
 
     private RegistrationService registrationService;
     private CustomUserDetailsService customUserDetailsService;
-    private FootballApiService footballApiService;
-    private HeaderCompetitionListDTO headerCompetitionListDTO;
+
 
 
     public RegistrationController(RegistrationService registrationService, CustomUserDetailsService customUserDetailsService, FootballApiService footballApiService, HeaderCompetitionListDTO headerCompetitionListDTO) {
         this.registrationService = registrationService;
         this.customUserDetailsService = customUserDetailsService;
-        this.footballApiService = footballApiService;
-        this.headerCompetitionListDTO = headerCompetitionListDTO;
+
     }
 
     @GetMapping
     public String register(Model model) throws JSONException {
         model.addAttribute("user", new RegistrationForm());
-        headerCompetitionListDTO.getCompetitions();
-//        List<String> endpoints = Collections.singletonList("competitions");
-//        Map<String, String> filters = new HashMap<>();
-//        filters.put("plan","TIER_ONE");
-//        ResponseEntity<HeaderCompetitionListDTO> externalData = footballApiService.getExternalData(endpoints, filters, HeaderCompetitionListDTO.class);
-//        model.addAttribute("competitions", externalData.getBody().getCompetitions());
         return "registration";
     }
 

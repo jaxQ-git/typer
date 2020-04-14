@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.security.PrivateKey;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -15,8 +16,8 @@ public class Season {
     @JsonProperty("id")
     private Integer apiId;
 
-    private String startDate;
-    private String endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     private Integer currentMatchday;
 

@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -29,14 +32,16 @@ public class Competition {
 
     private String plan;
 
-    private String lastUpdated;
+    private LocalDateTime lastUpdated;
 
+
+    //TODO remove
     public Competition(Integer apiId, String name) {
         this.apiId = apiId;
         this.name = name;
     }
 
-    //    private String emblemUrl;
+    //  private String emblemUrl;
 //
 //    private Integer numberOfAvailableSeasons;
 

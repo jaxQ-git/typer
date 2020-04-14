@@ -1,4 +1,4 @@
-package pl.most.typer.controller;
+package pl.most.typer.controller.globalControllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
