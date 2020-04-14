@@ -6,12 +6,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.most.typer.model.dto.RegistrationForm;
+import pl.most.typer.model.dto.HeaderCompetitionListDTO;
 import pl.most.typer.service.accountservice.CustomUserDetailsService;
-import pl.most.typer.service.footballservice.LeagueService;
+import pl.most.typer.service.footballservice.FootballApiService;
 import pl.most.typer.service.accountservice.RegistrationService;
 
 import javax.validation.Valid;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/register")
@@ -20,19 +21,26 @@ public class RegistrationController {
 
     private RegistrationService registrationService;
     private CustomUserDetailsService customUserDetailsService;
-    private LeagueService leagueService;
+    private FootballApiService footballApiService;
+    private HeaderCompetitionListDTO headerCompetitionListDTO;
 
 
-    public RegistrationController(RegistrationService registrationService, CustomUserDetailsService customUserDetailsService, LeagueService leagueService) {
+    public RegistrationController(RegistrationService registrationService, CustomUserDetailsService customUserDetailsService, FootballApiService footballApiService, HeaderCompetitionListDTO headerCompetitionListDTO) {
         this.registrationService = registrationService;
         this.customUserDetailsService = customUserDetailsService;
-        this.leagueService = leagueService;
+        this.footballApiService = footballApiService;
+        this.headerCompetitionListDTO = headerCompetitionListDTO;
     }
 
     @GetMapping
     public String register(Model model) throws JSONException {
         model.addAttribute("user", new RegistrationForm());
-//        leagueService.getStandingInfoFromExternalApi(2001);
+        headerCompetitionListDTO.getCompetitions();
+//        List<String> endpoints = Collections.singletonList("competitions");
+//        Map<String, String> filters = new HashMap<>();
+//        filters.put("plan","TIER_ONE");
+//        ResponseEntity<HeaderCompetitionListDTO> externalData = footballApiService.getExternalData(endpoints, filters, HeaderCompetitionListDTO.class);
+//        model.addAttribute("competitions", externalData.getBody().getCompetitions());
         return "registration";
     }
 

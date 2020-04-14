@@ -26,7 +26,6 @@ public class Standing {
     @JsonProperty("table")
     @OrderBy("position ASC")
     private List<LeagueStanding> leagueStandings;
-//    private Set<LeagueStanding> leagueStandings = new TreeSet<>(Comparator.comparing(LeagueStanding::getPosition));
 
     @ManyToOne
     @JoinColumn(name = "competition_id")

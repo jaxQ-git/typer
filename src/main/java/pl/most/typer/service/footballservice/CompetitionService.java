@@ -14,12 +14,9 @@ public interface CompetitionService {
 
     Competition save(Competition competition);
 
-    List<Standing> getStandingsByCompetition(Integer competitionId);
-
-    List<Standing> getStandingsByCompetition(Integer competitionId, String standingsType);
-
     Optional<Competition> getCompetition(Integer id);
 
-
     String getCompetitionName(Integer id);
+
+    List<Competition> getAll();
 }

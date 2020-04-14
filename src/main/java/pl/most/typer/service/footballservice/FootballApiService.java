@@ -3,9 +3,10 @@ package pl.most.typer.service.footballservice;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FootballApiService {
 
-    String BASIC_URL = "https://api.football-data.org/v2";
-    <T> ResponseEntity<T> getExternalData(List<String> endpoints, Class<T> returnedEntity);
+
+    <T> ResponseEntity<T> getExternalData(List<String> endpoints, Map<String,String> filters, Class<T> returnedEntity);
 }

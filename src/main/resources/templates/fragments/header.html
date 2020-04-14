@@ -25,7 +25,9 @@
                         Dostępne ligi
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" th:href="@{/competitions/2001/standings}">Liga Mistrzów</a>
+                        <div th:each="competition: ${competitions}">
+                            <a class="dropdown-item" th:href="@{/competitions/{competitionId}/standings(competitionId=${competition.apiId})}" th:text="${competition.name}"></a>
+                        </div>
                         <a class="dropdown-item" th:href="@{/competitions/2002/standings}">Bundesliga</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Wszystkie Ligi</a>

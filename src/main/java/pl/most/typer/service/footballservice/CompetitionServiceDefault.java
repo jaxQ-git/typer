@@ -34,14 +34,8 @@ public class CompetitionServiceDefault implements CompetitionService {
         return competitionRepository.save(competition);
     }
 
-    public List<Standing> getStandingsByCompetition(Integer competitionId) {
-        return getStandingsByCompetition(competitionId,"TOTAL");
-    }
 
-    public List<Standing> getStandingsByCompetition(Integer competitionId, String standingsType) {
-        Optional<Competition> optionalCompetition = findByApiId(competitionId);
-        return getStandingsByType(optionalCompetition, Optional.of(standingsType));
-    }
+
 
     @Override
     public Optional<Competition> getCompetition(Integer id) {
@@ -57,17 +51,10 @@ public class CompetitionServiceDefault implements CompetitionService {
         return null;
     }
 
-
-    /**
-     *
-     * @param optionalCompetition
-     * @param standingsType - If null the method will return Total League standings
-     * @return
-     */
-    private List<Standing> getStandingsByType(Optional<Competition> optionalCompetition, Optional<String> standingsType) {
-        return optionalCompetition.get().getStandings()
-                .stream()
-                .filter(standing -> standingsType.orElse("TOTAL").equals(standing.getType()))
-                .collect(Collectors.toList());
+    @Override
+    public List<Competition> getAll() {
+        return (List<Competition>) competitionRepository.findAll();
     }
+
+
 }

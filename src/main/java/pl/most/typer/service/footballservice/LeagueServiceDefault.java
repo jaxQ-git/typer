@@ -9,8 +9,11 @@ import pl.most.typer.repository.footballrepo.SeasonService;
 import pl.most.typer.repository.footballrepo.StandingRepository;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+
 
 @Service
 public class LeagueServiceDefault implements LeagueService {
@@ -32,7 +35,10 @@ public class LeagueServiceDefault implements LeagueService {
 
     @Override
     public HttpStatus getStandingInfoFromExternalApi(Integer leagueId) {
-        ResponseEntity<CompetitionDTO> entity = footballApiService.getExternalData(Arrays.asList("competitions",leagueId.toString(),"standings"),CompetitionDTO.class);
+        List<String> endpoints = Arrays.asList("competitions", leagueId.toString(), "standings");
+        Map<String, String> filters = new HashMap<>();
+        ResponseEntity<CompetitionDTO> entity = footballApiService
+                .getExternalData(endpoints,filters,CompetitionDTO.class);
         if (entity.getStatusCode().is2xxSuccessful()) {
             CompetitionDTO competitionDTO = entity.getBody();
             if (competitionService.existsCompetitionByApiId(competitionDTO.getCompetition().getApiId())) {
@@ -61,8 +67,6 @@ public class LeagueServiceDefault implements LeagueService {
         competitionDTO.getStandings().forEach(standing -> standing.setCompetition(competitionDTO.getCompetition()));
         setStandingInLeagueStanding(competitionDTO);
     }
-
-
 
     private void setStandingInLeagueStanding(CompetitionDTO competitionDTO) {
         competitionDTO.getStandings().forEach(standing -> {

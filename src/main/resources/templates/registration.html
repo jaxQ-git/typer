@@ -32,6 +32,7 @@
         </div>
         <div class="col">
             <h3 class="display-4">Rejestracja</h3>
+            <p th:text="${msg}"></p>
             <div class="alert alert-info" th:if="${exist}">
                 <p>User with this email already exist !</p>
             </div>
