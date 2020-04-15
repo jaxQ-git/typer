@@ -2,6 +2,7 @@ package pl.most.typer.model.league;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.context.annotation.EnableMBeanExport;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class LeagueStanding {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "standing_id")
     private Standing standing;

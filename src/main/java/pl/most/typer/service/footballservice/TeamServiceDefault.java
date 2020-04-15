@@ -6,6 +6,7 @@ import pl.most.typer.repository.footballrepo.TeamRepository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,26 +19,20 @@ public class TeamServiceDefault implements TeamService {
     }
 
     @Override
-    public void saveTeam(Team team) {
-        if (teamRepository.existsByApiId(team.getApiId())) {
-            return;
+    public Team save(Team team) {
+        Optional<Team> optionalTeam = teamRepository.findByApiId(team.getApiId());
+        if (optionalTeam.isPresent()) {
+            return optionalTeam.get();
         }
-        teamRepository.save(team);
+        else {
+            return teamRepository.save(team);
+        }
 
     }
 
     @Override
-    public void saveTeams(Collection<Team> teams) {
-        List<Team> distinctTeams = getDistinctTeams(teams);
-        List<Team> uniqueTeams = distinctTeams.stream()
-                .filter(team -> !teamRepository.existsByApiId(team.getApiId()))
-                .collect(Collectors.toList());
-        teamRepository.saveAll(uniqueTeams);
+    public void saveAll(Collection<Team> teams) {
+        teams.stream().distinct().forEach(this::save);
     }
 
-    private List<Team> getDistinctTeams(Collection<Team> teams) {
-        return teams.stream()
-                .distinct()
-                .collect(Collectors.toList());
-    }
 }

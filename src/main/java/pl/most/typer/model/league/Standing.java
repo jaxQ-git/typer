@@ -3,6 +3,7 @@ package pl.most.typer.model.league;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Comparator;
@@ -22,15 +23,15 @@ public class Standing {
     private String type;
     @JsonProperty("group")
     private String groupName;
+    @ToString.Exclude
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "standing")
     @JsonProperty("table")
     @OrderBy("position ASC")
     private List<LeagueStanding> leagueStandings;
-//    private Set<LeagueStanding> leagueStandings = new TreeSet<>(Comparator.comparing(LeagueStanding::getPosition));
-
     @ManyToOne
     @JoinColumn(name = "competition_id")
     private Competition competition;
+
 
 
 }
