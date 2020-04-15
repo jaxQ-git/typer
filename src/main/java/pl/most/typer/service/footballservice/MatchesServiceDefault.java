@@ -12,6 +12,8 @@ import pl.most.typer.model.league.Season;
 import pl.most.typer.model.league.Team;
 import pl.most.typer.model.matches.Match;
 import pl.most.typer.model.matches.MatchDTO;
+import pl.most.typer.model.matches.Score;
+import pl.most.typer.model.matches.TeamGoals;
 import pl.most.typer.repository.footballrepo.MatchesRepository;
 
 import java.util.List;
@@ -22,16 +24,20 @@ import java.util.stream.Stream;
 @Service
 public class MatchesServiceDefault implements MatchesService {
 
-    private CompetitionService competitionService;
-    private TeamService teamService;
-    private SeasonService seasonService;
-    private MatchesRepository matchesRepository;
+    private final CompetitionService competitionService;
+    private final TeamService teamService;
+    private final SeasonService seasonService;
+    private final ScoreService scoreService;
+    private final TeamGoalsService teamGoalsService;
+    private final MatchesRepository matchesRepository;
 
 
-    public MatchesServiceDefault(CompetitionService competitionService, TeamService teamService, SeasonService seasonService, MatchesRepository matchesRepository) {
+    public MatchesServiceDefault(CompetitionService competitionService, TeamService teamService, SeasonService seasonService, ScoreService scoreService, TeamGoalsService teamGoalsService, MatchesRepository matchesRepository) {
         this.competitionService = competitionService;
         this.teamService = teamService;
         this.seasonService = seasonService;
+        this.scoreService = scoreService;
+        this.teamGoalsService = teamGoalsService;
         this.matchesRepository = matchesRepository;
     }
 
@@ -54,12 +60,14 @@ public class MatchesServiceDefault implements MatchesService {
 
                 seasonService.save(getSeasonsFromMatchDTO(matchDTO));
                 teamService.saveTeams(getTeamsFromMatchDTO(matchDTO));
+                teamGoalsService.save(getTeamGoalsFromMatchDTO(matchDTO));
+                scoreService.save(getScoreFromMatchDTO(matchDTO));
 
-//                save(matchDTO.getMatches());
+                save(matchDTO.getMatches());
             }
         }
-
     }
+
 
     @Override
     public void save(List<Match> matches) {
@@ -90,6 +98,22 @@ public class MatchesServiceDefault implements MatchesService {
     private List<Team> getTeamsFromMatchDTO(MatchDTO matchDTO) {
         return matchDTO.getMatches().stream()
                 .flatMap(match -> Stream.of(match.getAwayTeam(), match.getHomeTeam()))
+                .collect(Collectors.toList());
+    }
+
+    private List<Score> getScoreFromMatchDTO(MatchDTO matchDTO) {
+        return matchDTO.getMatches()
+                .stream()
+                .map(Match::getScore)
+                .collect(Collectors.toList());
+    }
+
+    private List<TeamGoals> getTeamGoalsFromMatchDTO(MatchDTO matchDTO) {
+        return matchDTO.getMatches()
+                .stream()
+                .map(Match::getScore)
+                .flatMap(score -> Stream.of(score.getExtraTime(), score.getFullTime()
+                        , score.getHalfTime(), score.getPenalties()))
                 .collect(Collectors.toList());
     }
 
