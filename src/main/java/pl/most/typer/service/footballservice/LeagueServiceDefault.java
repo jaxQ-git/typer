@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.most.typer.model.league.*;
-import pl.most.typer.repository.footballrepo.SeasonService;
 import pl.most.typer.repository.footballrepo.StandingRepository;
 
 import java.util.*;
@@ -38,23 +37,13 @@ public class LeagueServiceDefault implements LeagueService {
                 .getExternalData(endpoints,filters,CompetitionDTO.class);
         if (entity.getStatusCode().is2xxSuccessful()) {
             CompetitionDTO competitionDTO = entity.getBody();
-            Optional<Competition> competitionFromDB = competitionService.getCompetition(competitionDTO.getCompetition().getApiId());
-            if (competitionFromDB.isPresent()) {
-                if(checkIfExternalCompetitionIsRecent(competitionDTO.getCompetition(),competitionFromDB.get())){
-                    //TODO update the information
-                }
-                else {
-                    //TODO return
-                }
-                return HttpStatus.OK;
 
-            }
 
-            setChildFieldInCompetitionDTO(competitionDTO);
-            teamService.saveTeams(getAllTeamsFromCompetitionDTO(competitionDTO));
-            competitionService.save(competitionDTO.getCompetition());
-            standingService.saveAll(competitionDTO.getStandings());
+            Competition savedCompetition = competitionService.save(competitionDTO.getCompetition());
+            setChildFieldInCompetitionDTO(competitionDTO, savedCompetition);
+            teamService.saveAll(getAllTeamsFromCompetitionDTO(competitionDTO));
             seasonService.save(competitionDTO.getSeason());
+            standingService.saveAll(competitionDTO.getStandings());
 
             return HttpStatus.CREATED;
         }
@@ -67,20 +56,16 @@ public class LeagueServiceDefault implements LeagueService {
     }
 
     private boolean checkIfExternalCompetitionIsRecent(Competition ExtCompetition, Competition competitionFromDB) {
-        return ExtCompetition.getLastUpdated().isAfter(competitionFromDB.getLastUpdated());
+        return ExtCompetition.getLastUpdated().isEqual(competitionFromDB.getLastUpdated());
     }
 
-    private void setChildFieldInCompetitionDTO(CompetitionDTO competitionDTO) {
-        competitionDTO.getSeason().setCompetition(competitionDTO.getCompetition());
-        competitionDTO.getStandings().forEach(standing -> standing.setCompetition(competitionDTO.getCompetition()));
-        setStandingInLeagueStanding(competitionDTO);
+    private void setChildFieldInCompetitionDTO(CompetitionDTO competitionDTO, Competition competition) {
+        competitionDTO.setCompetition(competition);
+        seasonService.setCompetitionInSeasons(Arrays.asList(competitionDTO.getSeason()),competition);
+        standingService.setCompetitionInStandings(competitionDTO.getStandings(), competition);
+        standingService.setStandingInLeagueStanding(competitionDTO.getStandings());
     }
 
-    private void setStandingInLeagueStanding(CompetitionDTO competitionDTO) {
-        competitionDTO.getStandings().forEach(standing -> {
-            standing.getLeagueStandings().forEach(leagueStanding -> leagueStanding.setStanding(standing));
-        });
-    }
 
 
     private List<Team> getAllTeamsFromCompetitionDTO(CompetitionDTO competitionDTO) {

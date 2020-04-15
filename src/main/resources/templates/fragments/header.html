@@ -28,7 +28,7 @@
                         <div th:each="competition: ${competitions}">
                             <a class="dropdown-item" th:href="@{/competitions/{competitionId}/standings(competitionId=${competition.apiId})}" th:text="${competition.name}"></a>
                         </div>
-                        <a class="dropdown-item" th:href="@{/competitions/2002/standings}">Bundesliga</a>
+<!--                        <a class="dropdown-item" th:href="@{/competitions/2002/standings}">Bundesliga</a>-->
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Wszystkie Ligi</a>
                     </div>

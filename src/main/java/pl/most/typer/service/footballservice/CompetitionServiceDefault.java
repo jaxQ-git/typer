@@ -31,7 +31,23 @@ public class CompetitionServiceDefault implements CompetitionService {
 
     @Override
     public Competition save(Competition competition) {
-        return competitionRepository.save(competition);
+        Optional<Competition> optionalCompetition = competitionRepository.findByApiId(competition.getApiId());
+        //Jeżeli liga w bazie danych istnieje to ją aktualizuję i zwracam ligę zapisaną w bazie danych
+        if (optionalCompetition.isPresent()) {
+            Competition competitionDB = optionalCompetition.get();
+            if(!competitionDB.getLastUpdated().isEqual(competition.getLastUpdated())){
+                competitionDB.setPlan(competition.getPlan());
+                competitionDB.setCode(competition.getCode());
+                competitionDB.setName(competitionDB.getPlan());
+                competitionDB.setLastUpdated(competition.getLastUpdated());
+                competitionRepository.save(competitionDB);
+            }
+            return competitionDB;
+        }
+        // W innym przypadku zapisuje ligę w bazie i ją zwracam
+        else {
+            return competitionRepository.save(competition);
+        }
     }
 
 

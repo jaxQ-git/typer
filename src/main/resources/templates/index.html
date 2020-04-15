@@ -3,42 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <!--    Bootstrap links-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
     <title>Typer</title>
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
 <div class="container-fluid">
-<img th:src="@{img/background.jpg}" class="img-fluid" alt="Responsive image">
+    <img th:src="@{img/background.jpg}" class="img-fluid" alt="Responsive image">
 </div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3">
             <div class="container-fluid">
-                <p class="display-4">Login</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc odio magna, ullamcorper ac lacus et, dapibus commodo velit. Vestibulum luctus congue turpis eu luctus. Nulla in sagittis nisl. Ut ac mattis massa. Donec lacinia magna nec condimentum molestie. Sed sed libero cursus, tincidunt nisi at, posuere erat. Suspendisse auctor sem ut nulla ullamcorper sodales. Cras ac vulputate elit, vel suscipit mi. Nulla venenatis luctus nulla vel scelerisque. Duis elementum enim mauris, eu luctus erat sollicitudin at. Quisque vel ultrices purus. Pellentesque at faucibus tellus, nec varius metus. Mauris suscipit suscipit sodales.</p>
-
+                <div class="media">
+                    <div class="media-body">
+                        <p class="mt-0">Login</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc odio magna, ullamcorper ac
+                            lacus et, dapibus commodo velit. Vestibulum luctus congue turpis eu luctus. Nulla in
+                            sagittis nisl. Ut ac mattis massa. Donec lacinia magna nec condimentum molestie. Sed sed
+                            libero cursus, tincidunt nisi at, posuere erat. Suspendisse auctor sem ut nulla ullamcorper
+                            sodales. Cras ac vulputate elit, vel suscipit mi. Nulla venenatis luctus nulla vel
+                            scelerisque. Duis elementum enim mauris, eu luctus erat sollicitudin at. Quisque vel
+                            ultrices purus. Pellentesque at faucibus tellus, nec varius metus. Mauris suscipit suscipit
+                            sodales.</p>
+                    </div>
+                </div>
 
             </div>
         </div>
         <div class="col-sm-6">
             <div class="container-fluid">
-                <p class="display-4">Wiadomości</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc odio magna, ullamcorper ac lacus et, dapibus commodo velit. Vestibulum luctus congue turpis eu luctus. Nulla in sagittis nisl. Ut ac mattis massa. Donec lacinia magna nec condimentum molestie. Sed sed libero cursus, tincidunt nisi at, posuere erat. Suspendisse auctor sem ut nulla ullamcorper sodales. Cras ac vulputate elit, vel suscipit mi. Nulla venenatis luctus nulla vel scelerisque. Duis elementum enim mauris, eu luctus erat sollicitudin at. Quisque vel ultrices purus. Pellentesque at faucibus tellus, nec varius metus. Mauris suscipit suscipit sodales.</p>
-
+                <div class="media">
+                    <div class="media-body">
+                <p class="mt-0">Wiadomości</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc odio magna, ullamcorper ac lacus et,
+                    dapibus commodo velit. Vestibulum luctus congue turpis eu luctus. Nulla in sagittis nisl. Ut ac
+                    mattis massa. Donec lacinia magna nec condimentum molestie. Sed sed libero cursus, tincidunt nisi
+                    at, posuere erat. Suspendisse auctor sem ut nulla ullamcorper sodales. Cras ac vulputate elit, vel
+                    suscipit mi. Nulla venenatis luctus nulla vel scelerisque. Duis elementum enim mauris, eu luctus
+                    erat sollicitudin at. Quisque vel ultrices purus. Pellentesque at faucibus tellus, nec varius metus.
+                    Mauris suscipit suscipit sodales.</p>
+                    </div>
+                </div>
 
             </div>
         </div>
         <div class="col-sm-3">
             <div class="container-fluid">
-                <p class="display-4">Ranking</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc odio magna, ullamcorper ac lacus et, dapibus commodo velit. Vestibulum luctus congue turpis eu luctus. Nulla in sagittis nisl. Ut ac mattis massa. Donec lacinia magna nec condimentum molestie. Sed sed libero cursus, tincidunt nisi at, posuere erat. Suspendisse auctor sem ut nulla ullamcorper sodales. Cras ac vulputate elit, vel suscipit mi. Nulla venenatis luctus nulla vel scelerisque. Duis elementum enim mauris, eu luctus erat sollicitudin at. Quisque vel ultrices purus. Pellentesque at faucibus tellus, nec varius metus. Mauris suscipit suscipit sodales.</p>
+                <div class="media">
+                    <div class="media-body">
+                <p class="mt-0">Ranking</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc odio magna, ullamcorper ac lacus et,
+                    dapibus commodo velit. Vestibulum luctus congue turpis eu luctus. Nulla in sagittis nisl. Ut ac
+                    mattis massa. Donec lacinia magna nec condimentum molestie. Sed sed libero cursus, tincidunt nisi
+                    at, posuere erat. Suspendisse auctor sem ut nulla ullamcorper sodales. Cras ac vulputate elit, vel
+                    suscipit mi. Nulla venenatis luctus nulla vel scelerisque. Duis elementum enim mauris, eu luctus
+                    erat sollicitudin at. Quisque vel ultrices purus. Pellentesque at faucibus tellus, nec varius metus.
+                    Mauris suscipit suscipit sodales.</p>
 
-
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -11,7 +11,7 @@ public class WelcomeController {
 
 
     @GetMapping
-    public String welcome(Model model){
+    public String welcome(){
         return "index";
     }
 }

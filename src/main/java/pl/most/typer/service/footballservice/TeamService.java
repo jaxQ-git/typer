@@ -7,7 +7,7 @@ import java.util.Collection;
 public interface TeamService {
 
 
-    void saveTeam(Team team);
+    Team save(Team team);
 
-    void saveTeams(Collection<Team> teams);
+    void saveAll(Collection<Team> teams);
 }
