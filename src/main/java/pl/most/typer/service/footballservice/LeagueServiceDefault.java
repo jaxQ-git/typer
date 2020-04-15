@@ -38,8 +38,8 @@ public class LeagueServiceDefault implements LeagueService {
         if (entity.getStatusCode().is2xxSuccessful()) {
             CompetitionDTO competitionDTO = entity.getBody();
 
-
             Competition savedCompetition = competitionService.save(competitionDTO.getCompetition());
+            boolean isCompetitionUpdated = savedCompetition.getLastUpdated().isEqual(competitionDTO.getCompetition().getLastUpdated()) ? false :true;
             setChildFieldInCompetitionDTO(competitionDTO, savedCompetition);
             teamService.saveAll(getAllTeamsFromCompetitionDTO(competitionDTO));
             seasonService.save(competitionDTO.getSeason());

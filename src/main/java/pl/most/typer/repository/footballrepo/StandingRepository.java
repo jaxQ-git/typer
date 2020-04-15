@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface StandingRepository extends JpaRepository<Standing,Long> {
 
-    List<Standing> findAllByCompetitionAndType(Competition competition,String type);
+    List<Standing> findAllByCompetitionAndType(Competition competition, String type);
+    List<Standing> findAllByCompetition(Competition competition);
 }

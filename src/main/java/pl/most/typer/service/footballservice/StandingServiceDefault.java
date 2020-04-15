@@ -25,32 +25,29 @@ public class StandingServiceDefault implements StandingService {
 
     @Override
     public Standing save(Standing standing) {
-        if (standing.getId() != null) {
-            Optional<Standing> optionalStanding = standingRepository.findById(standing.getId());
-            if (optionalStanding.isEmpty()) {
-                standingRepository.save(standing);
-            } else {
-                Standing standingDB = optionalStanding.get();
-                if (!standingDB.getCompetition().getLastUpdated().isEqual(standing.getCompetition().getLastUpdated())) {
-                    standingDB.setGroupName(standing.getGroupName());
-                    standingDB.setType(standing.getType());
-                    standingDB.setStage(standing.getStage());
-                    leagueStandingRepository.deleteAll(standingDB.getLeagueStandings());
-                    standingDB.setLeagueStandings(standing.getLeagueStandings());
-                    standingDB.setCompetition(standing.getCompetition());
-                    standingDB = standingRepository.save(standingDB);
-                }
-                return standingDB;
-            }
-        }
         return standingRepository.save(standing);
     }
 
     @Override
     public void saveAll(List<Standing> standings) {
+        List<Standing> standingDB = standings.stream()
+                .map(standing -> standing.getCompetition())
+                .distinct()
+                .map(competition -> getAllStandingsByCompetition(competition))
+                .flatMap(standingList -> standingList.stream())
+                .collect(Collectors.toList());
+        standingRepository.deleteAll(standingDB);
         standings.forEach(this::save);
     }
 
+
+    /**
+     * @param competition
+     * @return By default it returns all Standings with type TOTAL
+     */
+    private List<Standing> getAllStandingsByCompetition(Competition competition) {
+        return standingRepository.findAllByCompetition(competition);
+    }
 
     /**
      * @param competition
