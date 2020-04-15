@@ -1,23 +1,21 @@
 package pl.most.typer.controller;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import pl.most.typer.model.dto.RegistrationForm;
-import pl.most.typer.model.league.CompetitionDTO;
-import pl.most.typer.model.league.Standing;
-import pl.most.typer.service.CustomUserDetailsService;
-import pl.most.typer.service.LeagueService;
-import pl.most.typer.service.RegistrationService;
+import pl.most.typer.model.account.RegistrationForm;
+import pl.most.typer.model.matches.Match;
+import pl.most.typer.service.accountservice.CustomUserDetailsService;
+import pl.most.typer.service.footballservice.LeagueService;
+import pl.most.typer.service.accountservice.RegistrationService;
+import pl.most.typer.service.footballservice.MatchesService;
+import pl.most.typer.service.footballservice.MatchesServiceDefault;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -27,19 +25,22 @@ public class RegistrationController {
 
     private RegistrationService registrationService;
     private CustomUserDetailsService customUserDetailsService;
-    private LeagueService leagueService;
+    private MatchesService matchesService;
 
 
-    public RegistrationController(RegistrationService registrationService, CustomUserDetailsService customUserDetailsService, LeagueService leagueService) {
+
+
+    public RegistrationController(RegistrationService registrationService, CustomUserDetailsService customUserDetailsService, LeagueService leagueService, MatchesService matchesService) {
         this.registrationService = registrationService;
         this.customUserDetailsService = customUserDetailsService;
-        this.leagueService = leagueService;
+        this.matchesService = matchesService;
+
     }
 
     @GetMapping
     public String register(Model model) throws JSONException {
         model.addAttribute("user", new RegistrationForm());
-        leagueService.getStandingInfoFromExternalApi(2001);
+        matchesService.getMatchesByCompetitionId(2001);
         return "registration";
     }
 

@@ -1,4 +1,4 @@
-package pl.most.typer.service;
+package pl.most.typer.service.footballservice;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -6,10 +6,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import pl.most.typer.configuration.ApiConfig;
 import pl.most.typer.model.league.Competition;
 import pl.most.typer.model.league.CompetitionDTO;
-import pl.most.typer.repository.SeasonRepository;
-import pl.most.typer.repository.StandingRepository;
+import pl.most.typer.repository.footballrepo.SeasonRepository;
+import pl.most.typer.repository.footballrepo.StandingRepository;
 
 @Service
 public class LeagueServiceDefault implements LeagueService {
@@ -18,20 +19,22 @@ public class LeagueServiceDefault implements LeagueService {
     private TeamService teamService;
     private SeasonRepository seasonRepository;
     private CompetitionService competitionService;
+    private ApiConfig apiConfig;
 
 
-    public LeagueServiceDefault(StandingRepository standingRepository, TeamService teamService, SeasonRepository seasonRepository, CompetitionService competitionService) {
+    public LeagueServiceDefault(StandingRepository standingRepository, TeamService teamService, SeasonRepository seasonRepository, CompetitionService competitionService, ApiConfig apiConfig, ApiConfig apiConfig1) {
         this.standingRepository = standingRepository;
         this.teamService = teamService;
         this.seasonRepository = seasonRepository;
         this.competitionService = competitionService;
+        this.apiConfig = apiConfig;
     }
 
     @Override
     public void getStandingInfoFromExternalApi(Integer leagueId) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<CompetitionDTO> entity = restTemplate.exchange(
-                "https://api.football-data.org/v2/competitions/" + leagueId + "/standings",
+                ApiConfig.COMPETITIONS_URL + leagueId + "/standings",
                 HttpMethod.GET,
                 getStringHttpEntity(),
                 CompetitionDTO.class
@@ -49,12 +52,7 @@ public class LeagueServiceDefault implements LeagueService {
             competitionService.save(competition);
             competitionDTO.getStandings().forEach(standing -> standingRepository.save(standing));
             seasonRepository.save(competitionDTO.getSeason());
-
-
         }
-
-
-
     }
 
     private void setStandingInLeagueStanding(CompetitionDTO competitionDTO) {
@@ -65,7 +63,7 @@ public class LeagueServiceDefault implements LeagueService {
 
     private HttpEntity<String> getStringHttpEntity() {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("X-Auth-Token","d6d4a40948f344e78fd1b8a461c4d213");
+        httpHeaders.set(ApiConfig.HEADER_NAME, ApiConfig.HEADER_VALUE);
         return new HttpEntity<>(httpHeaders);
     }
 }

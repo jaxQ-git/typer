@@ -1,6 +1,5 @@
 package pl.most.typer.model.league;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -32,5 +31,6 @@ public class Competition {
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "competition")
     private List<Standing> standings;
+
 
 }

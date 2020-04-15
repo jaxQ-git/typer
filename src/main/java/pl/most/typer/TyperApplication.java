@@ -1,15 +1,7 @@
 package pl.most.typer;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import pl.most.typer.repository.RoleRepository;
-import pl.most.typer.repository.UserRepository;
-import pl.most.typer.model.User;
-import pl.most.typer.model.role.Role;
-import pl.most.typer.model.role.RoleType;
 
 @SpringBootApplication
 public class TyperApplication {

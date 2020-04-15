@@ -1,11 +1,10 @@
-package pl.most.typer.model.role;
+package pl.most.typer.model.account;
 
 
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import pl.most.typer.model.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;

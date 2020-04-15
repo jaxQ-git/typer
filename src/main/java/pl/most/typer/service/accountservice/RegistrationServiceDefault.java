@@ -1,12 +1,12 @@
-package pl.most.typer.service;
+package pl.most.typer.service.accountservice;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pl.most.typer.model.role.RoleType;
-import pl.most.typer.repository.RoleRepository;
-import pl.most.typer.repository.UserRepository;
-import pl.most.typer.model.User;
-import pl.most.typer.model.dto.RegistrationForm;
+import pl.most.typer.model.account.RoleType;
+import pl.most.typer.repository.accountrepo.RoleRepository;
+import pl.most.typer.repository.accountrepo.UserRepository;
+import pl.most.typer.model.account.User;
+import pl.most.typer.model.account.RegistrationForm;
 
 import java.util.Optional;
 

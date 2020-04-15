@@ -1,6 +1,5 @@
-package pl.most.typer.service;
+package pl.most.typer.service.footballservice;
 
-import org.springframework.data.repository.CrudRepository;
 import pl.most.typer.model.league.Competition;
 
 import java.util.Optional;
@@ -12,4 +11,5 @@ public interface CompetitionService {
     boolean existsCompetitionByApiId(Integer apiId);
 
     Competition save(Competition competition);
+
 }

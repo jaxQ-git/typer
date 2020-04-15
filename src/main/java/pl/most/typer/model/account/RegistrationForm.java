@@ -1,9 +1,8 @@
-package pl.most.typer.model.dto;
+package pl.most.typer.model.account;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.most.typer.model.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

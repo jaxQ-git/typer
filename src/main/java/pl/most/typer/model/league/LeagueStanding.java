@@ -1,8 +1,6 @@
 package pl.most.typer.model.league;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.EnableMBeanExport;
 
 import javax.persistence.*;
 

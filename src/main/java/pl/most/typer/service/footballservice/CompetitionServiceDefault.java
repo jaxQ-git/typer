@@ -1,8 +1,8 @@
-package pl.most.typer.service;
+package pl.most.typer.service.footballservice;
 
 import org.springframework.stereotype.Service;
 import pl.most.typer.model.league.Competition;
-import pl.most.typer.repository.CompetitionRepository;
+import pl.most.typer.repository.footballrepo.CompetitionRepository;
 
 import java.util.Optional;
 
@@ -28,6 +28,7 @@ public class CompetitionServiceDefault implements CompetitionService {
 
     @Override
     public Competition save(Competition competition) {
-        return competitionRepository.save(competition);
+        Optional<Competition> byApiId = competitionRepository.findByApiId(competition.getApiId());
+         return byApiId.orElseGet(() -> competitionRepository.save(competition));
     }
 }
