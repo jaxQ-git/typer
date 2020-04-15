@@ -16,6 +16,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 
     <meta charset="utf-8">
 </head>
@@ -32,7 +33,6 @@
         </div>
         <div class="col">
             <h3 class="display-4">Rejestracja</h3>
-            <p th:text="${msg}"></p>
             <div class="alert alert-info" th:if="${exist}">
                 <p>User with this email already exist !</p>
             </div>
