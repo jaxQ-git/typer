@@ -22,8 +22,6 @@ public class Role {
     @Enumerated(EnumType.STRING)
     private final RoleType roleType;
 
-    @ManyToMany(mappedBy = "roles")
-    private List<User> userList = new ArrayList<>();
 
 
 }
