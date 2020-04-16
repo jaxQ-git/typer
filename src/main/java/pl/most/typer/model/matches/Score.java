@@ -1,6 +1,7 @@
 package pl.most.typer.model.matches;
 
 import lombok.Data;
+import pl.most.typer.model.competition.Competition;
 
 import javax.persistence.*;
 
@@ -15,13 +16,15 @@ public class Score {
     private String winner;
     private String duration;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private TeamGoals fullTime;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private TeamGoals halfTime;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private TeamGoals extraTime;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private TeamGoals penalties;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Match match;
 }
