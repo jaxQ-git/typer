@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.most.typer.model.dto.RegistrationForm;
+import pl.most.typer.model.account.RegistrationForm;
 import pl.most.typer.model.dto.HeaderCompetitionListDTO;
 import pl.most.typer.service.accountservice.CustomUserDetailsService;
 import pl.most.typer.service.footballservice.FootballApiService;

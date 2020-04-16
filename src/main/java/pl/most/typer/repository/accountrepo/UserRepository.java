@@ -2,7 +2,7 @@ package pl.most.typer.repository.accountrepo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import pl.most.typer.model.User;
+import pl.most.typer.model.account.User;
 
 import java.util.Optional;
 
