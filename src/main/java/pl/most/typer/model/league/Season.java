@@ -1,12 +1,14 @@
 package pl.most.typer.model.league;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.persistence.*;
-import java.security.PrivateKey;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -27,4 +29,17 @@ public class Season {
     @ManyToOne
     @JoinColumn(name = "competition_id")
     private Competition competition;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Season season = (Season) o;
+        return Objects.equals(apiId, season.apiId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(apiId);
+    }
 }

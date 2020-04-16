@@ -23,10 +23,15 @@ public class TeamServiceDefault implements TeamService {
         Optional<Team> optionalTeam = teamRepository.findByApiId(team.getApiId());
         if (optionalTeam.isPresent()) {
             return optionalTeam.get();
-        }
-        else {
+        } else {
             return teamRepository.save(team);
         }
+    }
+    public void saveTeam(Team team) {
+        if (teamRepository.existsByApiId(team.getApiId())) {
+            return;
+        }
+        teamRepository.save(team);
 
     }
 
@@ -35,4 +40,17 @@ public class TeamServiceDefault implements TeamService {
         teams.stream().distinct().forEach(this::save);
     }
 
+    public void saveTeams(Collection<Team> teams) {
+        List<Team> distinctTeams = getDistinctTeams(teams);
+        List<Team> uniqueTeams = distinctTeams.stream()
+                .filter(team -> !teamRepository.existsByApiId(team.getApiId()))
+                .collect(Collectors.toList());
+        teamRepository.saveAll(uniqueTeams);
+    }
+
+    private List<Team> getDistinctTeams(Collection<Team> teams) {
+        return teams.stream()
+                .distinct()
+                .collect(Collectors.toList());
+    }
 }

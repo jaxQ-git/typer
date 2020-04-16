@@ -1,6 +1,7 @@
 package pl.most.typer.service.footballservice;
 
 import pl.most.typer.model.league.Competition;
+<<<<<<< HEAD
 import pl.most.typer.model.league.Standing;
 
 import java.util.List;

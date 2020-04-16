@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 public class SeasonServiceDefault implements SeasonService {
 
-    SeasonRepository seasonRepository;
+    private SeasonRepository seasonRepository;
 
     public SeasonServiceDefault(SeasonRepository seasonRepository) {
         this.seasonRepository = seasonRepository;
@@ -41,4 +41,11 @@ public class SeasonServiceDefault implements SeasonService {
             return seasonRepository.save(season);
         }
     }
+    public void save(List<Season> season) {
+        for (Season seasonList : season) {
+            Optional<Season> byApiId = seasonRepository.findByApiId(seasonList.getApiId());
+            byApiId.orElseGet(() -> seasonRepository.save(seasonList));
+        }
+    }
+
 }
