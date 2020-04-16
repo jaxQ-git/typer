@@ -1,4 +1,4 @@
-package pl.most.typer.service.footballservice;
+package pl.most.typer.service.footballservice.matches;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -7,14 +7,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import pl.most.typer.configuration.ApiConfig;
-import pl.most.typer.model.league.Competition;
-import pl.most.typer.model.league.Season;
-import pl.most.typer.model.league.Team;
+import pl.most.typer.model.competition.Competition;
+import pl.most.typer.model.competition.Season;
+import pl.most.typer.model.competition.Team;
 import pl.most.typer.model.matches.Match;
 import pl.most.typer.model.matches.MatchDTO;
 import pl.most.typer.model.matches.Score;
 import pl.most.typer.model.matches.TeamGoals;
 import pl.most.typer.repository.footballrepo.MatchesRepository;
+import pl.most.typer.service.footballservice.competition.TeamService;
+import pl.most.typer.service.footballservice.competition.CompetitionService;
+import pl.most.typer.service.footballservice.competition.SeasonService;
 
 import java.util.List;
 import java.util.Optional;

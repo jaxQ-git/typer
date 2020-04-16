@@ -1,13 +1,11 @@
 package pl.most.typer.model.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.stereotype.Component;
-import pl.most.typer.model.league.Competition;
-import pl.most.typer.service.footballservice.CompetitionService;
+import pl.most.typer.model.competition.Competition;
+import pl.most.typer.service.footballservice.competition.CompetitionService;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Data

@@ -1,12 +1,9 @@
-package pl.most.typer.model.league;
+package pl.most.typer.model.competition;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.springframework.context.annotation.EnableMBeanExport;
 
 import javax.persistence.*;
-import java.util.Comparator;
 import java.util.Objects;
 
 @Data

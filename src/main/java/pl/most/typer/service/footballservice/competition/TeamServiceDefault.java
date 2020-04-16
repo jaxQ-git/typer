@@ -1,7 +1,7 @@
-package pl.most.typer.service.footballservice;
+package pl.most.typer.service.footballservice.competition;
 
 import org.springframework.stereotype.Service;
-import pl.most.typer.model.league.Team;
+import pl.most.typer.model.competition.Team;
 import pl.most.typer.repository.footballrepo.TeamRepository;
 
 import java.util.Collection;

@@ -1,8 +1,8 @@
-package pl.most.typer.service.footballservice;
+package pl.most.typer.service.footballservice.competition;
 
 import org.springframework.stereotype.Service;
-import pl.most.typer.model.league.Competition;
-import pl.most.typer.model.league.Season;
+import pl.most.typer.model.competition.Competition;
+import pl.most.typer.model.competition.Season;
 import pl.most.typer.repository.footballrepo.SeasonRepository;
 
 import java.util.List;

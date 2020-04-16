@@ -1,6 +1,7 @@
 package pl.most.typer.service.accountservice;
 
-import pl.most.typer.model.account.RegistrationForm;
+
+import pl.most.typer.model.dto.RegistrationForm;
 
 public interface RegistrationService {
 

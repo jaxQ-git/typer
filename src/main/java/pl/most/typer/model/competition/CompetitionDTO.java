@@ -1,9 +1,6 @@
-package pl.most.typer.model.league;
+package pl.most.typer.model.competition;
 
 import lombok.Data;
-import pl.most.typer.model.league.Competition;
-import pl.most.typer.model.league.Season;
-import pl.most.typer.model.league.Standing;
 
 import java.util.List;
 

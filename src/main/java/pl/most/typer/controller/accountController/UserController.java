@@ -1,4 +1,4 @@
-package pl.most.typer.controller;
+package pl.most.typer.controller.accountController;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

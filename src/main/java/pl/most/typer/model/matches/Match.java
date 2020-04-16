@@ -3,9 +3,9 @@ package pl.most.typer.model.matches;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import pl.most.typer.model.league.Competition;
-import pl.most.typer.model.league.Season;
-import pl.most.typer.model.league.Team;
+import pl.most.typer.model.competition.Competition;
+import pl.most.typer.model.competition.Season;
+import pl.most.typer.model.competition.Team;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

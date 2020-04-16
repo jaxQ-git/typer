@@ -1,7 +1,7 @@
 package pl.most.typer.model.matches;
 
 import lombok.Data;
-import pl.most.typer.model.league.Competition;
+import pl.most.typer.model.competition.Competition;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package pl.most.typer.service.footballservice;
+package pl.most.typer.service.footballservice.competition;
 
 import org.springframework.http.HttpStatus;
 

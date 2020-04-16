@@ -1,7 +1,7 @@
 package pl.most.typer.repository.footballrepo;
 
 import org.springframework.data.repository.CrudRepository;
-import pl.most.typer.model.league.Season;
+import pl.most.typer.model.competition.Season;
 
 import java.util.Optional;
 

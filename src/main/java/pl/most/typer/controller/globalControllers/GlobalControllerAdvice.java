@@ -1,14 +1,10 @@
 package pl.most.typer.controller.globalControllers;
 
 import lombok.Data;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import pl.most.typer.model.dto.HeaderCompetitionListDTO;
-import pl.most.typer.model.league.Competition;
-import pl.most.typer.service.footballservice.FootballApiService;
+import pl.most.typer.model.competition.Competition;
 
 import java.util.*;
 

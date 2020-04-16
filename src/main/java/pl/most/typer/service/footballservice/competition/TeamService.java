@@ -1,6 +1,6 @@
-package pl.most.typer.service.footballservice;
+package pl.most.typer.service.footballservice.competition;
 
-import pl.most.typer.model.league.Team;
+import pl.most.typer.model.competition.Team;
 
 import java.util.Collection;
 

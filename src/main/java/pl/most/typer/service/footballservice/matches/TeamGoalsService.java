@@ -1,4 +1,4 @@
-package pl.most.typer.service.footballservice;
+package pl.most.typer.service.footballservice.matches;
 
 import pl.most.typer.model.matches.Score;
 import pl.most.typer.model.matches.TeamGoals;

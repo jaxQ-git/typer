@@ -1,4 +1,4 @@
-package pl.most.typer.model.league;
+package pl.most.typer.model.competition;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

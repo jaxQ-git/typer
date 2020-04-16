@@ -1,12 +1,10 @@
-package pl.most.typer.service.footballservice;
+package pl.most.typer.service.footballservice.matches;
 
 import org.springframework.stereotype.Service;
-import pl.most.typer.model.matches.Match;
 import pl.most.typer.model.matches.Score;
 import pl.most.typer.repository.footballrepo.ScoreRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ScoreServiceDefault implements ScoreService{

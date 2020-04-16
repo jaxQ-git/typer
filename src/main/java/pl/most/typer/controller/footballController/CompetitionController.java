@@ -1,7 +1,6 @@
-package pl.most.typer.controller;
+package pl.most.typer.controller.footballController;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,15 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.most.typer.model.league.Competition;
-import pl.most.typer.model.league.Standing;
-import pl.most.typer.service.footballservice.CompetitionService;
-import pl.most.typer.service.footballservice.LeagueService;
-import pl.most.typer.service.footballservice.StandingService;
+import pl.most.typer.model.competition.Competition;
+import pl.most.typer.model.competition.Standing;
+import pl.most.typer.service.footballservice.competition.CompetitionService;
+import pl.most.typer.service.footballservice.competition.LeagueService;
+import pl.most.typer.service.footballservice.competition.StandingService;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

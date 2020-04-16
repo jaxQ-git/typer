@@ -1,11 +1,12 @@
-package pl.most.typer.service.footballservice;
+package pl.most.typer.service.footballservice.competition;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import pl.most.typer.model.league.*;
+import pl.most.typer.model.competition.*;
 import pl.most.typer.repository.footballrepo.StandingRepository;
+import pl.most.typer.service.footballservice.FootballApiService;
 
 import java.util.*;
 import java.util.stream.Collectors;
