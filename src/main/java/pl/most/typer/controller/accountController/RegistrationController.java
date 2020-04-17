@@ -39,7 +39,6 @@ public class RegistrationController {
     @GetMapping
     public String register(Model model) throws JSONException {
         model.addAttribute("user", new RegistrationForm());
-        matchesService.getMatchesByCompetitionId(2001);
         return "registration";
     }
 

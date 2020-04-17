@@ -13,10 +13,17 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 public class WelcomeController {
 
-
-
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
     @GetMapping
     public String welcome(){
         return "index";
+    }
+
+    @GetMapping("/about")
+    public String about(){
+        return "about";
     }
 }
