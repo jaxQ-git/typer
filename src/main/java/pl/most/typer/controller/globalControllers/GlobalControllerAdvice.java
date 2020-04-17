@@ -1,8 +1,9 @@
 package pl.most.typer.controller.globalControllers;
 
 import lombok.Data;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.beans.ConversionNotSupportedException;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import pl.most.typer.model.dto.HeaderCompetitionListDTO;
 import pl.most.typer.model.competition.Competition;
 
@@ -12,6 +13,7 @@ import java.util.*;
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
+    public static final String DEFAULT_ERROR_VIEW = "error";
     HeaderCompetitionListDTO headerCompetitionListDTO;
 
     public GlobalControllerAdvice(HeaderCompetitionListDTO headerCompetitionListDTO) {
@@ -25,5 +27,16 @@ public class GlobalControllerAdvice {
         return headerCompetitionListDTO.getCompetitions();
     }
 
+
+    @ExceptionHandler(value = {Exception.class, RuntimeException.class})
+    public String handleException(Exception ex) {
+        return "redirect:/error";
+    }
+
+
+    @GetMapping(value = {"/error"})
+    public String ErrorPage() {
+        return "error";
+    }
 
 }

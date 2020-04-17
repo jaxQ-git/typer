@@ -5,8 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.most.typer.model.account.RegistrationForm;
 import pl.most.typer.model.dto.HeaderCompetitionListDTO;
-import pl.most.typer.model.dto.RegistrationForm;
 import pl.most.typer.service.accountservice.CustomUserDetailsService;
 import pl.most.typer.service.accountservice.RegistrationService;
 import pl.most.typer.service.footballservice.FootballApiService;
@@ -48,11 +48,11 @@ public class RegistrationController {
                                       BindingResult bindingResult,
                                       Model model) {
         if (bindingResult.hasErrors()) {
-            return "/registration";
+            return "registration";
         }
         if (customUserDetailsService.isUserPresent(registrationForm.getUsername(), registrationForm.getMail())) {
             model.addAttribute("exist", true);
-            return "/registration";
+            return "registration";
         }
         registrationService.register(registrationForm);
         return "/login";

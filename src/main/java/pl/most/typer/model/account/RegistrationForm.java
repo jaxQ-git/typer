@@ -1,4 +1,4 @@
-package pl.most.typer.model.dto;
+package pl.most.typer.model.account;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

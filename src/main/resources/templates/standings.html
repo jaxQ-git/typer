@@ -1,41 +1,39 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 
-    <title>Typer</title>
-    <!--    Bootstrap links-->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
-
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>The Best Typer in whole World!</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/modern-business.css}" rel="stylesheet">
+
 </head>
 
 <body>
 
-<div th:replace="fragments/header :: header"/>
-
+<!-- Navigation -->
+<nav th:replace="fragments/navigation :: navigation"/>
 
 <div style="margin-top: 50px;" class="container-fluid">
     <div class="row">
-        <div class="col text-center">
-            <h3 class="display-4">Kontakt</h3>
+        <div class="col-sm-2">
+
         </div>
-
-
         <div class="col">
             <h3 class="display-4" style="text-align: center" th:text="${competitionName}"></h3>
-            <a class="btn btn-default float-right" th:href="@{/competitions/{id}/standings/update(id=${apiId})}" role="button">Update</a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-default float-right"
+               th:href="@{/competitions/{id}/standings/update(id=${apiId})}"
+               role="button">Update</a>
 
             <div th:each="standing: ${standings}">
 
@@ -43,8 +41,9 @@
                     <thead>
                     <tr>
                         <th style="text-align: center; font-size: 30px" colspan="8" scope="col"
-                            >
-                            <a th:text="${standing.groupName}" th:href="@{/competitions/{id}/standings(id=${apiId},group=${standing.groupName})}"></a>
+                        >
+                            <a th:text="${standing.groupName}"
+                               th:href="@{/competitions/{id}/standings(id=${apiId},group=${standing.groupName})}"></a>
                         </th>
                     </tr>
                     <tr>
@@ -73,14 +72,21 @@
                 </table>
             </div>
         </div>
+        <div class="col-sm-2">
 
-
-        <div class="col text-center">
-            <h3 class="display-4">Lorem </h3>
         </div>
     </div>
+
+
 </div>
+
+<!-- Footer -->
 <footer th:replace="fragments/footer :: footer"/>
+
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>
