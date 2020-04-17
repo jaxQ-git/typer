@@ -59,6 +59,9 @@ public class MatchesServiceDefault implements MatchesService {
                 setMatchForScore(matchDTO);
                 setScoreForTeamGoals(matchDTO);
 
+                seasonService.saveAll(getSeasonsFromMatchDTO(matchDTO));
+                teamService.saveAll(getTeamsFromMatchDTO(matchDTO));
+                
                 saveAll(matchDTO.getMatches());
             }
             return HttpStatus.CREATED;
