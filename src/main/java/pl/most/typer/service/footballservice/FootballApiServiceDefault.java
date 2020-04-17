@@ -41,7 +41,7 @@ public class FootballApiServiceDefault implements FootballApiService {
         }
         stringBuilder.append("?");
         for (Map.Entry<String, String> entrySet : filters.entrySet()) {
-            stringBuilder.append(entrySet.getKey()).append("=").append(entrySet.getValue());
+            stringBuilder.append(entrySet.getKey()).append("=").append(entrySet.getValue()).append("&");
         }
         return stringBuilder.toString();
     }

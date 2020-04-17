@@ -26,14 +26,13 @@
 
 <div style="margin-top: 50px;" class="container-fluid">
     <div class="row">
-        <div class="col text-center">
-            <h3 class="display-4">Kontakt</h3>
+        <div class="col-sm-2">
+
         </div>
-
-
         <div class="col">
             <h3 class="display-4" style="text-align: center" th:text="${competitionName}"></h3>
-            <a class="btn btn-default float-right" th:href="@{/competitions/{id}/standings/update(id=${apiId})}"
+            <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-default float-right"
+               th:href="@{/competitions/{id}/standings/update(id=${apiId})}"
                role="button">Update</a>
 
             <div th:each="standing: ${standings}">
@@ -73,12 +72,12 @@
                 </table>
             </div>
         </div>
+        <div class="col-sm-2">
 
-
-        <div class="col text-center">
-            <h3 class="display-4">Lorem </h3>
         </div>
     </div>
+
+
 </div>
 
 <!-- Footer -->

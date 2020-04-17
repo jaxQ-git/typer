@@ -64,6 +64,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .headers()
                 .frameOptions()
-                .sameOrigin();
+                .sameOrigin()
+
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/error");
     }
 }
