@@ -57,14 +57,9 @@ public class MatchesServiceDefault implements MatchesService {
                 setCompetitionForMatches(matchDTO, competition);
                 setCompetitionForSeasons(matchDTO, competition);
                 setMatchForScore(matchDTO);
-                setMatchForTeamGoals(matchDTO);
+                setScoreForTeamGoals(matchDTO);
 
-                seasonService.save(getSeasonsFromMatchDTO(matchDTO));
-                teamService.saveTeams(getTeamsFromMatchDTO(matchDTO));
-                scoreService.save(getScoreFromMatchDTO(matchDTO));
-                teamGoalsService.save(getTeamGoalsFromMatchDTO(matchDTO));
-
-                save(matchDTO.getMatches());
+                saveAll(matchDTO.getMatches());
             }
             return HttpStatus.CREATED;
         }
@@ -74,10 +69,10 @@ public class MatchesServiceDefault implements MatchesService {
     }
 
     @Override
-    public void save(List<Match> matches) {
-        for (Match matchList : matches) {
-            Optional<Match> byApiId = matchesRepository.findByApiId(matchList.getApiId());
-            byApiId.orElseGet(() -> matchesRepository.save(matchList));
+    public void saveAll(List<Match> matches) {
+        for (Match match : matches) {
+            Optional<Match> byApiId = matchesRepository.findByApiId(match.getApiId());
+            byApiId.orElseGet(() -> matchesRepository.save(match));
         }
     }
 
@@ -93,7 +88,7 @@ public class MatchesServiceDefault implements MatchesService {
         matchDTO.getMatches().forEach(match -> match.getScore().setMatch(match));
     }
 
-    private void setMatchForTeamGoals(MatchDTO matchDTO) {
+    private void setScoreForTeamGoals(MatchDTO matchDTO) {
         matchDTO.getMatches().forEach(match -> {
             match.getScore().getPenalties().setScore(match.getScore());
             match.getScore().getHalfTime().setScore(match.getScore());

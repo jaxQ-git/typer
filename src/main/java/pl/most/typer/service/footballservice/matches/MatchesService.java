@@ -9,5 +9,5 @@ public interface MatchesService {
 
     HttpStatus getMatchesByCompetitionId(Integer competitionId);
 
-    void save(List<Match> matches);
+    void saveAll(List<Match> matches);
 }

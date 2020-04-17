@@ -18,10 +18,10 @@ public class ScoreServiceDefault implements ScoreService{
     }
 
     @Override
-    public void save(List<Score> scoreFromMatchDTO) {
-        for (Score scoreList : scoreFromMatchDTO) {
-            Optional<Score> byId = scoreRepository.findById(scoreList.getMatch().getApiId());
-            byId.orElseGet(() -> scoreRepository.save(scoreList));
+    public void saveAll(List<Score> scoreFromMatchDTO) {
+        for (Score score : scoreFromMatchDTO) {
+            Optional<Score> byId = scoreRepository.findById(score.getMatch().getApiId());
+            byId.orElseGet(() -> scoreRepository.save(score));
         }
     }
 }

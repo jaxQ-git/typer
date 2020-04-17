@@ -11,5 +11,6 @@ public interface SeasonService {
 
     Season save(Season season);
 
-    void save(List<Season> season);
+    void saveAll(List<Season> season);
 }
+

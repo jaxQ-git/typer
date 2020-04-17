@@ -5,5 +5,5 @@ import pl.most.typer.model.matches.Score;
 import java.util.List;
 
 public interface ScoreService {
-    void save(List<Score> scoreFromMatchDTO);
+    void saveAll(List<Score> scoreFromMatchDTO);
 }

@@ -18,10 +18,10 @@ public class TeamGoalsServiceDefault implements TeamGoalsService {
     }
 
     @Override
-    public void save(List<TeamGoals> teamGoalsFromMatchDTO) {
-        for (TeamGoals teamGoalsList : teamGoalsFromMatchDTO) {
-            Optional<TeamGoals> byId = teamGoalsRepository.findById(teamGoalsList.getScore().getId());
-            byId.orElseGet(() -> teamGoalsRepository.save(teamGoalsList));
+    public void saveAll(List<TeamGoals> teamGoalsFromMatchDTO) {
+        for (TeamGoals teamGoals : teamGoalsFromMatchDTO) {
+            Optional<TeamGoals> byId = teamGoalsRepository.findById(teamGoals.getScore().getId());
+            byId.orElseGet(() -> teamGoalsRepository.save(teamGoals));
         }
     }
 }

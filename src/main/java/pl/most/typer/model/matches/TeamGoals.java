@@ -17,7 +17,7 @@ public class TeamGoals {
     private Integer homeTeam;
     private Integer awayTeam;
 
-    @ManyToOne
+    @OneToOne
     private Score score;
 
 }

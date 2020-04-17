@@ -1,7 +1,6 @@
 package pl.most.typer.model.matches;
 
 import lombok.Data;
-import pl.most.typer.model.competition.Competition;
 
 import javax.persistence.*;
 
@@ -13,8 +12,12 @@ public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String winner;
-    private String duration;
+
+    @Enumerated(EnumType.STRING)
+    private ScoreWinner winner;
+
+    @Enumerated(EnumType.STRING)
+    private ScoreDuration duration;
 
     @OneToOne(cascade = CascadeType.ALL)
     private TeamGoals fullTime;
@@ -25,6 +28,6 @@ public class Score {
     @OneToOne(cascade = CascadeType.ALL)
     private TeamGoals penalties;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     private Match match;
 }

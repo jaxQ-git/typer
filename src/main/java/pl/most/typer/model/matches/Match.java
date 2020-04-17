@@ -19,10 +19,11 @@ public class Match {
     private Integer apiId;
     @ManyToOne(cascade = CascadeType.ALL)
     private Competition competition;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Season season;
-
     private String utcDate;
+
+    @Enumerated(EnumType.STRING)
     private MatchStatus status;
     private Integer matchDay;
     private String stage;
@@ -30,11 +31,11 @@ public class Match {
     private String group;
     private String lastUpdate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Score score;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Team homeTeam;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Team awayTeam;
 
 }
