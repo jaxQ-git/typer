@@ -17,9 +17,9 @@ public class Match {
     @Id
     @JsonProperty("id")
     private Integer apiId;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Competition competition;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Season season;
     private String utcDate;
 
