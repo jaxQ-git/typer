@@ -2,11 +2,9 @@ package pl.most.typer.model.matches;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import pl.most.typer.model.competition.Competition;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -18,4 +16,8 @@ public class TeamGoals {
     private Integer id;
     private Integer homeTeam;
     private Integer awayTeam;
+
+    @OneToOne
+    private Score score;
+
 }

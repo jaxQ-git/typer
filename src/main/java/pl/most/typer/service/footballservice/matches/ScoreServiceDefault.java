@@ -1,10 +1,12 @@
 package pl.most.typer.service.footballservice.matches;
 
 import org.springframework.stereotype.Service;
+import pl.most.typer.model.competition.Season;
 import pl.most.typer.model.matches.Score;
 import pl.most.typer.repository.footballrepo.ScoreRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ScoreServiceDefault implements ScoreService{
@@ -15,12 +17,11 @@ public class ScoreServiceDefault implements ScoreService{
         this.scoreRepository = scoreRepository;
     }
 
-    //TODO Pomyslec nad zapisywaniem tego do bazy (przynajmniej zeby w locie przypisywac ID meczu,
-    // zeby drugi raz nie zapisywal)
     @Override
-    public void save(List<Score> scoreFromMatchDTO) {
-        for (Score scoreList : scoreFromMatchDTO) {
-            scoreRepository.save(scoreList);
+    public void saveAll(List<Score> scoreFromMatchDTO) {
+        for (Score score : scoreFromMatchDTO) {
+            Optional<Score> byId = scoreRepository.findById(score.getMatch().getApiId());
+            byId.orElseGet(() -> scoreRepository.save(score));
         }
     }
 }

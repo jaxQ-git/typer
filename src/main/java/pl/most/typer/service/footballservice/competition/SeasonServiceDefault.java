@@ -41,7 +41,7 @@ public class SeasonServiceDefault implements SeasonService {
             return seasonRepository.save(season);
         }
     }
-    public void save(List<Season> season) {
+    public void saveAll(List<Season> season) {
         for (Season seasonList : season) {
             Optional<Season> byApiId = seasonRepository.findByApiId(seasonList.getApiId());
             byApiId.orElseGet(() -> seasonRepository.save(seasonList));

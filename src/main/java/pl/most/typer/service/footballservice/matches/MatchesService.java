@@ -1,12 +1,13 @@
 package pl.most.typer.service.footballservice.matches;
 
+import org.springframework.http.HttpStatus;
 import pl.most.typer.model.matches.Match;
 
 import java.util.List;
 
 public interface MatchesService {
 
-    void getMatchesByCompetitionId(Integer competitionId);
+    HttpStatus getMatchesByCompetitionId(Integer competitionId);
 
-    void save(List<Match> matches);
+    void saveAll(List<Match> matches);
 }

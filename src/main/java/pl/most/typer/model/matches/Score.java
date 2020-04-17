@@ -12,16 +12,22 @@ public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private String winner;
-    private String duration;
 
-    @OneToOne
+    @Enumerated(EnumType.STRING)
+    private ScoreWinner winner;
+
+    @Enumerated(EnumType.STRING)
+    private ScoreDuration duration;
+
+    @OneToOne(cascade = CascadeType.ALL)
     private TeamGoals fullTime;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private TeamGoals halfTime;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private TeamGoals extraTime;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private TeamGoals penalties;
 
+    @OneToOne
+    private Match match;
 }
