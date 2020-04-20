@@ -7,6 +7,7 @@ import org.springframework.jmx.export.annotation.ManagedAttribute;
 import pl.most.typer.model.competition.LeagueStanding;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -16,5 +17,5 @@ public class TyperStanding extends BaseModel {
     @ManyToOne
     private TyperCompetition typerCompetition;
 
-
+    private Integer round;
 }

@@ -10,7 +10,6 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 @Controller
 @RequestMapping("/")
-
 public class WelcomeController {
 
     @GetMapping("/login")

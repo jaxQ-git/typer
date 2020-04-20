@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface TyperCompetitionService {
 
     TyperCompetition save(TyperCompetition typerCompetition);
+
+    Optional<TyperCompetition> findById(Integer id);
 }

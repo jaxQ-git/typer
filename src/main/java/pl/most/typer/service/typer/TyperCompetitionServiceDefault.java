@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import pl.most.typer.model.typer.TyperCompetition;
 import pl.most.typer.repository.typerrepo.TyperCompetitionRepository;
 
+import java.util.Optional;
+
 @Service
 public class TyperCompetitionServiceDefault implements TyperCompetitionService {
 
@@ -16,5 +18,10 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
     @Override
     public TyperCompetition save(TyperCompetition typerCompetition) {
         return typerCompetitionRepository.save(typerCompetition);
+    }
+
+    @Override
+    public Optional<TyperCompetition> findById(Integer id) {
+        return typerCompetitionRepository.findById(id);
     }
 }
