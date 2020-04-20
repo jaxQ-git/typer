@@ -43,7 +43,7 @@ public class MatchesServiceDefault implements MatchesService {
     }
 
     @Override
-    public HttpStatus getMatchesByCompetitionId(Integer competitionId) {
+    public HttpStatus getMatchInfoFromExternalApi(Integer competitionId) {
         List<String> endpoint = Arrays.asList("competitions", competitionId.toString(), "matches");
         Map<String, String> filters = new HashMap<>();
 
@@ -61,7 +61,7 @@ public class MatchesServiceDefault implements MatchesService {
 
                 seasonService.saveAll(getSeasonsFromMatchDTO(matchDTO));
                 teamService.saveAll(getTeamsFromMatchDTO(matchDTO));
-                
+
                 saveAll(matchDTO.getMatches());
             }
             return HttpStatus.CREATED;
@@ -78,6 +78,12 @@ public class MatchesServiceDefault implements MatchesService {
             byApiId.orElseGet(() -> matchesRepository.save(match));
         }
     }
+
+    @Override
+    public List<Match> findAllByCompetition(Competition competition) {
+        return matchesRepository.findAllByCompetition(competition);
+    }
+
 
     private void setCompetitionForMatches(MatchDTO matchDTO, Competition competition) {
         matchDTO.getMatches().forEach(match -> match.setCompetition(competition));
