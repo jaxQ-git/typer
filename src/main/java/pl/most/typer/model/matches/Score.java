@@ -1,6 +1,7 @@
 package pl.most.typer.model.matches;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -30,4 +31,6 @@ public class Score {
 
     @OneToOne
     private Match match;
+
+
 }

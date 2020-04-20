@@ -1,5 +1,6 @@
 package pl.most.typer.service.footballservice;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -10,7 +11,7 @@ import pl.most.typer.configuration.ExternalFootballApiProps;
 
 import java.util.List;
 import java.util.Map;
-
+@Slf4j
 @Service
 public class FootballApiServiceDefault implements FootballApiService {
 
@@ -31,6 +32,7 @@ public class FootballApiServiceDefault implements FootballApiService {
                 getStringHttpEntity(),
                 returnedEntity
         );
+        log.info(entity.getStatusCode().getReasonPhrase());
         return entity;
     }
 

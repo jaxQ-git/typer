@@ -22,18 +22,14 @@ public class RegistrationController {
 
     private RegistrationService registrationService;
     private CustomUserDetailsService customUserDetailsService;
-    private MatchesService matchesService;
 
 
 
 
-    public RegistrationController(RegistrationService registrationService, CustomUserDetailsService customUserDetailsService, FootballApiService footballApiService, HeaderCompetitionListDTO headerCompetitionListDTO, MatchesService matchesService) {
+    public RegistrationController(RegistrationService registrationService, CustomUserDetailsService customUserDetailsService, FootballApiService footballApiService, HeaderCompetitionListDTO headerCompetitionListDTO) {
 
         this.registrationService = registrationService;
         this.customUserDetailsService = customUserDetailsService;
-
-
-        this.matchesService = matchesService;
     }
 
     @GetMapping

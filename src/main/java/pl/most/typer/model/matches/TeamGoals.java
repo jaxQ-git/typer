@@ -2,6 +2,7 @@ package pl.most.typer.model.matches;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import lombok.ToString;
 import pl.most.typer.model.competition.Competition;
 
 import javax.persistence.*;

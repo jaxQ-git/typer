@@ -38,22 +38,20 @@ public class LeagueServiceDefault implements LeagueService {
                 .getExternalData(endpoints,filters,CompetitionDTO.class);
         if (entity.getStatusCode().is2xxSuccessful()) {
             CompetitionDTO competitionDTO = entity.getBody();
+            if (competitionDTO != null) {
+                Competition savedCompetition = competitionService.save(competitionDTO.getCompetition());
+                boolean isCompetitionUpdated = !savedCompetition.getLastUpdated().isEqual(competitionDTO.getCompetition().getLastUpdated());
+                setChildFieldInCompetitionDTO(competitionDTO, savedCompetition);
+                teamService.saveAll(getAllTeamsFromCompetitionDTO(competitionDTO));
+                seasonService.save(competitionDTO.getSeason());
+                standingService.saveAll(competitionDTO.getStandings());
 
-            Competition savedCompetition = competitionService.save(competitionDTO.getCompetition());
-            boolean isCompetitionUpdated = savedCompetition.getLastUpdated().isEqual(competitionDTO.getCompetition().getLastUpdated()) ? false :true;
-            setChildFieldInCompetitionDTO(competitionDTO, savedCompetition);
-            teamService.saveAll(getAllTeamsFromCompetitionDTO(competitionDTO));
-            seasonService.save(competitionDTO.getSeason());
-            standingService.saveAll(competitionDTO.getStandings());
-
-            return HttpStatus.CREATED;
+                return HttpStatus.CREATED;
+            } else {
+                return HttpStatus.BAD_GATEWAY;
+            }
         }
-        else{
-            return HttpStatus.BAD_GATEWAY;
-        }
-
-
-
+        return HttpStatus.BAD_GATEWAY;
     }
 
     private boolean checkIfExternalCompetitionIsRecent(Competition ExtCompetition, Competition competitionFromDB) {
@@ -72,9 +70,9 @@ public class LeagueServiceDefault implements LeagueService {
     private List<Team> getAllTeamsFromCompetitionDTO(CompetitionDTO competitionDTO) {
         return competitionDTO.getStandings()
                 .stream()
-                .map(standing -> standing.getLeagueStandings())
-                .flatMap(leagueStandings -> leagueStandings.stream())
-                .map(leagueStanding -> leagueStanding.getTeam())
+                .map(Standing::getLeagueStandings)
+                .flatMap(Collection::stream)
+                .map(LeagueStanding::getTeam)
                 .collect(Collectors.toList());
     }
 

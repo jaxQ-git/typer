@@ -3,15 +3,19 @@ package pl.most.typer.model.matches;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
 import pl.most.typer.model.competition.Competition;
 import pl.most.typer.model.competition.Season;
 import pl.most.typer.model.competition.Team;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Data
+
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class Match {
 
     @Id
@@ -21,7 +25,8 @@ public class Match {
     private Competition competition;
     @ManyToOne
     private Season season;
-    private String utcDate;
+    @OrderBy
+    private LocalDateTime utcDate;
 
     @Enumerated(EnumType.STRING)
     private MatchStatus status;

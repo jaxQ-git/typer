@@ -51,12 +51,13 @@ public class CompetitionController {
     private String getStandings(@PathVariable("id") Integer id,
                                 @RequestParam(name="group", required = false) String group,
                                 Model model) {
-        Optional<Competition> competition = competitionService.getCompetition(id);
+        Optional<Competition> optionalCompetition = competitionService.getCompetition(id);
+        Optional<Standing> optionalStanding = standingService.findFirstByCompetiton(new Competition(id, null));
         //If competition doesn't exists try to update it from external api
-        if (competition.isEmpty()) {
+        if (optionalCompetition.isEmpty() || optionalStanding.isEmpty()) {
             return "redirect:/competitions/"+ id + "/standings/update";
         }
-        List<Standing> standingsByCompetition = standingService.getStandingsByCompetition(competition.get());
+        List<Standing> standingsByCompetition = standingService.getStandingsByCompetition(optionalCompetition.get());
         //If group parameter exists filter standings by group name
         if (group != null) {
             standingsByCompetition = standingsByCompetition.stream()

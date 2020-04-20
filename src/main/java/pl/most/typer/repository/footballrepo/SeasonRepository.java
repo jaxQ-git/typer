@@ -5,9 +5,9 @@ import pl.most.typer.model.competition.Season;
 
 import java.util.Optional;
 
-public interface SeasonRepository extends CrudRepository<Season,Long> {
+public interface SeasonRepository extends CrudRepository<Season, Long> {
 
-    boolean existsByApiId (Integer apiId);
+    boolean existsByApiId(Integer apiId);
 
     Optional<Season> findByApiId(Integer apiId);
 }
