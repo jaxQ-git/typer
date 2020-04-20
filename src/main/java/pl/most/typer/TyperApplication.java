@@ -11,15 +11,22 @@ import pl.most.typer.model.account.Role;
 import pl.most.typer.model.account.RoleType;
 import pl.most.typer.model.account.User;
 import pl.most.typer.model.typer.TyperCompetition;
+import pl.most.typer.model.typer.TyperLeagueStanding;
 import pl.most.typer.model.typer.TyperPlayer;
+import pl.most.typer.model.typer.TyperStanding;
 import pl.most.typer.repository.accountrepo.RoleRepository;
 import pl.most.typer.repository.accountrepo.UserRepository;
 import pl.most.typer.repository.typerrepo.TyperCompetitionRepository;
+import pl.most.typer.repository.typerrepo.TyperLeagueStandingRepository;
 import pl.most.typer.repository.typerrepo.TyperPlayerRepository;
+import pl.most.typer.repository.typerrepo.TyperStandingRepository;
 import pl.most.typer.service.typer.TyperCompetitionService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class TyperApplication {
@@ -35,7 +42,9 @@ public class TyperApplication {
             UserRepository userRepository,
             RoleRepository roleRepository,
             TyperCompetitionRepository typerCompetitionRepository,
-            TyperPlayerRepository typerPlayerRepository
+            TyperPlayerRepository typerPlayerRepository,
+            TyperLeagueStandingRepository typerLeagueStandingRepository,
+            TyperStandingRepository typerStandingRepository
     ) {
         return new CommandLineRunner() {
             @Override
@@ -43,28 +52,60 @@ public class TyperApplication {
                 initializeRoleTypesInDb();
 
                 //Generate default user
-                User s = User.createUser(
-                        "user",
-                        new BCryptPasswordEncoder().encode("user"),
-                        "test@test.pl"
-                );
-                s.setEnabled(true);
-                s.getRoles().add(roleRepository.findByRoleType(RoleType.ADMIN));
-                User save = userRepository.save(s);
+                User admin = createUser("admin", RoleType.ADMIN);
+                User user1 = createUser("user1");
+                User user2 = createUser("user2");
+                List<User> users = Arrays.asList(admin, user1, user2);
+                userRepository.saveAll(users);
 
                 TyperCompetition typerCompetition = new TyperCompetition();
-                typerCompetition.setName("defaultLeague");
+                typerCompetition.setName("Liga Testowa");
                 typerCompetition.setLastUpdated(LocalDateTime.now());
                 typerCompetition.setTyperPlayers(new ArrayList<>());
 
+                List<TyperPlayer> typerPlayers = users.stream().map(user -> getTyperPlayer(user, typerCompetition)).collect(Collectors.toList());
+
+                TyperStanding typerStanding = new TyperStanding();
+                typerStanding.setTyperCompetition(typerCompetition);
+
+                List<TyperLeagueStanding> typerLeagueStandings = typerPlayers.stream().map(typerPlayer -> {
+                            TyperLeagueStanding typerLeagueStanding = new TyperLeagueStanding();
+                            typerLeagueStanding.setTyperPlayer(typerPlayer);
+                            typerLeagueStanding.setTyperStanding(typerStanding);
+                            return typerLeagueStanding;
+                        }
+                ).collect(Collectors.toList());
+
+
+                typerPlayerRepository.saveAll(typerPlayers);
+                typerCompetitionRepository.save(typerCompetition);
+                typerStandingRepository.save(typerStanding);
+                typerLeagueStandingRepository.saveAll(typerLeagueStandings);
+
+
+            }
+
+            private TyperPlayer getTyperPlayer(User user, TyperCompetition typerCompetition) {
                 TyperPlayer typerPlayer = new TyperPlayer();
-                typerPlayer.setUser(save);
+                typerPlayer.setUser(user);
                 typerPlayer.getTyperCompetitions().add(typerCompetition);
                 typerCompetition.getTyperPlayers().add(typerPlayer);
-                typerPlayerRepository.save(typerPlayer);
-                typerCompetitionRepository.save(typerCompetition);
+                return typerPlayer;
+            }
 
+            private User createUser(String username,  RoleType roleType) {
+                User s = User.createUser(
+                        username,
+                        new BCryptPasswordEncoder().encode("1111"),
+                        "test@test.pl"
+                );
+                s.setEnabled(true);
+                s.getRoles().add(roleRepository.findByRoleType(roleType));
+                return s;
+            }
 
+            private User createUser(String username) {
+                return createUser(username, RoleType.USER);
             }
 
             private void initializeRoleTypesInDb() {

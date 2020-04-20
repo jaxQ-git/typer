@@ -11,19 +11,22 @@ import javax.persistence.ManyToOne;
 
 @Data
 @Entity
-public class LeagueTyperStanding extends BaseModel {
+public class TyperLeagueStanding extends BaseModel {
 
     @ManyToOne
     private TyperStanding typerStanding;
 
+
+    private Integer position;
+
     @ManyToOne
     private TyperPlayer typerPlayer;
 
-    private Integer round;
-
     private Integer points;
 
-
-
-
+    //TODO Usunąć po wprowadzeniu logiki do liczenia pozycji
+    public TyperLeagueStanding() {
+        this.points=0;
+        this.position=1;
+    }
 }
