@@ -10,8 +10,23 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.most.typer.model.account.Role;
 import pl.most.typer.model.account.RoleType;
 import pl.most.typer.model.account.User;
+import pl.most.typer.model.typer.TyperCompetition;
+import pl.most.typer.model.typer.TyperLeagueStanding;
+import pl.most.typer.model.typer.TyperPlayer;
+import pl.most.typer.model.typer.TyperStanding;
 import pl.most.typer.repository.accountrepo.RoleRepository;
 import pl.most.typer.repository.accountrepo.UserRepository;
+import pl.most.typer.repository.typerrepo.TyperCompetitionRepository;
+import pl.most.typer.repository.typerrepo.TyperLeagueStandingRepository;
+import pl.most.typer.repository.typerrepo.TyperPlayerRepository;
+import pl.most.typer.repository.typerrepo.TyperStandingRepository;
+import pl.most.typer.service.typer.TyperCompetitionService;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 public class TyperApplication {
@@ -20,24 +35,77 @@ public class TyperApplication {
         SpringApplication.run(TyperApplication.class, args);
     }
 
-//FIXME zakomentowałem bo baza się krzaczyła przy kolejnym uruchomieniu aplikacji
+
 
     @Bean
-    public CommandLineRunner dataLoader(UserRepository userRepository, RoleRepository roleRepository) {
+    public CommandLineRunner dataLoader(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            TyperCompetitionRepository typerCompetitionRepository,
+            TyperPlayerRepository typerPlayerRepository,
+            TyperLeagueStandingRepository typerLeagueStandingRepository,
+            TyperStandingRepository typerStandingRepository
+    ) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
                 initializeRoleTypesInDb();
 
                 //Generate default user
+                User admin = createUser("admin", RoleType.ADMIN);
+                User user1 = createUser("user1");
+                User user2 = createUser("user2");
+                List<User> users = Arrays.asList(admin, user1, user2);
+                userRepository.saveAll(users);
+
+                TyperCompetition typerCompetition = new TyperCompetition();
+                typerCompetition.setName("Liga Testowa");
+                typerCompetition.setLastUpdated(LocalDateTime.now());
+                typerCompetition.setTyperPlayers(new ArrayList<>());
+
+                List<TyperPlayer> typerPlayers = users.stream().map(user -> getTyperPlayer(user, typerCompetition)).collect(Collectors.toList());
+
+                TyperStanding typerStanding = new TyperStanding();
+                typerStanding.setTyperCompetition(typerCompetition);
+
+                List<TyperLeagueStanding> typerLeagueStandings = typerPlayers.stream().map(typerPlayer -> {
+                            TyperLeagueStanding typerLeagueStanding = new TyperLeagueStanding();
+                            typerLeagueStanding.setTyperPlayer(typerPlayer);
+                            typerLeagueStanding.setTyperStanding(typerStanding);
+                            return typerLeagueStanding;
+                        }
+                ).collect(Collectors.toList());
+
+
+                typerPlayerRepository.saveAll(typerPlayers);
+                typerCompetitionRepository.save(typerCompetition);
+                typerStandingRepository.save(typerStanding);
+                typerLeagueStandingRepository.saveAll(typerLeagueStandings);
+
+
+            }
+
+            private TyperPlayer getTyperPlayer(User user, TyperCompetition typerCompetition) {
+                TyperPlayer typerPlayer = new TyperPlayer();
+                typerPlayer.setUser(user);
+                typerPlayer.getTyperCompetitions().add(typerCompetition);
+                typerCompetition.getTyperPlayers().add(typerPlayer);
+                return typerPlayer;
+            }
+
+            private User createUser(String username,  RoleType roleType) {
                 User s = User.createUser(
-                        "user",
-                        new BCryptPasswordEncoder().encode("user"),
+                        username,
+                        new BCryptPasswordEncoder().encode("1111"),
                         "test@test.pl"
                 );
                 s.setEnabled(true);
-                s.getRoles().add(roleRepository.findByRoleType(RoleType.ADMIN));
-                userRepository.save(s);
+                s.getRoles().add(roleRepository.findByRoleType(roleType));
+                return s;
+            }
+
+            private User createUser(String username) {
+                return createUser(username, RoleType.USER);
             }
 
             private void initializeRoleTypesInDb() {
@@ -47,6 +115,8 @@ public class TyperApplication {
                 }
             }
         };
+
+
     }
 }
 

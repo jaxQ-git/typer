@@ -40,9 +40,9 @@
                         Mini Ligi Typer
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownLigiTyper">
-                        <a class="dropdown-item" href="#">Liga 1</a>
-                        <a class="dropdown-item" href="#">Liga 2</a>
-                        <a class="dropdown-item" href="#">Liga 3</a>
+                        <div th:each="typer: ${typerCompetitions}">
+                            <a class="dropdown-item" th:href="@{/typer/{typerId}/standings(typerId=${typer.id})}" th:text="${typer.name}"></a>
+                        </div>
 
                     </div>
                 </li>
