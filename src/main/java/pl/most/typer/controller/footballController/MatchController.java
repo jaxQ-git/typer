@@ -38,12 +38,12 @@ public class MatchController {
 
     @GetMapping(value = "/{id}/matches")
     private String getMatches(@PathVariable("id") Integer id, Model model) {
-        Optional<Competition> competition = competitionService.getCompetition(id);
-        Optional<Match> match = matchesService.findFirstByCompetition(new Competition(id, null));
-        if (competition.isEmpty() || match.isEmpty()) {
+        Optional<Competition> optionalCompetition = competitionService.getCompetition(id);
+        Optional<Match> optionalMatch = matchesService.findFirstByCompetition(new Competition(id, null));
+        if (optionalCompetition.isEmpty() || optionalMatch.isEmpty()) {
             return "redirect:/competitions/" + id + "/matches/update";
         }
-        List<Match> matchByCompetition = matchesService.findAllByCompetition(competition.get());
+        List<Match> matchByCompetition = matchesService.findAllByCompetition(optionalCompetition.get());
 
         model.addAttribute("competitionName", competitionService.getCompetitionName(id));
         model.addAttribute("matches", matchByCompetition);
