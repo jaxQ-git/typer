@@ -63,12 +63,13 @@ public class MatchesServiceDefault implements MatchesService {
                 teamService.saveAll(getTeamsFromMatchDTO(matchDTO));
 
                 saveAll(matchDTO.getMatches());
+
+                return HttpStatus.CREATED;
+            } else {
+                return HttpStatus.BAD_GATEWAY;
             }
-            return HttpStatus.CREATED;
         }
-        else{
-            return HttpStatus.BAD_GATEWAY;
-        }
+        return HttpStatus.BAD_GATEWAY;
     }
 
     @Override
@@ -81,7 +82,12 @@ public class MatchesServiceDefault implements MatchesService {
 
     @Override
     public List<Match> findAllByCompetition(Competition competition) {
-        return matchesRepository.findAllByCompetition(competition);
+        return matchesRepository.findAllByCompetitionOrderByUtcDateDesc(competition);
+    }
+
+    @Override
+    public Optional<Match> findFirstByCompetition(Competition competiton) {
+        return matchesRepository.findFirstByCompetition(competiton);
     }
 
 

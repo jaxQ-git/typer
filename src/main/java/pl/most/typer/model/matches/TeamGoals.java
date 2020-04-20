@@ -19,7 +19,6 @@ public class TeamGoals {
     private Integer awayTeam;
 
     @OneToOne
-    @ToString.Exclude
     private Score score;
 
 }

@@ -5,9 +5,13 @@ import pl.most.typer.model.competition.Competition;
 import pl.most.typer.model.competition.Standing;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface StandingRepository extends JpaRepository<Standing,Long> {
+public interface StandingRepository extends JpaRepository<Standing, Long> {
 
     List<Standing> findAllByCompetitionAndType(Competition competition, String type);
+
     List<Standing> findAllByCompetition(Competition competition);
+
+    Optional<Standing> findFirstByCompetition(Competition competition);
 }

@@ -14,4 +14,7 @@ public interface MatchesService {
     void saveAll(List<Match> matches);
 
     List<Match> findAllByCompetition(Competition competition);
+
+    Optional<Match> findFirstByCompetition(Competition competiton);
+
 }

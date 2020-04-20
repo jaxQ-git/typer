@@ -1,6 +1,5 @@
 package pl.most.typer.controller.footballController;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +39,8 @@ public class MatchController {
     @GetMapping(value = "/{id}/matches")
     private String getMatches(@PathVariable("id") Integer id, Model model) {
         Optional<Competition> competition = competitionService.getCompetition(id);
-        if (competition.isEmpty()) {
+        Optional<Match> match = matchesService.findFirstByCompetition(new Competition(id, null));
+        if (competition.isEmpty() || match.isEmpty()) {
             return "redirect:/competitions/" + id + "/matches/update";
         }
         List<Match> matchByCompetition = matchesService.findAllByCompetition(competition.get());

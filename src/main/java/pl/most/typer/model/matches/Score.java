@@ -21,16 +21,12 @@ public class Score {
     private ScoreDuration duration;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @ToString.Exclude
     private TeamGoals fullTime;
     @OneToOne(cascade = CascadeType.ALL)
-    @ToString.Exclude
     private TeamGoals halfTime;
     @OneToOne(cascade = CascadeType.ALL)
-    @ToString.Exclude
     private TeamGoals extraTime;
     @OneToOne(cascade = CascadeType.ALL)
-    @ToString.Exclude
     private TeamGoals penalties;
 
     @OneToOne

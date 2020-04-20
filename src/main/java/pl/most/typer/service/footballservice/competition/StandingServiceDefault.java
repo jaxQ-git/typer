@@ -76,5 +76,10 @@ public class StandingServiceDefault implements StandingService {
         standings.forEach(standing -> standing.setCompetition(competition));
     }
 
+    @Override
+    public Optional<Standing> findFirstByCompetiton(Competition competition) {
+        return standingRepository.findFirstByCompetition(competition);
+    }
+
 
 }
