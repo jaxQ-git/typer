@@ -10,8 +10,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import pl.most.typer.model.account.Role;
 import pl.most.typer.model.account.RoleType;
 import pl.most.typer.model.account.User;
+import pl.most.typer.model.typer.TyperCompetition;
+import pl.most.typer.model.typer.TyperPlayer;
 import pl.most.typer.repository.accountrepo.RoleRepository;
 import pl.most.typer.repository.accountrepo.UserRepository;
+import pl.most.typer.repository.typerrepo.TyperCompetitionRepository;
+import pl.most.typer.repository.typerrepo.TyperPlayerRepository;
+import pl.most.typer.service.typer.TyperCompetitionService;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @SpringBootApplication
 public class TyperApplication {
@@ -20,10 +28,15 @@ public class TyperApplication {
         SpringApplication.run(TyperApplication.class, args);
     }
 
-//FIXME zakomentowałem bo baza się krzaczyła przy kolejnym uruchomieniu aplikacji
+
 
     @Bean
-    public CommandLineRunner dataLoader(UserRepository userRepository, RoleRepository roleRepository) {
+    public CommandLineRunner dataLoader(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            TyperCompetitionRepository typerCompetitionRepository,
+            TyperPlayerRepository typerPlayerRepository
+    ) {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
@@ -37,7 +50,21 @@ public class TyperApplication {
                 );
                 s.setEnabled(true);
                 s.getRoles().add(roleRepository.findByRoleType(RoleType.ADMIN));
-                userRepository.save(s);
+                User save = userRepository.save(s);
+
+                TyperCompetition typerCompetition = new TyperCompetition();
+                typerCompetition.setName("defaultLeague");
+                typerCompetition.setLastUpdated(LocalDateTime.now());
+                typerCompetition.setTyperPlayers(new ArrayList<>());
+
+                TyperPlayer typerPlayer = new TyperPlayer();
+                typerPlayer.setUser(save);
+                typerPlayer.getTyperCompetitions().add(typerCompetition);
+                typerCompetition.getTyperPlayers().add(typerPlayer);
+                typerPlayerRepository.save(typerPlayer);
+                typerCompetitionRepository.save(typerCompetition);
+
+
             }
 
             private void initializeRoleTypesInDb() {
@@ -47,6 +74,8 @@ public class TyperApplication {
                 }
             }
         };
+
+
     }
 }
 

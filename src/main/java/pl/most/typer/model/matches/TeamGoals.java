@@ -18,6 +18,7 @@ public class TeamGoals {
     private Integer homeTeam;
     private Integer awayTeam;
 
+    //TODO Przedyskutować czy to jest tu potrzebne?
     @OneToOne
     private Score score;
 
