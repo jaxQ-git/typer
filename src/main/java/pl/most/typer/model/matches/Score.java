@@ -30,6 +30,7 @@ public class Score {
     private TeamGoals penalties;
 
     @OneToOne
+    @ToString.Exclude
     private Match match;
 
 

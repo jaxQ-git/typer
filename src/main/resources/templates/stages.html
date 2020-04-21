@@ -35,22 +35,13 @@
                 <table class="table table-striped table-sm">
                     <thead>
                     <tr>
-                        <th style="text-align: center; font-size: 30px" colspan="4" scope="col" th:text="${match.key}">
+                        <th style="text-align: center; font-size: 30px" colspan="4" scope="col">
+                            <a th:text="${match.key}"
+                               th:href="@{/competitions/{id}/matches(id=${apiId},stage=${match.key})}"></a>
                         </th>
-
-                    </tr>
-                    <th scope="col">Data</th>
-                    <th scope="col">Gospodarz</th>
-                    <th scope="col">Wynik</th>
-                    <th scope="col">Gość</th>
-                    </tr>
-                    </thead>
-                    <tbody id="matchScore">
-                    <tr th:each="mapValue : ${match.value}">
-                        <td th:text="${#temporals.format(mapValue.utcDate, 'dd-MM-yyyy HH:mm')}"></td>
-                        <td th:text="${mapValue.homeTeam.name}"></td>
-                        <td th:text="${#objects.nullSafe(mapValue.score.fullTime.homeTeam, '')} + '-' + ${#objects.nullSafe(mapValue.score.fullTime.awayTeam, '')}"></td>
-                        <td th:text="${mapValue.awayTeam.name}"></td>
+                        <!--                        <th style="text-align: center; font-size: 30px" colspan="4" scope="col"-->
+                        <!--                            th:text="${match.group}">-->
+                        <!--                        </th>-->
                     </tr>
                     </tbody>
                 </table>
