@@ -6,6 +6,7 @@ import pl.most.typer.model.typer.TyperStanding;
 import pl.most.typer.repository.typerrepo.TyperStandingRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TyperStandingServiceDefault implements TyperStandingService {
@@ -17,9 +18,22 @@ public class TyperStandingServiceDefault implements TyperStandingService {
     }
 
     @Override
-    public List<TyperStanding> findAllByCompetitionId(Integer id) {
+    public List<TyperStanding> findAllByTyperCompetitionId(Integer id) {
         TyperCompetition typerCompetition = new TyperCompetition();
         typerCompetition.setId(id);
-        return typerStandingRepository.findAllByTyperCompetition(typerCompetition);
+        return typerStandingRepository.findAllByTyperCompetition(id);
     }
+
+    @Override
+    public Optional<TyperStanding> findLatestStandingByTyperCompetition(TyperCompetition typerCompetition) {
+        return findStandingByTyperCompetition(typerCompetition, typerCompetition.getCurrentRound());
+    }
+
+    @Override
+    public Optional<TyperStanding> findStandingByTyperCompetition(TyperCompetition typerCompetition, Integer round) {
+        return typerStandingRepository.findByTyperCompetitionAndRound(typerCompetition, round);
+    }
+
+
 }
+

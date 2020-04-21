@@ -80,8 +80,6 @@ public class TyperApplication {
                 typerPlayerRepository.saveAll(typerPlayers);
                 typerCompetitionRepository.save(typerCompetition);
                 typerStandingRepository.save(typerStanding);
-                typerLeagueStandingRepository.saveAll(typerLeagueStandings);
-
 
             }
 
