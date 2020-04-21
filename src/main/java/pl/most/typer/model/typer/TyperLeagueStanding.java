@@ -1,6 +1,7 @@
 package pl.most.typer.model.typer;
 
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import pl.most.typer.model.competition.Standing;
 import pl.most.typer.model.competition.Team;
@@ -14,6 +15,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class TyperLeagueStanding extends BaseModel {
 
+    @ToString.Exclude
     @ManyToOne
     private TyperStanding typerStanding;
 

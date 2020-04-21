@@ -43,6 +43,8 @@
                         <div th:each="typer: ${typerCompetitions}">
                             <a class="dropdown-item" th:href="@{/typer/{typerId}/standings(typerId=${typer.id})}" th:text="${typer.name}"></a>
                         </div>
+                        <div class="divider"></div>
+                        <a class="dropdown-item" th:href="@{/typer/manage}" >Zarządzaj ligami</a>
 
                     </div>
                 </li>

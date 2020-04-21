@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>The Best Typer in whole World!</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/modern-business.css}" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav th:replace="fragments/navigation :: navigation"/>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2">
+
+        </div>
+        <div class="col">
+
+            <p class="display-4 text-center">Dostępne ligi typerów</p>
+            <div >
+
+                <table class="table table-striped table-sm text-center">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Nazwa</th>
+                        <th scope="col">Runda</th>
+                        <th scope="col">Liczba graczy</th>
+                        <th scope="col">Ostatnia akutalizacja</th>
+                        <th scope="col">Akcja</th>
+                    </tr>
+                    </thead>
+                    <tbody id="typerCompetition">
+                    <tr th:each="typerCompetition : ${typerCompetitions}">
+                        <td th:text="${typerCompetition.id}"/>
+                        <td th:text="${typerCompetition.name}"/>
+                        <td th:text="${typerCompetition.currentRound}"/>
+                        <td th:text="${#lists.size(typerCompetition.typerPlayers)}"/>
+                        <td  th:text="${#temporals.format(typerCompetition.lastUpdated, 'dd-MM-yyyy HH:mm')}"/>
+                        <td >
+                            <a th:href="@{/{id}/edit(id=${typerCompetition.id})}" >Edytuj </a>
+                            <a th:href="@{/{id}/delete(id=${typerCompetition.id})}" >Usuń</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="margin-top: 50px" class="col-sm-2">
+            <p class="display-6" style="text-align: center">Stwórz nową ligę</p>
+            <form method="POST" th:action="@{'/typer/manage'}" th:object="${typerCompetitionDTO}" id="createTComp">
+                <div class="form-label-group">
+                    <input type="text" id="name" th:field="*{name}" name="name" class="form-control" placeholder="Nazwa" required autofocus>
+                </div>
+
+                <button class="btn btn-sm btn-primary btn-block font-weight-bold mb-2" type="submit">Załóż ligę</button>
+
+            </form>
+
+        </div>
+    </div>
+
+
+</div>
+
+<!-- Footer -->
+<footer th:replace="fragments/footer :: footer"/>
+
+<!-- Bootstrap core JavaScript -->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

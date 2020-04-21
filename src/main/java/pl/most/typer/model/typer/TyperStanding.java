@@ -21,6 +21,7 @@ public class TyperStanding extends BaseModel {
     @ColumnDefault("0")
     private Integer round;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "typerStanding")
     private List<TyperLeagueStanding> typerLeagueStandings;
 }

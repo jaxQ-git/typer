@@ -1,6 +1,7 @@
 package pl.most.typer.model.typer;
 
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import pl.most.typer.model.account.User;
 
@@ -22,6 +23,7 @@ public class TyperPlayer extends BaseModel {
     @ColumnDefault("''")
     private String surname;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "typerPlayers")
     Collection<TyperCompetition> typerCompetitions = new ArrayList<>();
 

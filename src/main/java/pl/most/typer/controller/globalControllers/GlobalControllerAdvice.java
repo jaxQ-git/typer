@@ -1,6 +1,8 @@
 package pl.most.typer.controller.globalControllers;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.most.typer.model.dto.HeaderCompetitionListDTO;
 import pl.most.typer.model.competition.Competition;
@@ -9,6 +11,7 @@ import pl.most.typer.repository.typerrepo.TyperCompetitionRepository;
 
 import java.util.*;
 
+@Slf4j
 @Data
 @ControllerAdvice
 public class GlobalControllerAdvice {
@@ -35,7 +38,8 @@ public class GlobalControllerAdvice {
 
 
     @ExceptionHandler(value = {Exception.class, RuntimeException.class})
-    public String handleException(Exception ex) {
+    public String handleException(Exception ex, Model model) {
+        log.error(ex.getMessage(),ex);
         return "redirect:/error";
     }
 

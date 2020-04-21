@@ -41,14 +41,16 @@ body {
   margin-bottom: 1rem;
 }
 
-/*.form-label-group input {
-  height: auto;
-}*/
+.divider {
+  height: 1px;
+  width:100%;
+  display:block; /* for use on default inline elements like span */
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
 
-/*.form-label-group>input,*/
-/*.form-label-group>label {*/
-/*  padding: var(--input-padding-y) var(--input-padding-x);*/
-/*}*/
+
 
 
 

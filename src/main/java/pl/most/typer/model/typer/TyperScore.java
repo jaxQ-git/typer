@@ -20,6 +20,7 @@ public class TyperScore extends BaseModel {
     @Enumerated(EnumType.STRING)
     private ScoreWinner scoreWinner;
 
+
     @OneToOne
     private TeamGoals teamGoals;
 }
