@@ -12,10 +12,10 @@ import pl.most.typer.model.matches.Match;
 import pl.most.typer.service.footballservice.competition.CompetitionService;
 import pl.most.typer.service.footballservice.matches.MatchesService;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.groupingBy;
 
 @Controller
 @RequestMapping(value = "/competitions")
@@ -45,22 +45,18 @@ public class MatchController {
 
     @GetMapping(value = "/{id}/stages")
     private String getStages(@PathVariable("id") Integer id,
-                                      @RequestParam(name="stage", required = false) String stage,
-                                      Model model) {
+                             @RequestParam(name = "stage", required = false) String stage,
+                             Model model) {
         Optional<Competition> optionalCompetition = getCompetition(id);
         Optional<Match> optionalMatch = getFirstMatch(id);
-        if (checkIfCompetitionMatchExist(optionalCompetition, optionalMatch)){
+        if (checkIfCompetitionMatchExist(optionalCompetition, optionalMatch)) {
             return "redirect:/competitions/" + id + "/stages/update";
         }
+
         List<Match> matchByCompetition = getAllMatches(optionalCompetition);
+        matchByCompetition = filterMatchesByStage(stage, matchByCompetition);
 
-        matchByCompetition = checkIfStageExist(stage, matchByCompetition);
-
-        Map<String, List<Match>> groupMap = matchByCompetition
-                .stream()
-                .collect(groupingBy(match -> match.getGroup() == null ? "absentGroup" : match.getGroup()));
         LinkedHashMap<String, List<Match>> matchesByStage = getStageLinkedHashMap(matchByCompetition);
-
 
         model.addAttribute("apiId", id);
         model.addAttribute("competitionName", competitionService.getCompetitionName(id));
@@ -71,21 +67,33 @@ public class MatchController {
 
     @GetMapping(value = "/{id}/matches")
     private String getMatchesByStages(@PathVariable("id") Integer id,
-                                      @RequestParam(name="stage", required = false) String stage,
+                                      @RequestParam(name = "stage", required = false) String stage,
                                       Model model) {
         Optional<Competition> optionalCompetition = getCompetition(id);
         List<Match> matchByCompetition = getAllMatches(optionalCompetition);
 
-        matchByCompetition = checkIfStageExist(stage, matchByCompetition);
-
-        LinkedHashMap<String, List<Match>> matchesByStage = getStageLinkedHashMap(matchByCompetition);
+        matchByCompetition = filterMatchesByStage(stage, matchByCompetition);
+        LinkedHashMap<String, List<Match>> matchesByGroup = getGroupLinkedHashMap(matchByCompetition);
 
         model.addAttribute("competitionName", competitionService.getCompetitionName(id));
-        model.addAttribute("matchesByStage", matchesByStage);
+        model.addAttribute("matchesByGroup", matchesByGroup);
+        model.addAttribute("stageName", stage);
         return "matches";
     }
 
-    private List<Match> checkIfStageExist(@RequestParam(name = "stage", required = false) String stage, List<Match> matchByCompetition) {
+    private LinkedHashMap<String, List<Match>> getStageLinkedHashMap(List<Match> matchByCompetition) {
+        return matchByCompetition
+                .stream()
+                .collect(Collectors.groupingBy(Match::getStage, LinkedHashMap::new, Collectors.toList()));
+    }
+
+    private LinkedHashMap<String, List<Match>> getGroupLinkedHashMap(List<Match> matchByCompetition) {
+        return matchByCompetition
+                .stream()
+                .collect(Collectors.groupingBy(match -> match.getGroup() == null ? "absentGroup" : match.getGroup(), LinkedHashMap::new, Collectors.toList()));
+    }
+
+    private List<Match> filterMatchesByStage(@RequestParam(name = "stage", required = false) String stage, List<Match> matchByCompetition) {
         if (stage != null) {
             matchByCompetition = matchByCompetition.stream()
                     .filter(match -> match.getStage().equals(stage))
@@ -94,10 +102,13 @@ public class MatchController {
         return matchByCompetition;
     }
 
-    private LinkedHashMap<String, List<Match>> getStageLinkedHashMap(List<Match> matchByCompetition) {
-        return matchByCompetition
-                .stream()
-                .collect(Collectors.groupingBy(Match::getStage, LinkedHashMap::new, Collectors.toList()));
+    private List<Match> filterMatchesByGroup(String group, List<Match> matchByCompetition) {
+        if (group != null) {
+            matchByCompetition = matchByCompetition.stream()
+                    .filter(match -> match.getGroup().equals(group))
+                    .collect(Collectors.toList());
+        }
+        return matchByCompetition;
     }
 
     private Optional<Match> getFirstMatch(@PathVariable("id") Integer id) {
