@@ -30,15 +30,16 @@
         </div>
         <div class="col">
             <h3 class="display-4" style="text-align: center" th:text="${competitionName}"></h3>
-            <h4 class="display-4" style=" font-size: 30px; text-align: center"  th:text="${stageName}"></h4>
+            <h4 class="display-4" style=" font-size: 30px; text-align: center" th:text="${stageName}"></h4>
             <div th:each="match: ${matchesByGroup}">
 
                 <table class="table table-striped table-sm">
                     <thead>
                     <tr>
-                        <th style="text-align: center; font-size: 30px" colspan="4" scope="col" th:text="${match.key}">
-                        </th>
-
+                        <th:block th:if="${match.key != 'absentGroup'}">
+                            <th style="text-align: center; font-size: 30px"
+                                colspan="4" scope="col" th:text="${match.key}"></th>
+                        </th:block>
                     </tr>
                     <th scope="col">Data</th>
                     <th scope="col">Gospodarz</th>
