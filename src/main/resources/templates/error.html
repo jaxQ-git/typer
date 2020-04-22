@@ -31,9 +31,12 @@
     <h1 class="mt-4 mb-3">Coś poszło nie tak!
       <small>Nasi inżynierowie już pracują nad tym</small>
     </h1>
+
     <div class="text-center" style="margin: 25px">
     <img style="height: 300px" class="img-fluid img-thumbnail" th:src="@{/img/engineers.png}" alt="Genius">
     </div>
+    <h3 th:text="${msg}"></h3>
+    <h3 th:text="${url}"></h3>
 
 
   </div>

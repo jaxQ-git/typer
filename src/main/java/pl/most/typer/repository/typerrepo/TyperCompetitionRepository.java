@@ -5,4 +5,5 @@ import pl.most.typer.model.typer.TyperCompetition;
 
 public interface TyperCompetitionRepository extends JpaRepository<TyperCompetition,Integer> {
 
+    boolean existsByName(String name);
 }

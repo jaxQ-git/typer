@@ -1,6 +1,9 @@
 package pl.most.typer.model.typer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 import pl.most.typer.model.account.User;
 
 import javax.persistence.*;
@@ -10,15 +13,20 @@ import java.util.Collection;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
+
 public class TyperPlayer extends BaseModel {
 
     @OneToOne
     private User user;
 
-    private String name = "default";
 
-    private String surname = "default";
+    private String name="";
 
+
+    private String surname="";
+
+    @ToString.Exclude
     @ManyToMany(mappedBy = "typerPlayers")
     Collection<TyperCompetition> typerCompetitions = new ArrayList<>();
 

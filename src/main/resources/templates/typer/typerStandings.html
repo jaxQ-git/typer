@@ -24,7 +24,7 @@
 <!-- Navigation -->
 <nav th:replace="fragments/navigation :: navigation"/>
 
-<div style="margin-top: 50px;" class="container-fluid">
+<div class="container-fluid">
     <div class="row">
         <div class="col-sm-2">
 
@@ -44,7 +44,8 @@
                     </tr>
                     </thead>
                     <tbody id="typerLStanding">
-                    <tr th:each="typerLStanding : ${typerLStandings}">
+                    <!--/*@thymesVar id="typerStanding" type="TyperStanding"*/-->
+                    <tr th:each="typerLStanding : ${typerStanding.typerLeagueStandings}">
                         <td th:text="${typerLStanding.position}"/>
                         <td th:text="${typerLStanding.typerPlayer.user.username}"/>
                         <td th:text="${typerLStanding.points}"/>

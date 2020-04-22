@@ -58,10 +58,7 @@ public class TyperApplication {
                 List<User> users = Arrays.asList(admin, user1, user2);
                 userRepository.saveAll(users);
 
-                TyperCompetition typerCompetition = new TyperCompetition();
-                typerCompetition.setName("Liga Testowa");
-                typerCompetition.setLastUpdated(LocalDateTime.now());
-                typerCompetition.setTyperPlayers(new ArrayList<>());
+                TyperCompetition typerCompetition = new TyperCompetition("Liga Testowa");
 
                 List<TyperPlayer> typerPlayers = users.stream().map(user -> getTyperPlayer(user, typerCompetition)).collect(Collectors.toList());
 
@@ -76,12 +73,12 @@ public class TyperApplication {
                         }
                 ).collect(Collectors.toList());
 
+                typerStanding.setTyperLeagueStandings(typerLeagueStandings);
+
 
                 typerPlayerRepository.saveAll(typerPlayers);
                 typerCompetitionRepository.save(typerCompetition);
                 typerStandingRepository.save(typerStanding);
-                typerLeagueStandingRepository.saveAll(typerLeagueStandings);
-
 
             }
 
