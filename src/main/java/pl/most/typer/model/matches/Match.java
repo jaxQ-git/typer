@@ -25,9 +25,7 @@ public class Match {
     private Competition competition;
     @ManyToOne
     private Season season;
-    @OrderBy
     private LocalDateTime utcDate;
-
     @Enumerated(EnumType.STRING)
     private MatchStatus status;
     private Integer matchDay;
@@ -35,7 +33,6 @@ public class Match {
     @Column(name = "groups")
     private String group;
     private String lastUpdate;
-
     @OneToOne(cascade = CascadeType.ALL)
     private Score score;
     @OneToOne

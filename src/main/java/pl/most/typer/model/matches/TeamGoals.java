@@ -20,6 +20,7 @@ public class TeamGoals {
 
     //TODO Przedyskutować czy to jest tu potrzebne?
     @OneToOne
+    @ToString.Exclude
     private Score score;
 
 }
