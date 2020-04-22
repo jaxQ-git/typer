@@ -2,6 +2,7 @@ package pl.most.typer.model.typer;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
@@ -13,6 +14,8 @@ import java.util.List;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
+
 public class TyperStanding extends BaseModel {
 
     @ManyToOne

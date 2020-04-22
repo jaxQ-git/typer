@@ -1,6 +1,7 @@
 package pl.most.typer.model.typer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import pl.most.typer.model.account.User;
@@ -12,6 +13,8 @@ import java.util.Collection;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
+
 public class TyperPlayer extends BaseModel {
 
     @OneToOne

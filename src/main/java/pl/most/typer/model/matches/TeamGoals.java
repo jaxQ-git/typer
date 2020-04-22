@@ -19,7 +19,6 @@ public class TeamGoals {
     private Integer awayTeam;
 
     //TODO Przedyskutować czy to jest tu potrzebne?
-    @ToString.Exclude
     @OneToOne
     @ToString.Exclude
     private Score score;

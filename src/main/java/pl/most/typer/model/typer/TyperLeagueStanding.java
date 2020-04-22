@@ -1,6 +1,7 @@
 package pl.most.typer.model.typer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import pl.most.typer.model.competition.Standing;
@@ -13,6 +14,8 @@ import javax.persistence.ManyToOne;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
+
 public class TyperLeagueStanding extends BaseModel {
 
     @ToString.Exclude

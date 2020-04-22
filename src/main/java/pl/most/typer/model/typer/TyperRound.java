@@ -1,6 +1,7 @@
 package pl.most.typer.model.typer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -10,6 +11,7 @@ import javax.persistence.ManyToOne;
 
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 public class TyperRound extends BaseModel {
 
     @ToString.Exclude
