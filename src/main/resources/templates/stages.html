@@ -19,48 +19,49 @@
 
 </head>
 
-<body>
+<body class="d-flex flex-column">
+    <div id="page-content">
+        <!-- Navigation -->
+        <nav th:replace="fragments/navigation :: navigation"/>
 
-<!-- Navigation -->
-<nav th:replace="fragments/navigation :: navigation"/>
+        <div style="margin-top: 50px;" class="container-fluid">
+            <div class="row">
+                <div class="col-sm-2">
+                </div>
+                <div class="col">
+                    <h3 class="display-4" style="text-align: center" th:text="${competitionName}"></h3>
+                    <div th:each="match: ${matchesByStage}">
 
-<div style="margin-top: 50px;" class="container-fluid">
-    <div class="row">
-        <div class="col-sm-2">
-        </div>
-        <div class="col">
-            <h3 class="display-4" style="text-align: center" th:text="${competitionName}"></h3>
-            <div th:each="match: ${matchesByStage}">
+                        <table class="table table-striped table-sm">
+                            <thead>
+                            <tr>
+                                <th style="text-align: center; font-size: 30px" colspan="4" scope="col">
+                                    <a th:text="${match.key}"
+                                       th:href="@{/competitions/{id}/matches(id=${apiId},stage=${match.key})}"></a>
+                                </th>
+                                <!--                        <th style="text-align: center; font-size: 30px" colspan="4" scope="col"-->
+                                <!--                            th:text="${match.group}">-->
+                                <!--                        </th>-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-sm-2">
 
-                <table class="table table-striped table-sm">
-                    <thead>
-                    <tr>
-                        <th style="text-align: center; font-size: 30px" colspan="4" scope="col">
-                            <a th:text="${match.key}"
-                               th:href="@{/competitions/{id}/matches(id=${apiId},stage=${match.key})}"></a>
-                        </th>
-                        <!--                        <th style="text-align: center; font-size: 30px" colspan="4" scope="col"-->
-                        <!--                            th:text="${match.group}">-->
-                        <!--                        </th>-->
-                    </tr>
-                    </tbody>
-                </table>
+                </div>
             </div>
-        </div>
-        <div class="col-sm-2">
+
 
         </div>
     </div>
+        <!-- Footer -->
+        <footer id="sticky-footer" th:replace="fragments/footer :: footer"></footer>
 
 
-</div>
-
-<!-- Footer -->
-<footer th:replace="fragments/footer :: footer"/>
-
-<!-- Bootstrap core JavaScript -->
-<script src="/vendor/jquery/jquery.min.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap core JavaScript -->
+        <script src="/vendor/jquery/jquery.min.js"></script>
+        <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

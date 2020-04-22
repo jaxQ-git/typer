@@ -19,55 +19,67 @@
 
 </head>
 
-<body>
+<body class="d-flex flex-column">
+<div id="page-content">
 
-<!-- Navigation -->
-<nav th:replace="fragments/navigation :: navigation"/>
+    <!-- Navigation -->
+    <nav th:replace="fragments/navigation :: navigation"/>
 
-<div style="margin-top: 50px;" class="container-fluid">
-    <div class="row">
-        <div class="col-sm-2">
-        </div>
-        <div class="col">
-            <h3 class="display-4" style="text-align: center" th:text="${competitionName}"></h3>
-            <h4 class="display-4" style=" font-size: 30px; text-align: center" th:text="${stageName}"></h4>
-            <div th:each="match: ${matchesByGroup}">
+    <div style="margin-top: 50px;" class="container-fluid">
+        <div class="row">
+            <div class="col-sm-2">
+            </div>
+            <div class="col">
+                <h3 class="display-4" style="text-align: center" th:text="${competitionName}"></h3>
+                <h4 class="display-4" style=" font-size: 30px; text-align: center" th:text="${stageName}"></h4>
+                <div th:each="match: ${matchesByGroup}">
 
-                <table class="table table-striped table-sm">
-                    <thead>
-                    <tr>
-                        <th:block th:if="${match.key != 'absentGroup'}">
-                            <th style="text-align: center; font-size: 30px"
-                                colspan="4" scope="col" th:text="${match.key}"></th>
-                        </th:block>
-                    </tr>
-                    <th scope="col">Data</th>
-                    <th scope="col">Gospodarz</th>
-                    <th scope="col">Wynik</th>
-                    <th scope="col">Gość</th>
-                    </tr>
-                    </thead>
-                    <tbody id="matchScore">
-                    <tr th:each="mapValue : ${match.value}">
-                        <td th:text="${#temporals.format(mapValue.utcDate, 'dd-MM-yyyy HH:mm')}"></td>
-                        <td th:text="${mapValue.homeTeam.name}"></td>
-                        <td th:text="${#objects.nullSafe(mapValue.score.fullTime.homeTeam, '')} + '-' + ${#objects.nullSafe(mapValue.score.fullTime.awayTeam, '')}"></td>
-                        <td th:text="${mapValue.awayTeam.name}"></td>
-                    </tr>
-                    </tbody>
-                </table>
+                    <table class="table table-striped table-sm">
+                        <thead>
+                        <tr>
+                            <th:block th:if="${match.key != 'absentGroup'}">
+                                <th style="text-align: center; font-size: 30px"
+                                    colspan="4" scope="col" th:text="${match.key}"></th>
+                            </th:block>
+                        </tr>
+                        <th scope="col">Data</th>
+                        <th scope="col"></th>
+                        <th scope="col">Gospodarz</th>
+                        <th scope="col">Wynik</th>
+                        <th scope="col"></th>
+                        <th scope="col">Gość</th>
+                        </tr>
+                        </thead>
+                        <tbody id="matchScore">
+                        <tr th:each="mapValue : ${match.value}">
+                            <td th:text="${#temporals.format(mapValue.utcDate, 'dd-MM-yyyy HH:mm')}"></td>
+                            <td th:if="${mapValue.homeTeam.crestUrl != null}">
+                                <img th:src="${mapValue.homeTeam.crestUrl}" width="35"
+                                     th:alt="${mapValue.homeTeam.name}"/>
+                            </td>
+                            <td th:text="${mapValue.homeTeam.name}"></td>
+                            <td th:text="${#objects.nullSafe(mapValue.score.fullTime.homeTeam, '')} + '-' + ${#objects.nullSafe(mapValue.score.fullTime.awayTeam, '')}"></td>
+                            <td th:text="${mapValue.awayTeam.name}"></td>
+                            <td th:if="${mapValue.awayTeam.crestUrl != null}">
+                                <img th:src="${mapValue.awayTeam.crestUrl}" width="35"
+                                     th:alt="${mapValue.awayTeam.name}"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-2">
+
             </div>
         </div>
-        <div class="col-sm-2">
 
-        </div>
+
     </div>
-
-
 </div>
 
 <!-- Footer -->
-<footer th:replace="fragments/footer :: footer"/>
+<footer id="sticky-footer" th:replace="fragments/footer :: footer"/>
 
 <!-- Bootstrap core JavaScript -->
 <script src="/vendor/jquery/jquery.min.js"></script>
