@@ -1,17 +1,18 @@
 package pl.most.typer.service.typer;
 
+import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.typer.TyperCompetition;
 import pl.most.typer.model.typer.TyperStanding;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TyperStandingService {
 
     List<TyperStanding> findAllByTyperCompetitionId(Integer id);
 
-    Optional<TyperStanding> findLatestStandingByTyperCompetition(TyperCompetition typerCompetition);
+    TyperStanding findLatestStandingByTyperCompetition(TyperCompetition typerCompetition) throws ResourceNotFoundException;
 
-    Optional<TyperStanding> findStandingByTyperCompetition(TyperCompetition typerCompetition, Integer round);
+    TyperStanding findStandingByTyperCompetition(TyperCompetition typerCompetition, Integer round) throws ResourceNotFoundException;
 
+    void saveDefaultStanding(TyperCompetition typerCompetition);
 }

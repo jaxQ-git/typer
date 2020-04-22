@@ -1,5 +1,7 @@
 package pl.most.typer.service.typer;
 
+import pl.most.typer.exceptions.BadResourceException;
+import pl.most.typer.exceptions.ResourceAlreadyExistsException;
 import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.typer.TyperCompetition;
 
@@ -9,7 +11,7 @@ import java.util.Optional;
 
 public interface TyperCompetitionService {
 
-    TyperCompetition save(TyperCompetition typerCompetition);
+    TyperCompetition save(TyperCompetition typerCompetition) throws BadResourceException, ResourceAlreadyExistsException;
 
     TyperCompetition findById(Integer id) throws ResourceNotFoundException;
 

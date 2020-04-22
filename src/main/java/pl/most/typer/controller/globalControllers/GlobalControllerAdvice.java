@@ -2,13 +2,14 @@ package pl.most.typer.controller.globalControllers;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import pl.most.typer.model.dto.HeaderCompetitionListDTO;
 import pl.most.typer.model.competition.Competition;
 import pl.most.typer.model.typer.TyperCompetition;
 import pl.most.typer.repository.typerrepo.TyperCompetitionRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Slf4j
@@ -27,20 +28,25 @@ public class GlobalControllerAdvice {
         this.typerCompetitionRepository = typerCompetitionRepository;
     }
 
-    @ModelAttribute("competitions")
+    @ModelAttribute("navCompetitions")
     public List<Competition> getListOfAvailableCompetitions() {
         return headerCompetitionListDTO.getCompetitions();
     }
-    @ModelAttribute("typerCompetitions")
+
+    @ModelAttribute("navTyperCompetitions")
     public List<TyperCompetition> getTypersCompetitions() {
         return typerCompetitionRepository.findAll();
     }
 
 
     @ExceptionHandler(value = {Exception.class, RuntimeException.class})
-    public String handleException(Exception ex, Model model) {
+    public ModelAndView handleException(HttpServletRequest req, Exception ex) {
+        ModelAndView mav = new ModelAndView();
         log.error(ex.getMessage(),ex);
-        return "redirect:/error";
+        mav.addObject("msg", ex.getMessage());
+        mav.addObject("url", req.getRequestURL());
+        mav.setViewName(DEFAULT_ERROR_VIEW);
+        return mav;
     }
 
 

@@ -16,6 +16,6 @@ public class TyperRound extends BaseModel {
     @ManyToOne
     private TyperCompetition typerCompetition;
 
-    @ColumnDefault("0")
-    private Integer number;
+
+    private Integer number=0;
 }

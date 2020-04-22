@@ -18,10 +18,10 @@ public class TyperStanding extends BaseModel {
     @ManyToOne
     private TyperCompetition typerCompetition;
 
-    @ColumnDefault("0")
-    private Integer round;
+
+    private Integer round=0;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "typerStanding")
-    private List<TyperLeagueStanding> typerLeagueStandings;
+    @OneToMany(mappedBy = "typerStanding",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<TyperLeagueStanding> typerLeagueStandings = new ArrayList<>();
 }

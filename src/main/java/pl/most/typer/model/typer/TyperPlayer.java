@@ -17,11 +17,11 @@ public class TyperPlayer extends BaseModel {
     @OneToOne
     private User user;
 
-    @ColumnDefault("''")
-    private String name;
 
-    @ColumnDefault("''")
-    private String surname;
+    private String name="";
+
+
+    private String surname="";
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "typerPlayers")

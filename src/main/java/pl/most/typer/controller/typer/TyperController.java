@@ -35,11 +35,11 @@ public class TyperController {
                                 Model model) throws ResourceNotFoundException {
         TyperCompetition typerCompetition = typerCompetitionService.findById(id);
 
-        Optional<TyperStanding> typerStanding = typerStandingService
+        TyperStanding typerStanding = typerStandingService
                 .findLatestStandingByTyperCompetition(typerCompetition);
         model.addAttribute("typerCompetition", typerCompetition);
-        model.addAttribute("typerStanding", typerStanding.get());
-        return "typerStandings";
+        model.addAttribute("typerStanding", typerStanding);
+        return "typer/typerStandings";
 
     }
 

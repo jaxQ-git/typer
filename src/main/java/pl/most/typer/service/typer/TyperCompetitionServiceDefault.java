@@ -20,16 +20,20 @@ import java.util.Optional;
 public class TyperCompetitionServiceDefault implements TyperCompetitionService {
 
     TyperCompetitionRepository typerCompetitionRepository;
+    TyperStandingService typerStandingService;
 
-    public TyperCompetitionServiceDefault(TyperCompetitionRepository typerCompetitionRepository) {
+    public TyperCompetitionServiceDefault(TyperCompetitionRepository typerCompetitionRepository,
+                                          TyperStandingService typerStandingService) {
         this.typerCompetitionRepository = typerCompetitionRepository;
+        this.typerStandingService = typerStandingService;
     }
-
-
-
 
     private boolean existsById(Integer id) {
         return typerCompetitionRepository.existsById(id);
+    }
+
+    private boolean existsByName(String name) {
+        return typerCompetitionRepository.existsByName(name);
     }
 
     @Override
@@ -51,10 +55,19 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
     public TyperCompetition save(TyperCompetition typerCompetition) throws BadResourceException, ResourceAlreadyExistsException {
         if (!StringUtils.isEmpty(typerCompetition.getName())) {
             if (typerCompetition.getId() != null && existsById(typerCompetition.getId())) {
-                throw new ResourceAlreadyExistsException("TyperCompetition with id: " + typerCompetition.getId() +
-                        " already exists");
+                ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperCompetition with id: " + typerCompetition.getId() +
+                        " and name: " + typerCompetition.getName() + " already exists");
+                ex.setIssue("id");
+                throw ex;
             }
-            return typerCompetitionRepository.save(typerCompetition);
+            else if (existsByName(typerCompetition.getName())){
+                ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperCompetition with name: " + typerCompetition.getName() + " already exists");
+                ex.setIssue("name");
+                throw ex;
+            }
+            TyperCompetition competition = typerCompetitionRepository.save(typerCompetition);
+            typerStandingService.saveDefaultStanding(competition);
+            return competition;
         }
         else {
             BadResourceException exc = new BadResourceException("Failed to save typerCompetition");
@@ -80,7 +93,9 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
     @Override
     public void deleteById(Integer id) throws ResourceNotFoundException {
         if (!existsById(id)) {
-            throw new ResourceNotFoundException("Cannot find typerCompetition with id: " + id);
+            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find typerCompetition with id: " + id);
+            ex.setIssue("id");
+            throw ex;
         }
         else {
             typerCompetitionRepository.deleteById(id);

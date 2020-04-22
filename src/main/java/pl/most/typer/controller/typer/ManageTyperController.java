@@ -1,19 +1,24 @@
 package pl.most.typer.controller.typer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.most.typer.exceptions.ResourceAlreadyExistsException;
+import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.typer.TyperCompetition;
-import pl.most.typer.model.typer.TyperStanding;
 import pl.most.typer.model.typer.dto.TyperCompetitionDTO;
 import pl.most.typer.service.typer.TyperCompetitionService;
 import pl.most.typer.service.typer.TyperStandingService;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @Controller
-@RequestMapping (value = "/typer/manage")
+@RequestMapping (value = "/typer/manager")
 public class ManageTyperController {
 
     TyperCompetitionService typerCompetitionService;
@@ -47,17 +52,35 @@ public class ManageTyperController {
 
     @GetMapping
     private String manageTyper()  {
-        return "manageTyper";
+        return "typer/manageTyper";
     }
 
     @PostMapping
-    private String add(@ModelAttribute("typerCompetitionDTO") TyperCompetitionDTO typerCompetitionDTO) {
-        if (typerCompetitionDTO != null && typerCompetitionDTO.getName()!= null) {
-            TyperCompetition typerCompetition = new TyperCompetition(typerCompetitionDTO.getName());
-            typerCompetitionService.save(typerCompetition);
-            return "redirect:/typer/manage";
+    private String addTyperCompetition(@Valid @ModelAttribute("typerCompetitionDTO") TyperCompetitionDTO typerCompetitionDTO,
+                       BindingResult bindingResult) {
+        if (typerCompetitionDTO != null && !StringUtils.isEmpty(typerCompetitionDTO.getName())) {
+            try {
+                typerCompetitionService.save(typerCompetitionDTO.toTyperCompetition());
+            } catch (ResourceAlreadyExistsException ex) {
+                bindingResult.rejectValue(ex.getIssue(),"error."+ex.getIssue(),ex.getMessage());
+            }
+            if (bindingResult.hasErrors()) {
+                return "typer/manageTyper";
+            }
+            return "redirect:/typer/manager";
         }
-        return "/typer/manage";
+        return "typer/manageTyper";
+    }
+
+    @GetMapping(value = "/{id}/delete")
+    private String deleteTyperCompetition(@PathVariable("id") Integer id)  {
+        try {
+            typerCompetitionService.deleteById(id);
+        } catch (ResourceNotFoundException e) {
+            log.warn(e.getMessage());
+            //TODO przekazac informacje o bledzie do modelu??
+        }
+        return "redirect:/typer/manager";
     }
 
 

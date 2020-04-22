@@ -30,7 +30,7 @@
                         Dostępne ligi
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownLigi">
-                        <div th:each="competition: ${competitions}">
+                        <div th:each="competition: ${navCompetitions}">
                             <a class="dropdown-item" th:href="@{/competitions/{competitionId}/standings(competitionId=${competition.apiId})}" th:text="${competition.name}"></a>
                         </div>
                     </div>
@@ -40,11 +40,11 @@
                         Mini Ligi Typer
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownLigiTyper">
-                        <div th:each="typer: ${typerCompetitions}">
+                        <div th:each="typer: ${navTyperCompetitions}">
                             <a class="dropdown-item" th:href="@{/typer/{typerId}/standings(typerId=${typer.id})}" th:text="${typer.name}"></a>
                         </div>
                         <div class="divider"></div>
-                        <a class="dropdown-item" th:href="@{/typer/manage}" >Zarządzaj ligami</a>
+                        <a class="dropdown-item" th:href="@{/typer/manager}" >Zarządzaj ligami</a>
 
                     </div>
                 </li>

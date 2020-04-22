@@ -19,12 +19,12 @@ public class TyperLeagueStanding extends BaseModel {
     @ManyToOne
     private TyperStanding typerStanding;
 
-    @ColumnDefault("1")
-    private Integer position;
+
+    private Integer position=1;
 
     @ManyToOne
     private TyperPlayer typerPlayer;
-    @ColumnDefault("0")
-    private Integer points;
+
+    private Integer points=0;
 
 }

@@ -73,6 +73,8 @@ public class TyperApplication {
                         }
                 ).collect(Collectors.toList());
 
+                typerStanding.setTyperLeagueStandings(typerLeagueStandings);
+
 
                 typerPlayerRepository.saveAll(typerPlayers);
                 typerCompetitionRepository.save(typerCompetition);
