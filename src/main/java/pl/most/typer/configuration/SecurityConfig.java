@@ -48,6 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .failureUrl("/login-error")
                 //domyślna strona po zalogowaniu
                 .defaultSuccessUrl("/")
                 //Obsługa wylogowania

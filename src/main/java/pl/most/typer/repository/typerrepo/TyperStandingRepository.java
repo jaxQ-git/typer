@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface TyperStandingRepository extends JpaRepository<TyperStanding, Integer> {
 
-    List<TyperStanding> findAllByTyperCompetition(Integer Id);
+    List<TyperStanding> findAllByTyperCompetition(TyperCompetition Id);
 
     Optional<TyperStanding> findByTyperCompetitionAndRound(TyperCompetition typerCompetition, Integer round);
 }

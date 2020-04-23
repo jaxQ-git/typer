@@ -41,10 +41,10 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownLigiTyper">
                         <div th:each="typer: ${navTyperCompetitions}">
-                            <a class="dropdown-item" th:href="@{/typer/{typerId}/standings(typerId=${typer.id})}" th:text="${typer.name}"></a>
+                            <a class="dropdown-item" th:href="@{/typer/competitions/{typerId}/standings(typerId=${typer.id})}" th:text="${typer.name}"></a>
                         </div>
                         <div class="divider"></div>
-                        <a class="dropdown-item" th:href="@{/typer/manager}" >Zarządzaj ligami</a>
+                        <a class="dropdown-item" th:href="@{/typer/manager/competitions}" >Zarządzaj ligami</a>
 
                     </div>
                 </li>

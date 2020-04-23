@@ -44,10 +44,15 @@
                                     <label for="inputPassword">Password</label>
                                 </div>
 
-
+                                <div class="form-label-group">
+                                    <div  th:if="${loginError}" class="text text-danger">Błędna nazwa użytkownika lub hasło</div>
+                                </div>
                                 <button class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Sign in</button>
-                                <div class="text-center">
-                                    <a class="small" th:href="@{/register}">Zarejestruj się</a></div>
+                                <div class="form-label-group text-center">
+                                    <a th:href="@{/register}">Zarejestruj się</a> | <a href="#">Zapomniałeś hasła?</a>
+                                </div>
+
+
                             </form>
                         </div>
                     </div>

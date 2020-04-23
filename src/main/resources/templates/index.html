@@ -48,9 +48,6 @@
 
                     <div sec:authorize="isAnonymous()">
                         <form class="form-signin" th:action="@{/login}" method="post">
-                            <div th:if="${errorLogin}">
-                                Unable to login. Check your username and password.
-                            </div>
                             <div class="form-label-group">
                                 <input type="text" id="username" name="username" class="form-control"
                                        placeholder="Username"
@@ -77,7 +74,9 @@
 
             </div>
         </div>
-
+        <div class="display-6 text-center">
+            <div  th:if="${errorMessage != null}" th:text="${errorMessage}" class="text text-danger"></div>
+        </div>
         <div class="col-lg-4 mb-4">
             <div class="card h-100">
                 <h4 class="card-header">Card Title</h4>
