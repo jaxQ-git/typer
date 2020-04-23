@@ -60,7 +60,7 @@
                         <td  th:text="${#temporals.format(typerCompetition.lastUpdated, 'dd-MM-yyyy HH:mm')}"/>
                         <td >
                             <a class="btn btn-sm btn-primary"    th:href="@{/typer/manager/competitions/{id}/edit(id=${typerCompetition.id})}" >Edytuj </a>
-                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#deleteModal" th:data-id="${typerCompetition.id}"  >Usuń</button>
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#deleteModal" th:data-link="'/typer/manager/competitions/' + ${typerCompetition.id} + '/delete'"  >Usuń</button>
                             <a class="btn btn-sm btn-primary"  th:href="@{/typer/manager/competitions/{id}/count(id=${typerCompetition.id})}" >Przelicz</a>
                         </td>
                     </tr>

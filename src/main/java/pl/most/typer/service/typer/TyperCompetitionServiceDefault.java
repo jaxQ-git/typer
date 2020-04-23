@@ -1,6 +1,5 @@
 package pl.most.typer.service.typer;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -10,6 +9,7 @@ import pl.most.typer.exceptions.BadResourceException;
 import pl.most.typer.exceptions.ResourceAlreadyExistsException;
 import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.typer.TyperCompetition;
+import pl.most.typer.model.typer.TyperStanding;
 import pl.most.typer.repository.typerrepo.TyperCompetitionRepository;
 
 import java.util.ArrayList;
@@ -19,13 +19,16 @@ import java.util.Optional;
 @Service
 public class TyperCompetitionServiceDefault implements TyperCompetitionService {
 
-    TyperCompetitionRepository typerCompetitionRepository;
-    TyperStandingService typerStandingService;
+    private TyperCompetitionRepository typerCompetitionRepository;
+    private TyperStandingService typerStandingService;
+    private TyperLeagueStandingService typerLeagueStandingService;
+
 
     public TyperCompetitionServiceDefault(TyperCompetitionRepository typerCompetitionRepository,
-                                          TyperStandingService typerStandingService) {
+                                          TyperStandingService typerStandingService, TyperLeagueStandingService typerLeagueStandingService) {
         this.typerCompetitionRepository = typerCompetitionRepository;
         this.typerStandingService = typerStandingService;
+        this.typerLeagueStandingService = typerLeagueStandingService;
     }
 
     private boolean existsById(Integer id) {
@@ -61,11 +64,13 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
             if (typerCompetition.getId() != null && existsById(typerCompetition.getId())) {
                 ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperCompetition with id: " + typerCompetition.getId() +
                         " and name: " + typerCompetition.getName() + " already exists");
+                ex.setResource("Competition");
                 ex.setIssue("id");
                 throw ex;
             }
             else if (existsByName(typerCompetition.getName())){
-                ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperCompetition with name: " + typerCompetition.getName() + " already exists");
+                ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperCompetition with name: \"" + typerCompetition.getName() + "\" already exists");
+                ex.setResource("Competition");
                 ex.setIssue("name");
                 throw ex;
             }
@@ -74,7 +79,7 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
             return competition;
         }
         else {
-            BadResourceException exc = new BadResourceException("Failed to save typerCompetition");
+            BadResourceException exc = new BadResourceException("Failed to save TyperCompetition");
             throw exc;
         }
     }
@@ -85,12 +90,14 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
         if (!StringUtils.isEmpty(typerCompetition.getName())) {
             if (!existsById(typerCompetition.getId())) {
                 ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find TyperCompetition with id: " + typerCompetition.getId());
+                ex.setResource("Competition");
                 ex.setIssue("id");
                 throw ex;
             }
 
             else if (existsByName(typerCompetition.getName())){
-                ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperCompetition with name: " + typerCompetition.getName() + " already exists");
+                ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperCompetition with name: \"" + typerCompetition.getName() + "\" already exists");
+                ex.setResource("Competition");
                 ex.setIssue("name");
                 throw ex;
             }
@@ -114,6 +121,8 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
             throw ex;
         }
         else {
+            List<TyperStanding> typerStandings = typerStandingService.findAllByTyperCompetitionId(id);
+            typerStandingService.deleteAll(typerStandings);
             typerCompetitionRepository.deleteById(id);
         }
     }
@@ -121,5 +130,17 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
     @Override
     public Long count() {
         return typerCompetitionRepository.count();
+    }
+
+    @Override
+    public void deletePlayerFromCompetition(Integer competitionId, Integer playerId) {
+        if (!existsById(competitionId)) {
+            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find typerCompetition with id: " + competitionId);
+            ex.setIssue("id");
+            throw ex;
+        }
+        else {
+            typerLeagueStandingService.deleteAllByPlayerAndCompetition(playerId,competitionId);
+        }
     }
 }

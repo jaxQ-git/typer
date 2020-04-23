@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface TyperLeagueStandingService {
     
-    List<TyperLeagueStanding> getLeagueStandings();
 
     List<TyperLeagueStanding> findByTyperCompetitionId(Integer id);
+
+
+    void deleteAllByPlayerAndCompetition(Integer playerId, Integer competitionId);
 }

@@ -22,4 +22,6 @@ public interface TyperCompetitionService {
     void deleteById(Integer id) throws ResourceNotFoundException;
 
     Long count();
+
+    void deletePlayerFromCompetition(Integer competitionId, Integer playerId);
 }

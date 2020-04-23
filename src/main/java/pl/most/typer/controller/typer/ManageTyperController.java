@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping (value = "/typer/manager")
+@RequestMapping(value = "/typer/manager")
 public class ManageTyperController {
 
     private final String ERROR_ATTR = "errorMessage";
@@ -36,7 +36,9 @@ public class ManageTyperController {
     }
 
     @ModelAttribute("typerCompetitionDTO")
-    public TyperCompetitionDTO getTyperCompetitionDTO(){ return new TyperCompetitionDTO();}
+    public TyperCompetitionDTO getTyperCompetitionDTO() {
+        return new TyperCompetitionDTO();
+    }
 
     @ModelAttribute
     public void getAll(Model model, @RequestParam(value = "page", defaultValue = "1") int pageNumber) {
@@ -53,20 +55,19 @@ public class ManageTyperController {
     }
 
 
-
     @GetMapping("/competitions")
-    private String manageTyper(Model model)  {
+    private String manageTyper(Model model) {
         return "typer/manageTyper";
     }
 
     @PostMapping("/competitions")
     private String addTyperCompetition(@Valid @ModelAttribute("typerCompetitionDTO") TyperCompetitionDTO typerCompetitionDTO,
-                       BindingResult bindingResult) {
+                                       BindingResult bindingResult) {
         if (typerCompetitionDTO != null && !StringUtils.isEmpty(typerCompetitionDTO.getName())) {
             try {
                 typerCompetitionService.save(typerCompetitionDTO.toTyperCompetition());
             } catch (ResourceException ex) {
-                bindingResult.rejectValue(ex.getIssue(),"error."+ex.getIssue(),ex.getMessage());
+                bindingResult.rejectValue(ex.getIssue(), "error." + ex.getIssue(), ex.getMessage());
             }
             if (bindingResult.hasErrors()) {
                 return "typer/manageTyper";
@@ -77,7 +78,7 @@ public class ManageTyperController {
     }
 
     @GetMapping(value = "competitions/{id}/delete")
-    private String deleteTyperCompetition(@PathVariable("id") Integer id, Model model)  {
+    private String deleteTyperCompetition(@PathVariable("id") Integer id, Model model) {
         try {
             typerCompetitionService.deleteById(id);
         } catch (ResourceException e) {
@@ -90,14 +91,14 @@ public class ManageTyperController {
     }
 
     @GetMapping(value = "competitions/{id}/count")
-    private String updateTyperCompetition(@PathVariable("id") Integer id)  {
+    private String updateTyperCompetition(@PathVariable("id") Integer id) {
         //TODO implementacja przeliczenia punktów z kolejki
         return "redirect:/typer/manager/competitions";
     }
 
     @GetMapping(value = "competitions/{id}/edit")
     private String editTyperCompetition(@PathVariable("id") Integer id,
-                                        Model model)  {
+                                        Model model) {
         TyperCompetition typerCompetition = null;
         try {
             typerCompetition = typerCompetitionService.findById(id);
@@ -119,24 +120,40 @@ public class ManageTyperController {
         return "typer/typerCompetitionEdit";
     }
 
+
     @PostMapping(value = "competitions/{id}/edit")
     private String updateTyperCompetition(@PathVariable("id") Integer id,
-                                        @Valid @ModelAttribute("typerCompetition") TyperCompetition typerCompetition,
+                                          @Valid @ModelAttribute("typerCompetition") TyperCompetition typerCompetition,
                                           BindingResult bindingResult,
                                           @ModelAttribute("typerStanding") TyperStanding typerStanding,
-                                        Model model)  {
+                                          Model model) {
         try {
             typerCompetition.setId(id);
             typerCompetitionService.update(typerCompetition);
-            return "redirect:/typer/manager/competitions/"+id+"/edit";
+            return "redirect:/typer/manager/competitions/" + id + "/edit";
         } catch (ResourceException ex) {
             log.warn(ex.getMessage());
             model.addAttribute(ERROR_ATTR, ERROR_MSG + "edycji " + ex.getResource());
-            bindingResult.rejectValue(ex.getIssue(),"error."+ex.getIssue(),ex.getMessage());
+            bindingResult.rejectValue(ex.getIssue(), "error." + ex.getIssue(), ex.getMessage());
+            bindingResult.rejectValue(ex.getIssue(), "error." + ex.getIssue(), ex.getMessage());
             return "typer/typerCompetitionEdit";
         }
     }
-
+    //FIXME nie usuwa gracza z ligi. why???
+    @GetMapping(value = "competitions/{id}/players/{playerId}/delete")
+    private String deleteTyperCompetitionPlayer(@PathVariable("id") Integer id,
+                                                @PathVariable("playerId") Integer playerId,
+                                                Model model) {
+        try {
+            typerCompetitionService.deletePlayerFromCompetition(id, playerId);
+        } catch (ResourceException e) {
+            log.warn(e.getMessage());
+            String error = ERROR_MSG + "usunięcie elementu";
+            model.addAttribute("errorMessage", true);
+            return "/typer/manager/competitions/" + id + "/edit";
+        }
+        return "redirect:/typer/manager/competitions/" + id + "/edit";
+    }
 
 
 }

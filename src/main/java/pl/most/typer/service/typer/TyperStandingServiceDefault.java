@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 public class TyperStandingServiceDefault implements TyperStandingService {
 
-    TyperStandingRepository typerStandingRepository;
+    private TyperStandingRepository typerStandingRepository;
 
     public TyperStandingServiceDefault(TyperStandingRepository typerStandingRepository) {
         this.typerStandingRepository = typerStandingRepository;
@@ -23,7 +23,7 @@ public class TyperStandingServiceDefault implements TyperStandingService {
     public List<TyperStanding> findAllByTyperCompetitionId(Integer id) {
         TyperCompetition typerCompetition = new TyperCompetition();
         typerCompetition.setId(id);
-        return typerStandingRepository.findAllByTyperCompetition(id);
+        return typerStandingRepository.findAllByTyperCompetition(typerCompetition);
     }
 
     @Override
@@ -47,6 +47,11 @@ public class TyperStandingServiceDefault implements TyperStandingService {
         TyperStanding typerStanding = new TyperStanding();
         typerStanding.setTyperCompetition(typerCompetition);
         typerStandingRepository.save(typerStanding);
+    }
+
+    @Override
+    public void deleteAll(List<TyperStanding> typerStandings) {
+        typerStandingRepository.deleteAll(typerStandings);
     }
 
 
