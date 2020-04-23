@@ -30,14 +30,14 @@
                 </div>
                 <div class="col">
                     <h3 class="display-4" style="text-align: center" th:text="${competitionName}"></h3>
-                    <div th:each="match: ${matchesByStage}">
+                    <div th:each="stage: ${stages}">
 
                         <table class="table table-striped table-sm">
                             <thead>
                             <tr>
                                 <th style="text-align: center; font-size: 30px" colspan="4" scope="col">
-                                    <a th:text="${match.key}"
-                                       th:href="@{/competitions/{id}/matches(id=${apiId},stage=${match.key})}"></a>
+                                    <a th:text="${stage}"
+                                       th:href="@{/competitions/{id}/matches(id=${apiId},stage=${stage})}"></a>
                                 </th>
                                 <!--                        <th style="text-align: center; font-size: 30px" colspan="4" scope="col"-->
                                 <!--                            th:text="${match.group}">-->

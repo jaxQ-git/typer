@@ -41,7 +41,7 @@
                     <thead>
                     <tr>
                         <th style="text-align: center; font-size: 30px" colspan="8" scope="col">
-                            <a class="btn btn-default float-right" th:href="@{/competitions/{id}/stages(id=${apiId})}"
+                            <a class="btn btn-default float-right" th:href="@{/competitions/{id}/matches(id=${apiId})}"
                                role="button">Mecze</a>
                             <a th:text="${standing.groupName}"
                                th:href="@{/competitions/{id}/standings(id=${apiId},group=${standing.groupName})}"></a>

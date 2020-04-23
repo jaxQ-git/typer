@@ -15,6 +15,8 @@ public interface MatchesService {
 
     List<Match> findAllByCompetition(Competition competition);
 
+    List<Match> findAllByCompetitionAndStage(Competition competition, String stage);
+
     Optional<Match> findFirstByCompetition(Competition competiton);
 
 

@@ -64,6 +64,13 @@ body {
   background-color: #e5e5e5;
 }
 
+.img-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 45px;
+  height: 45px;
+}
 
 
 

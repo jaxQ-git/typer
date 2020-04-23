@@ -38,8 +38,7 @@
                         <thead>
                         <tr>
                             <th:block th:if="${match.key != 'absentGroup'}">
-                                <th style="text-align: center; font-size: 30px"
-                                    colspan="4" scope="col" th:text="${match.key}"></th>
+                                <th style="text-align: center; font-size: 30px" colspan="6" scope="col" th:text="${match.key}"></th>
                             </th:block>
                         </tr>
                         <th scope="col">Data</th>
@@ -53,16 +52,14 @@
                         <tbody id="matchScore">
                         <tr th:each="mapValue : ${match.value}">
                             <td th:text="${#temporals.format(mapValue.utcDate, 'dd-MM-yyyy HH:mm')}"></td>
-                            <td th:if="${mapValue.homeTeam.crestUrl != null}">
-                                <img th:src="${mapValue.homeTeam.crestUrl}" width="35"
-                                     th:alt="${mapValue.homeTeam.name}"/>
+                            <td>
+                                <img class="img-center" th:src="${#objects.nullSafe(mapValue.homeTeam.crestUrl, '')}"/>
                             </td>
                             <td th:text="${mapValue.homeTeam.name}"></td>
                             <td th:text="${#objects.nullSafe(mapValue.score.fullTime.homeTeam, '')} + '-' + ${#objects.nullSafe(mapValue.score.fullTime.awayTeam, '')}"></td>
                             <td th:text="${mapValue.awayTeam.name}"></td>
-                            <td th:if="${mapValue.awayTeam.crestUrl != null}">
-                                <img th:src="${mapValue.awayTeam.crestUrl}" width="35"
-                                     th:alt="${mapValue.awayTeam.name}"/>
+                            <td>
+                                <img class="img-center" th:src="${#objects.nullSafe(mapValue.awayTeam.crestUrl, '')}"/>
                             </td>
                         </tr>
                         </tbody>

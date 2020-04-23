@@ -14,5 +14,7 @@ public interface MatchesRepository extends JpaRepository<Match, Integer> {
     List<Match> findAllByCompetitionOrderByUtcDateDesc(Competition competitionId);
 
     Optional<Match> findFirstByCompetition(Competition competiton);
+
+    List<Match> findAllByCompetitionAndStage(Competition competition, String stage);
 }
 

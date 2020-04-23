@@ -15,6 +15,7 @@ import pl.most.typer.service.footballservice.matches.MatchesService;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -29,55 +30,59 @@ public class MatchController {
         this.matchesService = matchesService;
     }
 
-    @GetMapping(value = "/{id}/stages/update")
+    @GetMapping(value = "/{id}/matches/update")
     public String updateMatchInfo(@PathVariable(value = "id") Integer id) {
-        Optional<Match> optionalMatch = getFirstMatch(id);
+        Optional<Match> optionalMatch = matchesService.findFirstByCompetition(new Competition(id, null));
         if (optionalMatch.isPresent()) {
-            return "redirect:/competitions/" + id + "/stages";
+            return "redirect:/competitions/" + id + "/matches";
         }
         HttpStatus status = matchesService.getMatchInfoFromExternalApi(id);
         if (status.is2xxSuccessful()) {
-            return "redirect:/competitions/" + id + "/stages";
+            return "redirect:/competitions/" + id + "/matches";
         } else {
             return "redirect:/";
         }
-    }
-
-    @GetMapping(value = "/{id}/stages")
-    private String getStages(@PathVariable("id") Integer id,
-                             @RequestParam(name = "stage", required = false) String stage,
-                             Model model) {
-        Optional<Competition> optionalCompetition = getCompetition(id);
-        Optional<Match> optionalMatch = getFirstMatch(id);
-        if (checkIfCompetitionMatchExist(optionalCompetition, optionalMatch)) {
-            return "redirect:/competitions/" + id + "/stages/update";
-        }
-
-        List<Match> matchByCompetition = getAllMatches(optionalCompetition);
-        matchByCompetition = filterMatchesByStage(stage, matchByCompetition);
-
-        LinkedHashMap<String, List<Match>> matchesByStage = getStageLinkedHashMap(matchByCompetition);
-
-        model.addAttribute("apiId", id);
-        model.addAttribute("competitionName", competitionService.getCompetitionName(id));
-        model.addAttribute("matchesByStage", matchesByStage);
-        model.addAttribute("matches", matchByCompetition);
-        return "stages";
     }
 
     @GetMapping(value = "/{id}/matches")
     private String getMatchesByStages(@PathVariable("id") Integer id,
                                       @RequestParam(name = "stage", required = false) String stage,
                                       Model model) {
-        Optional<Competition> optionalCompetition = getCompetition(id);
-        List<Match> matchByCompetition = getAllMatches(optionalCompetition);
+        Optional<Competition> optionalCompetition = competitionService.getCompetition(id);
+        Optional<Match> optionalMatch = matchesService.findFirstByCompetition(new Competition(id, null));
 
-        matchByCompetition = filterMatchesByStage(stage, matchByCompetition);
+        if (checkIfCompetitionMatchExist(optionalCompetition, optionalMatch)) {
+            return "redirect:/competitions/" + id + "/matches/update";
+        }
+
+        List<Match> matchByCompetition;
+
+        if (stage != null) {
+            matchByCompetition = matchesService
+                    .findAllByCompetitionAndStage(optionalCompetition.get(), stage);
+        } else {
+            matchByCompetition = matchesService
+                    .findAllByCompetition(optionalCompetition.get());
+
+            LinkedHashMap<String, List<Match>> matchesByStage = getStageLinkedHashMap(matchByCompetition);
+            Set<String> stages = matchesByStage.keySet();
+            if (stages.size() == 1) {
+                return "redirect:/competitions/" + id + "/matches?stage=" + stages.stream().findFirst().get();
+            }
+
+            model.addAttribute("apiId", id);
+            model.addAttribute("competitionName", competitionService.getCompetitionName(id));
+            model.addAttribute("stages", stages);
+
+            return "stages";
+        }
+
         LinkedHashMap<String, List<Match>> matchesByGroup = getGroupLinkedHashMap(matchByCompetition);
 
         model.addAttribute("competitionName", competitionService.getCompetitionName(id));
         model.addAttribute("matchesByGroup", matchesByGroup);
         model.addAttribute("stageName", stage);
+
         return "matches";
     }
 
@@ -93,41 +98,11 @@ public class MatchController {
                 .collect(Collectors.groupingBy(match -> match.getGroup() == null ? "absentGroup" : match.getGroup(), LinkedHashMap::new, Collectors.toList()));
     }
 
-    private List<Match> filterMatchesByStage(@RequestParam(name = "stage", required = false) String stage, List<Match> matchByCompetition) {
-        if (stage != null) {
-            matchByCompetition = matchByCompetition.stream()
-                    .filter(match -> match.getStage().equals(stage))
-                    .collect(Collectors.toList());
-        }
-        return matchByCompetition;
-    }
-
-    private List<Match> filterMatchesByGroup(String group, List<Match> matchByCompetition) {
-        if (group != null) {
-            matchByCompetition = matchByCompetition.stream()
-                    .filter(match -> match.getGroup().equals(group))
-                    .collect(Collectors.toList());
-        }
-        return matchByCompetition;
-    }
-
-    private Optional<Match> getFirstMatch(@PathVariable("id") Integer id) {
-        return matchesService.findFirstByCompetition(new Competition(id, null));
-    }
-
     private boolean checkIfCompetitionMatchExist(Optional<Competition> optionalCompetition, Optional<Match> optionalMatch) {
         if (optionalCompetition.isEmpty() || optionalMatch.isEmpty()) {
             return true;
         }
         return false;
-    }
-
-    private Optional<Competition> getCompetition(@PathVariable("id") Integer id) {
-        return competitionService.getCompetition(id);
-    }
-
-    private List<Match> getAllMatches(Optional<Competition> optionalCompetition) {
-        return matchesService.findAllByCompetition(optionalCompetition.get());
     }
 
 }
