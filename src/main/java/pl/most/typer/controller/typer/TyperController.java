@@ -1,5 +1,6 @@
 package pl.most.typer.controller.typer;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,13 @@ import pl.most.typer.service.typer.TyperStandingService;
 
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Controller
-@RequestMapping(value = "/typer")
+@RequestMapping(value = "/typer/competitions")
 public class TyperController {
+
+    private final String ERROR_ATTR = "errorMessage";
+    private final String ERROR_MSG = "Wystąpił błąd z obsługą: ";
 
     TyperCompetitionService typerCompetitionService;
     TyperStandingService typerStandingService;
@@ -32,8 +36,15 @@ public class TyperController {
     @GetMapping(value = "/{id}/standings")
     private String getStandings(
                                 @PathVariable("id") Integer id,
-                                Model model) throws ResourceNotFoundException {
-        TyperCompetition typerCompetition = typerCompetitionService.findById(id);
+                                Model model)  {
+        TyperCompetition typerCompetition = null;
+        try {
+            typerCompetition = typerCompetitionService.findById(id);
+        } catch (ResourceNotFoundException e) {
+            log.warn(e.getMessage());
+            model.addAttribute(ERROR_ATTR,ERROR_MSG + "nie znaleziono ligi");
+            return "/";
+        }
 
         TyperStanding typerStanding = typerStandingService
                 .findLatestStandingByTyperCompetition(typerCompetition);

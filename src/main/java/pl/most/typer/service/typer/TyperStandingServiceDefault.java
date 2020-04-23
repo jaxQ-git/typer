@@ -36,6 +36,7 @@ public class TyperStandingServiceDefault implements TyperStandingService {
         Optional<TyperStanding> optionalTyperStanding = typerStandingRepository.findByTyperCompetitionAndRound(typerCompetition, round);
         if (optionalTyperStanding.isEmpty()) {
             ResourceNotFoundException ex = new ResourceNotFoundException();
+            ex.setResource("standing");
             throw ex;
         }
         return optionalTyperStanding.get();

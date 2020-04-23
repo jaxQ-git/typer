@@ -39,7 +39,11 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
     @Override
     public TyperCompetition findById(Integer id) throws ResourceNotFoundException {
         Optional<TyperCompetition> typerCompetitionOptional = typerCompetitionRepository.findById(id);
-        return typerCompetitionOptional.orElseThrow(() -> new ResourceNotFoundException("Cannot find TyperCompetition with id: " + id));
+        return typerCompetitionOptional.orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find TyperCompetition with id: " + id);
+            ex.setResource("competition");
+            return ex;
+        });
     }
 
     @Override
@@ -80,9 +84,21 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
             throws BadResourceException, ResourceNotFoundException {
         if (!StringUtils.isEmpty(typerCompetition.getName())) {
             if (!existsById(typerCompetition.getId())) {
-                throw new ResourceNotFoundException("Cannot find TyperCompetition with id: " + typerCompetition.getId());
+                ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find TyperCompetition with id: " + typerCompetition.getId());
+                ex.setIssue("id");
+                throw ex;
             }
-            typerCompetitionRepository.save(typerCompetition);
+
+            else if (existsByName(typerCompetition.getName())){
+                ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperCompetition with name: " + typerCompetition.getName() + " already exists");
+                ex.setIssue("name");
+                throw ex;
+            }
+            TyperCompetition typerCompetitionDB = typerCompetitionRepository.findById(typerCompetition.getId()).get();
+            typerCompetitionDB.setName(typerCompetition.getName());
+            typerCompetitionDB.setCurrentRound(typerCompetition.getCurrentRound());
+            typerCompetitionDB.setLastUpdated(typerCompetition.getLastUpdated());
+            typerCompetitionRepository.save(typerCompetitionDB);
         }
         else {
             BadResourceException exc = new BadResourceException("Failed to save typerCompetition");

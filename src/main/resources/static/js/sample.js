@@ -5,6 +5,15 @@ $('#deleteModal').on('show.bs.modal', function (event) {
     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     var modal = $(this)
-    modal.find('#deleteLink').attr('href','/typer/manager/' + id + '/delete')
+    modal.find('#deleteLink').attr('href','/typer/manager/competitions' + id + '/delete')
     modal.find('#contentModal').text('Czy na pewno chcesz usunąć Ligę o id=' + id + '?')
 })
+
+$(document).ready(function(){
+    $("#mySearch").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#searchTable tr").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+});
