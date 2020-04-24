@@ -42,7 +42,7 @@
                         <tbody id="matchScore">
                         <div th:each="mapValue, stat : ${match.value}" th:if="${stat.even}">
                             <div class="row">
-                                <div class="col-lg-6 mb-4" th:with="leftMapValue=${match.value.get(stat.index - 1)}">
+                                <div class="col-lg-6 mb-4" th:with="leftMapValue=${match.value.get(stat.index)}">
                                     <div class="card h-100">
                                         <h4 class="card-header" style="text-align: center;">
                                             <span th:text="${#temporals.format(leftMapValue.utcDate, 'dd-MM-yyyy HH:mm')}"></span>
@@ -55,8 +55,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 mb-4" th:if="${stat.index &lt; match.value.size()}"
-                                     th:with="rightMapValue=${match.value.get(stat.index)}">
+                                <div class="col-lg-6 mb-4" th:if="${stat.index + 1 &lt; match.value.size()}"
+                                     th:with="rightMapValue=${match.value.get(stat.index + 1)}">
                                     <div class="card h-100">
                                         <h4 class="card-header" style="text-align: center;">
                                             <span th:text="${#temporals.format(rightMapValue.utcDate, 'dd-MM-yyyy HH:mm')}"></span>
