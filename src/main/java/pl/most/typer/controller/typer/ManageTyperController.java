@@ -6,16 +6,20 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.most.typer.exceptions.ResourceAlreadyExistsException;
 import pl.most.typer.exceptions.ResourceException;
-import pl.most.typer.exceptions.ResourceNotFoundException;
+import pl.most.typer.model.account.PlayerDTO;
 import pl.most.typer.model.typer.TyperCompetition;
+import pl.most.typer.model.typer.TyperLeagueStanding;
+import pl.most.typer.model.typer.TyperPlayer;
 import pl.most.typer.model.typer.TyperStanding;
 import pl.most.typer.model.typer.dto.TyperCompetitionDTO;
+import pl.most.typer.service.accountservice.CustomUserDetailsService;
 import pl.most.typer.service.typer.TyperCompetitionService;
+import pl.most.typer.service.typer.TyperPlayerService;
 import pl.most.typer.service.typer.TyperStandingService;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -25,14 +29,18 @@ public class ManageTyperController {
 
     private final String ERROR_ATTR = "errorMessage";
     private final String ERROR_MSG = "Wystąpił błąd z obsługą: ";
-    TyperCompetitionService typerCompetitionService;
-    TyperStandingService typerStandingService;
+    private TyperCompetitionService typerCompetitionService;
+    private TyperStandingService typerStandingService;
+    private TyperPlayerService typerPlayerService;
+    private CustomUserDetailsService userDetailsService;
 
     private final int ROW_PER_PAGE = 5;
 
-    public ManageTyperController(TyperCompetitionService typerCompetitionService, TyperStandingService typerStandingService) {
+    public ManageTyperController(TyperCompetitionService typerCompetitionService, TyperStandingService typerStandingService, CustomUserDetailsService userDetailsService, TyperPlayerService typerPlayerService, CustomUserDetailsService userDetailsService1) {
         this.typerCompetitionService = typerCompetitionService;
         this.typerStandingService = typerStandingService;
+        this.typerPlayerService = typerPlayerService;
+        this.userDetailsService = userDetailsService1;
     }
 
     @ModelAttribute("typerCompetitionDTO")
@@ -115,8 +123,11 @@ public class ManageTyperController {
             log.warn(ex.getMessage());
             model.addAttribute(ERROR_ATTR, ERROR_MSG + "nie znaleziono " + ex.getResource());
         }
+        List<PlayerDTO> playerDTOS = typerPlayerService.findAll();
         model.addAttribute("typerCompetition", typerCompetition);
         model.addAttribute("typerStanding", typerStanding);
+        model.addAttribute("players", playerDTOS);
+        model.addAttribute("playerDTO", new PlayerDTO());
         return "typer/typerCompetitionEdit";
     }
 
@@ -135,25 +146,44 @@ public class ManageTyperController {
             log.warn(ex.getMessage());
             model.addAttribute(ERROR_ATTR, ERROR_MSG + "edycji " + ex.getResource());
             bindingResult.rejectValue(ex.getIssue(), "error." + ex.getIssue(), ex.getMessage());
-            bindingResult.rejectValue(ex.getIssue(), "error." + ex.getIssue(), ex.getMessage());
             return "typer/typerCompetitionEdit";
         }
     }
-    //FIXME nie usuwa gracza z ligi. why???
+
     @GetMapping(value = "competitions/{id}/players/{playerId}/delete")
-    private String deleteTyperCompetitionPlayer(@PathVariable("id") Integer id,
+    private String deleteTyperCompetitionPlayer(@PathVariable("id") Integer competitionId,
                                                 @PathVariable("playerId") Integer playerId,
                                                 Model model) {
         try {
-            typerCompetitionService.deletePlayerFromCompetition(id, playerId);
+            typerCompetitionService.deletePlayerFromCompetition(competitionId, playerId);
         } catch (ResourceException e) {
             log.warn(e.getMessage());
             String error = ERROR_MSG + "usunięcie elementu";
             model.addAttribute("errorMessage", true);
-            return "/typer/manager/competitions/" + id + "/edit";
+            return "/typer/manager/competitions/" + competitionId + "/edit";
         }
-        return "redirect:/typer/manager/competitions/" + id + "/edit";
+        return "redirect:/typer/manager/competitions/" + competitionId + "/edit";
     }
+    @PostMapping("/competitions/{id}/players/add")
+    private String addPlayerToCompetition(@Valid @ModelAttribute("userDTO") PlayerDTO playerDTO,
+                                          @PathVariable("id") Integer competitionId,
+                                       BindingResult bindingResult) {
+        if (playerDTO != null) {
+            try {
+                TyperPlayer typerPlayer = typerPlayerService.findById(playerDTO.getId());
+                TyperCompetition typerCompetition = typerCompetitionService.findById(competitionId);
+                TyperStanding standing = typerStandingService.findLatestStandingByTyperCompetition(typerCompetition);
+                TyperLeagueStanding typerLeagueStanding = new TyperLeagueStanding();
+                typerLeagueStanding.setTyperPlayer(typerPlayer);
+                standing.addTyperLeagueStanding(typerLeagueStanding);
+                typerStandingService.saveAll(Arrays.asList(standing));
 
+            } catch (ResourceException ex) {
+                bindingResult.rejectValue(ex.getIssue(), "error." + ex.getIssue(), ex.getMessage());
+            }
+            return "redirect:/typer/manager/competitions/" + competitionId + "/edit";
+        }
+        return "typer/typerCompetitionEdit";
+    }
 
 }

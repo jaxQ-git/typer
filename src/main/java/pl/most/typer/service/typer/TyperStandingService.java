@@ -17,4 +17,6 @@ public interface TyperStandingService {
     void saveDefaultStanding(TyperCompetition typerCompetition);
 
     void deleteAll(List<TyperStanding> typerStandings);
+
+    void saveAll(List<TyperStanding> standings);
 }

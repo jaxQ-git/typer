@@ -25,11 +25,7 @@
 <nav th:replace="fragments/navigation :: navigation"/>
 
 <div style="margin: 10px" class="container-fluid">
-    <div class="container">
-        <div class="display-6 text-center">
-            <div th:if="${errorMessage != null}" th:text="${errorMessage}" class="text text-danger"></div>
-        </div>
-    </div>
+
     <div class="row">
         <div class="col-sm-2">
 
@@ -37,18 +33,45 @@
         <div class="col">
 
             <div class="container-fluid">
-                <div class="text-center">
+                <h1 style="padding: 10px; border-radius: 10px" class="my-4 text-center bg-secondary text-white shadow"
+                    th:text="'Edycja ligi: ' + ${typerCompetition.name}"></h1>
+                <div class="container">
+                    <div class="display-6 text-center">
+                        <div th:if="${errorMessage != null}" th:text="${errorMessage}" class="text text-danger"></div>
+                    </div>
+                </div>
+                <div>
                     <form method="POST" th:action="@{/typer/manager/competitions/{id}/edit(id=${typerCompetition.id})}"
                           th:object="${typerCompetition}" id="createTComp">
                         <div class="form-group row">
                             <label for="name" class="col-sm-3 col-form-label">Nazwa ligi</label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-9">
                                 <input class="form-control" type="text" id="name" th:field="*{name}"/>
                                 <div class="text text-danger" th:if="${#fields.hasErrors('name')}"
                                      th:errors="*{name}"></div>
                             </div>
-                            <div class="col-sm-3">
-                                <button class="btn btn-secondary" type="submit">Zmien nazwe</button>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-3 col-form-label">Obecna runda</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" th:disabled type="text" id="currentRound"
+                                       th:field="*{currentRound}"/>
+                                <div class="text text-danger" th:if="${#fields.hasErrors('currentRound')}"
+                                     th:errors="*{currentRound}"></div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-sm-3 col-form-label">Ostatnia aktualizacja</label>
+                            <div class="col-sm-9">
+                                <input class="form-control" th:disabled type="text" id="lastUpdated"
+                                       th:field="*{lastUpdated}"/>
+                                <div class="text text-danger" th:if="${#fields.hasErrors('lastUpdated')}"
+                                     th:errors="*{lastUpdated}"></div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px" class="form-group row">
+                            <div class="col-sm-12">
+                                <button class="btn btn-secondary btn-block" type="submit">Zapisz zmiany</button>
                             </div>
                         </div>
                     </form>
@@ -73,22 +96,43 @@
                         <td th:text="${typerLStanding?.typerPlayer?.user?.username}"/>
                         <td th:text="${typerLStanding?.points}"/>
                         <td>
-                            <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#deleteModal" th:data-link="'/typer/manager/competitions/' + ${typerCompetition.id} + '/players/' + ${typerLStanding.id} +  '/delete'"  >Usuń</button>
+                            <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal"
+                                    data-target="#deleteModal"
+                                    th:data-link="'/typer/manager/competitions/' + ${typerCompetition.id} + '/players/' + ${typerLStanding.typerPlayer.id} +  '/delete'">
+                                Usuń
+                            </button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
+            <div>
+                <form method="POST" th:action="@{'/typer/manager/competitions/' + ${typerCompetition.id} + '/players/add'}"
+                      th:object="${playerDTO}" id="addPlayer">
+                    <div class="form-group row">
+
+                        <label class="col-sm-3 col-form-label" for="player">Dodaj gracza</label>
+                        <div class="col-sm-7">
+                            <select class="custom-select" th:field="*{id}" id="player">
+                                <option th:each="player : ${players}" th:value="${player.id} "
+                                        th:text="${player.username}"></option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-secondary" type="submit">Dodaj</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="col-sm-2">
 
         </div>
     </div>
-
-
 </div>
 <!-- Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalCentre" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="ModalCentre"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -101,11 +145,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
-                <a type="button" id="deleteLink"  class="btn btn-primary">Potwierdź</a>
+                <a type="button" id="deleteLink" class="btn btn-primary">Potwierdź</a>
             </div>
         </div>
     </div>
+
 </div>
+
 
 <!-- Footer -->
 <footer th:replace="fragments/footer :: footer"/>
@@ -114,6 +160,7 @@
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/js/sample.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </body>
 

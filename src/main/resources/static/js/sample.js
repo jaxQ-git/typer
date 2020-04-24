@@ -18,3 +18,9 @@ $(document).ready(function(){
         });
     });
 });
+
+$(document).ready(function () {
+    $('select').selectize({
+        sortField: 'text'
+    });
+});

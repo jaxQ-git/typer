@@ -16,6 +16,7 @@ import java.util.Objects;
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data
+@Table(name="matches")
 public class Match {
 
     @Id

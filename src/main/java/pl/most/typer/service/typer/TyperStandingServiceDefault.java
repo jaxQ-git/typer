@@ -54,6 +54,11 @@ public class TyperStandingServiceDefault implements TyperStandingService {
         typerStandingRepository.deleteAll(typerStandings);
     }
 
+    @Override
+    public void saveAll(List<TyperStanding> standings) {
+        typerStandingRepository.saveAll(standings);
+    }
+
 
 }
 

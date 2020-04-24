@@ -25,6 +25,16 @@ public class TyperStanding extends BaseModel {
     private Integer round=0;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "typerStanding",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "typerStanding",cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<TyperLeagueStanding> typerLeagueStandings = new ArrayList<>();
+
+    public void addTyperLeagueStanding(TyperLeagueStanding typerLeagueStanding){
+        typerLeagueStandings.add(typerLeagueStanding);
+        typerLeagueStanding.setTyperStanding(this);
+    }
+
+    public void removeTyperLeagueStanding(TyperLeagueStanding typerLeagueStanding) {
+        typerLeagueStandings.remove(typerLeagueStanding);
+        typerLeagueStanding.setTyperStanding(null);
+    }
 }
