@@ -1,7 +1,13 @@
 package pl.most.typer.service.typer;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import pl.most.typer.exceptions.BadResourceException;
+import pl.most.typer.exceptions.ResourceAlreadyExistsException;
+import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.account.PlayerDTO;
+import pl.most.typer.model.account.User;
+import pl.most.typer.model.typer.TyperCompetition;
 import pl.most.typer.model.typer.TyperPlayer;
 import pl.most.typer.repository.typerrepo.TyperPlayerRepository;
 
@@ -27,11 +33,65 @@ public class TyperPlayerServiceDefault implements TyperPlayerService {
 
     @Override
     public TyperPlayer findById(Integer id) {
-        Optional<TyperPlayer> typerPlayer = typerPlayerRepository.findById(id);
-        if (typerPlayer.isPresent()) {
-            return typerPlayer.get();
+        Optional<TyperPlayer> typerPlayerOptional = typerPlayerRepository.findById(id);
+        return typerPlayerOptional.orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find TyperPlayer with id: " + id);
+            ex.setResource("player");
+            return ex;
+        });
+    }
+
+    @Override
+    public TyperPlayer save(TyperPlayer typerPlayer) throws BadResourceException, ResourceAlreadyExistsException {
+        if ((typerPlayer.getUser() != null)) {
+            if (existsByUser(typerPlayer.getUser())) {
+                ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperPlayer already exists");
+                ex.setResource("TyperPlayer");
+                ex.setIssue("user");
+                throw ex;
+            }
+            return typerPlayerRepository.save(typerPlayer);
+        } else {
+            BadResourceException exc = new BadResourceException("Failed to save TyperPlayer");
+            throw exc;
         }
-        //TODO throw exception istead of return null
-        return null;
+    }
+
+    @Override
+    public TyperPlayer update(TyperPlayer typerPlayer) {
+
+        if ((typerPlayer.getUser() != null) && typerPlayer.getId()!=null && existsById(typerPlayer)) {
+            //Jeżeli jest już w bazie inny obiekt TyperPlayer,
+            // który ma takiego usera to nie można zdublowac.
+            // Jeżeli to ten sam TyperPlayer to robimy update
+            if (!findByUser(typerPlayer.getUser()).equals(findById(typerPlayer.getId()))) {
+                ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperPlayer already exists");
+                ex.setResource("TyperPlayer");
+                ex.setIssue("user");
+                throw ex;
+            }
+            return typerPlayerRepository.save(typerPlayer);
+        } else {
+            BadResourceException exc = new BadResourceException("Failed to save TyperPlayer");
+            throw exc;
+        }
+    }
+
+    private boolean existsById(TyperPlayer typerPlayer) {
+        return typerPlayerRepository.existsById(typerPlayer.getId());
+    }
+
+    private boolean existsByUser(User user) {
+        return typerPlayerRepository.existsByUser(user);
+    }
+
+    private TyperPlayer findByUser(User user) {
+        Optional<TyperPlayer> typerPlayerOptional = typerPlayerRepository.findByUser(user);
+        return typerPlayerOptional.orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find TyperPlayer with user: " + user.getUsername());
+            ex.setResource("player");
+            return ex;
+        });
     }
 }
+

@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.most.typer.exceptions.ResourceException;
 import pl.most.typer.model.account.PlayerDTO;
 import pl.most.typer.model.typer.TyperCompetition;
-import pl.most.typer.model.typer.TyperLeagueStanding;
-import pl.most.typer.model.typer.TyperPlayer;
-import pl.most.typer.model.typer.TyperStanding;
 import pl.most.typer.model.typer.dto.TyperCompetitionDTO;
 import pl.most.typer.service.accountservice.CustomUserDetailsService;
 import pl.most.typer.service.typer.TyperCompetitionService;
@@ -19,7 +16,6 @@ import pl.most.typer.service.typer.TyperPlayerService;
 import pl.most.typer.service.typer.TyperStandingService;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
@@ -65,7 +61,7 @@ public class ManageTyperController {
 
     @GetMapping("/competitions")
     private String manageTyper(Model model) {
-        return "typer/manageTyper";
+        return "typerTemplate/manageTyper";
     }
 
     @PostMapping("/competitions")
@@ -78,11 +74,11 @@ public class ManageTyperController {
                 bindingResult.rejectValue(ex.getIssue(), "error." + ex.getIssue(), ex.getMessage());
             }
             if (bindingResult.hasErrors()) {
-                return "typer/manageTyper";
+                return "typerTemplate/manageTyper";
             }
             return "redirect:/typer/manager/competitions";
         }
-        return "typer/manageTyper";
+        return "typerTemplate/manageTyper";
     }
 
     @GetMapping(value = "competitions/{id}/delete")
@@ -92,7 +88,7 @@ public class ManageTyperController {
         } catch (ResourceException e) {
             log.warn(e.getMessage());
             String error = ERROR_MSG + "usunięcie elementu";
-            model.addAttribute("errorMessage", true);
+            model.addAttribute(ERROR_ATTR, true);
             return "/typer/manager/competitions";
         }
         return "redirect:/typer/manager/competitions";
@@ -113,22 +109,13 @@ public class ManageTyperController {
         } catch (ResourceException ex) {
             log.warn(ex.getMessage());
             model.addAttribute(ERROR_ATTR, ERROR_MSG + "nie znaleziono " + ex.getResource());
-            return "typer/manageTyper";
-        }
-        TyperStanding typerStanding = null;
-        try {
-            typerStanding = typerStandingService
-                    .findLatestStandingByTyperCompetition(typerCompetition);
-        } catch (ResourceException ex) {
-            log.warn(ex.getMessage());
-            model.addAttribute(ERROR_ATTR, ERROR_MSG + "nie znaleziono " + ex.getResource());
+            return "typerTemplate/manageTyper";
         }
         List<PlayerDTO> playerDTOS = typerPlayerService.findAll();
         model.addAttribute("typerCompetition", typerCompetition);
-        model.addAttribute("typerStanding", typerStanding);
         model.addAttribute("players", playerDTOS);
         model.addAttribute("playerDTO", new PlayerDTO());
-        return "typer/typerCompetitionEdit";
+        return "typerTemplate/typerCompetitionEdit";
     }
 
 
@@ -136,7 +123,6 @@ public class ManageTyperController {
     private String updateTyperCompetition(@PathVariable("id") Integer id,
                                           @Valid @ModelAttribute("typerCompetition") TyperCompetition typerCompetition,
                                           BindingResult bindingResult,
-                                          @ModelAttribute("typerStanding") TyperStanding typerStanding,
                                           Model model) {
         try {
             typerCompetition.setId(id);
@@ -146,7 +132,7 @@ public class ManageTyperController {
             log.warn(ex.getMessage());
             model.addAttribute(ERROR_ATTR, ERROR_MSG + "edycji " + ex.getResource());
             bindingResult.rejectValue(ex.getIssue(), "error." + ex.getIssue(), ex.getMessage());
-            return "typer/typerCompetitionEdit";
+            return "typerTemplate/typerCompetitionEdit";
         }
     }
 
@@ -156,10 +142,10 @@ public class ManageTyperController {
                                                 Model model) {
         try {
             typerCompetitionService.deletePlayerFromCompetition(competitionId, playerId);
-        } catch (ResourceException e) {
-            log.warn(e.getMessage());
+        } catch (ResourceException ex) {
+            log.warn(ex.getMessage());
             String error = ERROR_MSG + "usunięcie elementu";
-            model.addAttribute("errorMessage", true);
+            model.addAttribute(ERROR_ATTR, true);
             return "/typer/manager/competitions/" + competitionId + "/edit";
         }
         return "redirect:/typer/manager/competitions/" + competitionId + "/edit";
@@ -167,23 +153,22 @@ public class ManageTyperController {
     @PostMapping("/competitions/{id}/players/add")
     private String addPlayerToCompetition(@Valid @ModelAttribute("userDTO") PlayerDTO playerDTO,
                                           @PathVariable("id") Integer competitionId,
-                                       BindingResult bindingResult) {
+                                            BindingResult bindingResult,
+                                          Model model) {
         if (playerDTO != null) {
             try {
-                TyperPlayer typerPlayer = typerPlayerService.findById(playerDTO.getId());
-                TyperCompetition typerCompetition = typerCompetitionService.findById(competitionId);
-                TyperStanding standing = typerStandingService.findLatestStandingByTyperCompetition(typerCompetition);
-                TyperLeagueStanding typerLeagueStanding = new TyperLeagueStanding();
-                typerLeagueStanding.setTyperPlayer(typerPlayer);
-                standing.addTyperLeagueStanding(typerLeagueStanding);
-                typerStandingService.saveAll(Arrays.asList(standing));
+                typerCompetitionService.addPlayerToCompetition(competitionId, playerDTO.getId());
+
 
             } catch (ResourceException ex) {
+                log.warn(ex.getMessage());
+                model.addAttribute(ERROR_ATTR, ERROR_MSG + "dodania " + ex.getResource());
                 bindingResult.rejectValue(ex.getIssue(), "error." + ex.getIssue(), ex.getMessage());
+                return "/typer/manager/competitions/" + competitionId + "/edit";
             }
             return "redirect:/typer/manager/competitions/" + competitionId + "/edit";
         }
-        return "typer/typerCompetitionEdit";
+        return "typerTemplate/typerCompetitionEdit";
     }
 
 }

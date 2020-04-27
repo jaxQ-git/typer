@@ -42,12 +42,6 @@ public class TyperStandingServiceDefault implements TyperStandingService {
         return optionalTyperStanding.get();
     }
 
-    @Override
-    public void saveDefaultStanding(TyperCompetition typerCompetition) {
-        TyperStanding typerStanding = new TyperStanding();
-        typerStanding.setTyperCompetition(typerCompetition);
-        typerStandingRepository.save(typerStanding);
-    }
 
     @Override
     public void deleteAll(List<TyperStanding> typerStandings) {

@@ -11,4 +11,8 @@ public interface TyperPlayerService {
     List<PlayerDTO> findAll();
 
     TyperPlayer findById(Integer id);
+
+    TyperPlayer save(TyperPlayer typerPlayer);
+
+    TyperPlayer update(TyperPlayer typerPlayer);
 }

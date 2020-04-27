@@ -78,36 +78,34 @@
                 </div>
             </div>
 
-            <div th:if="${typerStanding != null}">
 
-                <table class="table table-striped table-sm text-center">
-                    <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Gracz</th>
-                        <th scope="col">Punkty</th>
-                        <th scope="col">Akcja</th>
-                    </tr>
-                    </thead>
-                    <tbody id="typerLStanding">
-                    <!--/*@thymesVar id="typerStanding" type="TyperStanding"*/-->
-                    <tr th:each="typerLStanding : ${typerStanding.typerLeagueStandings}">
-                        <td th:text="${typerLStanding?.position}"/>
-                        <td th:text="${typerLStanding?.typerPlayer?.user?.username}"/>
-                        <td th:text="${typerLStanding?.points}"/>
-                        <td>
-                            <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal"
-                                    data-target="#deleteModal"
-                                    th:data-link="'/typer/manager/competitions/' + ${typerCompetition.id} + '/players/' + ${typerLStanding.typerPlayer.id} +  '/delete'">
-                                Usuń
-                            </button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <table class="table table-striped table-sm text-center">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Gracz</th>
+                    <th scope="col">Akcja</th>
+                </tr>
+                </thead>
+                <tbody id="typerLStanding">
+                <!--/*@thymesVar id="typerStanding" type="TyperStanding"*/-->
+                <tr th:each="typerPlayer, iStat : ${typerCompetition.typerPlayers}">
+                    <td th:text="${iStat.index}"/>
+                    <td th:text="${typerPlayer.user.username}"/>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal"
+                                data-target="#deleteModal"
+                                th:data-link="'/typer/manager/competitions/' + ${typerCompetition.id} + '/players/' + ${typerPlayer.id} +  '/delete'">
+                            Usuń
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
             <div>
-                <form method="POST" th:action="@{'/typer/manager/competitions/' + ${typerCompetition.id} + '/players/add'}"
+                <form method="POST"
+                      th:action="@{'/typer/manager/competitions/' + ${typerCompetition.id} + '/players/add'}"
                       th:object="${playerDTO}" id="addPlayer">
                     <div class="form-group row">
 
