@@ -25,14 +25,20 @@ public class Match {
     private Competition competition;
     @ManyToOne
     private Season season;
+
     private LocalDateTime utcDate;
+
     @Enumerated(EnumType.STRING)
     private MatchStatus status;
-    private Integer matchDay;
+
+    private Integer matchday;
     private String stage;
+
     @Column(name = "groups")
     private String group;
-    private String lastUpdate;
+
+    private LocalDateTime lastUpdated;
+
     @OneToOne(cascade = CascadeType.ALL)
     private Score score;
     @OneToOne
