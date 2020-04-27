@@ -24,7 +24,7 @@ public class TyperPlayerServiceDefault implements TyperPlayerService {
         this.typerPlayerRepository = typerPlayerRepository;
     }
 
-
+    //PlayerDTO, żeby nie przekazywać informacji o userze
     @Override
     public List<PlayerDTO> findAll() {
         List<TyperPlayer> typerPlayers = typerPlayerRepository.findAll();
@@ -70,7 +70,12 @@ public class TyperPlayerServiceDefault implements TyperPlayerService {
                 ex.setIssue("user");
                 throw ex;
             }
-            return typerPlayerRepository.save(typerPlayer);
+            TyperPlayer typerPlayerDB = findById(typerPlayer.getId());
+            typerPlayerDB.setUser(typerPlayer.getUser());
+            typerPlayerDB.setName(typerPlayer.getName());
+            typerPlayerDB.setSurname(typerPlayer.getSurname());
+            typerPlayerDB.setTyperCompetitions(typerPlayerDB.getTyperCompetitions());
+            return typerPlayerRepository.save(typerPlayerDB);
         } else {
             BadResourceException exc = new BadResourceException("Failed to save TyperPlayer");
             throw exc;

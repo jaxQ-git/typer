@@ -6,6 +6,7 @@ import pl.most.typer.exceptions.BadResourceException;
 import pl.most.typer.exceptions.ResourceAlreadyExistsException;
 import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.typer.TyperCompetition;
+import pl.most.typer.model.typer.TyperPlayer;
 import pl.most.typer.model.typer.TyperStanding;
 import pl.most.typer.repository.typerrepo.TyperStandingRepository;
 import pl.most.typer.service.footballservice.competition.StandingService;
@@ -64,6 +65,7 @@ public class TyperStandingServiceDefault implements TyperStandingService {
     }
 
 
+    @Override
     public TyperStanding save(TyperStanding typerStanding) throws BadResourceException, ResourceAlreadyExistsException {
         if (typerStanding.getTyperCompetition()!=null) {
             if (typerStanding.getId() != null && existsById(typerStanding.getId())) {
@@ -75,9 +77,36 @@ public class TyperStandingServiceDefault implements TyperStandingService {
             return typerStandingRepository.save(typerStanding);
         }
         else {
-            BadResourceException exc = new BadResourceException("Failed to save TyperCompetition");
+            BadResourceException exc = new BadResourceException("Failed to save TyperStanding");
             throw exc;
         }
+    }
+
+    @Override
+    public TyperStanding update(TyperStanding typerStanding) {
+
+        if ((typerStanding.getTyperCompetition() != null) && typerStanding.getId()!=null && existsById(typerStanding.getId())) {
+            //Jeżeli jest już w bazie inny obiekt TyperStanding,
+            // który ma takiego usera to nie można zdublowac.
+            // Jeżeli to ten sam TyperStanding to robimy update
+            TyperStanding typerStandingDB = findById(typerStanding.getId());
+            typerStandingDB.setTyperLeagueStandings(typerStanding.getTyperLeagueStandings());
+            typerStandingDB.setRound(typerStanding.getRound());
+            return typerStandingRepository.save(typerStandingDB);
+        } else {
+            BadResourceException exc = new BadResourceException("Failed to save TyperStanding");
+            throw exc;
+        }
+    }
+
+
+    private TyperStanding findById(Integer id) throws ResourceNotFoundException {
+        Optional<TyperStanding> typerStandingOptional = typerStandingRepository.findById(id);
+        return typerStandingOptional.orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find TyperStanding with id: " + id);
+            ex.setResource("standing");
+            return ex;
+        });
     }
 
     private boolean existsById(Integer id) {

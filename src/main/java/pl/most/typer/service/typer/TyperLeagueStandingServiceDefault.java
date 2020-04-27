@@ -25,25 +25,5 @@ public class TyperLeagueStandingServiceDefault implements TyperLeagueStandingSer
     }
 
 
-    @Override
-    public List<TyperLeagueStanding> findByTyperCompetitionId(Integer id) {
-        List<TyperStanding> typerStandings = typerStandingService.findAllByTyperCompetitionId(id);
-        List<TyperLeagueStanding> result = typerStandings.stream()
-                .map(typerStanding -> typerLeagueStandingRepository.findAllByTyperStanding(typerStanding))
-                .flatMap(typerLeagueStandings -> typerLeagueStandings.stream())
-                .collect(Collectors.toList());
-        return result;
-    }
 
-    @Override
-    public void deleteAllByPlayerAndCompetition(Integer playerId, Integer competitionId) {
-        List<TyperStanding> standings = typerStandingService.findAllByTyperCompetitionId(competitionId);
-        standings.forEach(typerStanding -> {
-            List<TyperLeagueStanding> typerLeagueStandings = typerStanding.getTyperLeagueStandings();
-            TyperLeagueStanding leagueStandingByPlayer = typerLeagueStandings.stream().filter(typerLeagueStanding -> typerLeagueStanding.getTyperPlayer().getId().equals(playerId)).findFirst().get();
-            typerStanding.removeTyperLeagueStanding(leagueStandingByPlayer);
-        });
-        typerStandingService.saveAll(standings);
-
-    }
 }
