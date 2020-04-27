@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pl.most.typer.exceptions.BadResourceException;
 import pl.most.typer.exceptions.ResourceAlreadyExistsException;
+import pl.most.typer.exceptions.ResourceException;
 import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.typer.TyperCompetition;
 import pl.most.typer.model.typer.TyperPlayer;
@@ -157,5 +158,22 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
         typerCompetition.addTyperPlayer(typerPlayer);
         update(typerCompetition);
         typerPlayerServiceDefault.update(typerPlayer);
+    }
+
+    @Override
+    public void countRound(Integer competitionId) {
+        TyperCompetition typerCompetition = findById(competitionId);
+        TyperStanding latestStandingByTyperCompetition;
+        try {
+            latestStandingByTyperCompetition = typerStandingService.findLatestStandingByTyperCompetition(typerCompetition);
+        }
+        catch (ResourceException ex)
+        {
+            latestStandingByTyperCompetition = null;
+        }
+        //TODO policzyc punkty za kolejke i dodac do tabeli -> usunac try catch
+
+        //stworzenie nowej tabeli dla nastepnej kolejki
+        typerStandingService.createNewTyperStanding(typerCompetition, latestStandingByTyperCompetition);
     }
 }

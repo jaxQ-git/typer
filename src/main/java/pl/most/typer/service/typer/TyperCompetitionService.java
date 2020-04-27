@@ -26,4 +26,6 @@ public interface TyperCompetitionService {
     void deletePlayerFromCompetition(Integer competitionId, Integer playerId);
 
     void addPlayerToCompetition(Integer competitionId, Integer id);
+
+    void countRound(Integer competitionId);
 }

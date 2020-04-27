@@ -18,4 +18,6 @@ public interface TyperStandingService {
     void deleteAll(List<TyperStanding> typerStandings);
 
     void saveAll(List<TyperStanding> standings);
+
+    void createNewTyperStanding(TyperCompetition typerCompetition, TyperStanding latestStandingByTyperCompetition);
 }

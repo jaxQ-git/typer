@@ -95,8 +95,9 @@ public class ManageTyperController {
     }
 
     @GetMapping(value = "competitions/{id}/count")
-    private String updateTyperCompetition(@PathVariable("id") Integer id) {
+    private String updateTyperCompetition(@PathVariable("id") Integer competitionId) {
         //TODO implementacja przeliczenia punktów z kolejki
+        typerCompetitionService.countRound(competitionId);
         return "redirect:/typer/manager/competitions";
     }
 

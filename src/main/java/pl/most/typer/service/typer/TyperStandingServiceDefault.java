@@ -1,6 +1,9 @@
 package pl.most.typer.service.typer;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import pl.most.typer.exceptions.BadResourceException;
+import pl.most.typer.exceptions.ResourceAlreadyExistsException;
 import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.typer.TyperCompetition;
 import pl.most.typer.model.typer.TyperStanding;
@@ -51,6 +54,34 @@ public class TyperStandingServiceDefault implements TyperStandingService {
     @Override
     public void saveAll(List<TyperStanding> standings) {
         typerStandingRepository.saveAll(standings);
+    }
+
+    @Override
+    public void createNewTyperStanding(TyperCompetition typerCompetition, TyperStanding latestStandingByTyperCompetition) {
+        TyperStanding typerStanding = new TyperStanding(typerCompetition);
+        //TODO dodac punkty z poprzedniej kolejki
+        save(typerStanding);
+    }
+
+
+    public TyperStanding save(TyperStanding typerStanding) throws BadResourceException, ResourceAlreadyExistsException {
+        if (typerStanding.getTyperCompetition()!=null) {
+            if (typerStanding.getId() != null && existsById(typerStanding.getId())) {
+                ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperStanding with id: " + typerStanding.getId());
+                ex.setResource("TyperStanding");
+                ex.setIssue("id");
+                throw ex;
+            }
+            return typerStandingRepository.save(typerStanding);
+        }
+        else {
+            BadResourceException exc = new BadResourceException("Failed to save TyperCompetition");
+            throw exc;
+        }
+    }
+
+    private boolean existsById(Integer id) {
+        return typerStandingRepository.existsById(id);
     }
 
 
