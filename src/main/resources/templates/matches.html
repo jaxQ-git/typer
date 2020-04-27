@@ -27,7 +27,8 @@
 
     <div style="margin-top: 50px;" class="container-fluid">
         <div class="row">
-            <div class="col-sm-2"></div>
+            <div class="col-sm-2">
+            </div>
             <div class="col">
                 <h3 class="display-4" style="text-align: center" th:text="${competitionName}"></h3>
                 <h4 class="display-4" style=" font-size: 30px; text-align: center" th:text="${stageName}"></h4>
@@ -38,50 +39,77 @@
                                 th:text="${match.key}"></th>
                         </th:block>
                     </h2>
-                    <table class="table table-striped table-sm">
-                        <tbody id="matchScore">
-                        <div th:each="mapValue, stat : ${match.value}" th:if="${stat.even}">
-                            <div class="row">
-                                <div class="col-lg-6 mb-4" th:with="leftMapValue=${match.value.get(stat.index - 1)}">
-                                    <div class="card h-100">
-                                        <h4 class="card-header" style="text-align: center;">
-                                            <span th:text="${#temporals.format(leftMapValue.utcDate, 'dd-MM-yyyy HH:mm')}"></span>
-                                        </h4>
-                                        <div class="card-body">
-                                            <img class="img-center"
-                                                 th:src="${#objects.nullSafe(leftMapValue.homeTeam.crestUrl, '')}"/>
-                                            <img class="img-center"
-                                                 th:src="${#objects.nullSafe(leftMapValue.awayTeam.crestUrl, '')}"/>
+                    <div th:each="mapValue, stat : ${match.value}" th:if="${stat.even}">
+                        <div class="row">
+                            <div class="col-lg-6 mb-4" th:with="leftMatchValue=${match.value.get(stat.index - 1)}">
+                                <div class="card h-100">
+                                    <h4 class="card-header" style="text-align: center;">
+                                        <span th:text="${#temporals.format(leftMatchValue.utcDate, 'dd-MM-yyyy HH:mm')}"></span>
+                                        <div th:if="${leftMatchValue.matchday != null}">
+                                            <span th:text="${#objects.nullSafe('Kolejka: ' + leftMatchValue.matchday, '')}"></span>
+                                        </div>
+                                    </h4>
+                                    <div class="card-body">
+                                        <div class="row my-auto align-items-center justify-content-center">
+                                            <div class="float-left" style="margin: 20px">
+                                                <img class="img-center"
+                                                     th:src="${#objects.nullSafe(leftMatchValue.homeTeam.crestUrl, '')}"/>
+                                                <div class="text-center" style="width: 110px"th:text="${leftMatchValue.homeTeam.name}"></div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div style="font-weight: bold" th:text="${mapValue.status}"></div>
+                                                <span style="font-size: 40px" th:text="${#objects.nullSafe(leftMatchValue.score.fullTime.homeTeam, '')} +
+                                        ' - ' + ${#objects.nullSafe(leftMatchValue.score.fullTime.awayTeam, '')}"></span>
+                                            </div>
+                                            <div class="float-right" style="margin: 20px">
+                                                <img class="img-center"
+                                                     th:src="${#objects.nullSafe(leftMatchValue.awayTeam.crestUrl, '')}"/>
+                                                <div class="text-center" style="width: 110px" th:text="${leftMatchValue.awayTeam.name}"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-6 mb-4" th:if="${stat.index &lt; match.value.size()}"
-                                     th:with="rightMapValue=${match.value.get(stat.index)}">
-                                    <div class="card h-100">
-                                        <h4 class="card-header" style="text-align: center;">
-                                            <span th:text="${#temporals.format(rightMapValue.utcDate, 'dd-MM-yyyy HH:mm')}"></span>
-                                        </h4>
-                                        <div class="card-body">
-                                            <img class="img-center"
-                                                 th:src="${#objects.nullSafe(rightMapValue.homeTeam.crestUrl, '')}"/>
-                                            <img class="img-center"
-                                                 th:src="${#objects.nullSafe(rightMapValue.awayTeam.crestUrl, '')}"/>
+                            </div>
+                            <div class="col-lg-6 mb-4" th:if="${stat.index &lt; match.value.size()}"
+                                 th:with="rightMatchValue=${match.value.get(stat.index)}">
+                                <div class="card h-100">
+                                    <h4 class="card-header" style="text-align: center;">
+                                        <span th:text="${#temporals.format(rightMatchValue.utcDate, 'dd-MM-yyyy HH:mm')}"></span>
+                                        <div th:if="${rightMatchValue.matchday != null}">
+                                            <span th:text="${#objects.nullSafe('Kolejka: ' + rightMatchValue.matchday, '')}"></span>
+                                        </div>
+                                    </h4>
+                                    <div class="card-body">
+                                        <div class="row my-auto align-items-center justify-content-center">
+                                            <div class="float-right" style="margin: 20px">
+                                                <img class="img-center"
+                                                     th:src="${#objects.nullSafe(rightMatchValue.homeTeam.crestUrl, '')}"/>
+                                                <div class="text-center" style="width: 110px" th:text="${rightMatchValue.homeTeam.name}"></div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div style="font-weight: bold" th:text="${mapValue.status}"></div>
+                                                <span style="font-size: 40px" th:text="${#objects.nullSafe(rightMatchValue.score.fullTime.homeTeam, '')} +
+                                        ' - ' + ${#objects.nullSafe(rightMatchValue.score.fullTime.awayTeam, '')}"></span>
+                                            </div>
+                                            <div class="float-right" style="margin: 20px">
+                                                <img class="img-center"
+                                                     th:src="${#objects.nullSafe(rightMatchValue.awayTeam.crestUrl, '')}"/>
+                                                <div class="text-center" style="width: 110px" th:text="${rightMatchValue.awayTeam.name}"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        </tbody>
-                    </table>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-2">
             </div>
         </div>
-
-
     </div>
 </div>
+
 
 <!-- Footer -->
 <footer id="sticky-footer" th:replace="fragments/footer :: footer"/>
