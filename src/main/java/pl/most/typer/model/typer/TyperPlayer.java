@@ -31,4 +31,25 @@ public class TyperPlayer extends BaseModel {
     Collection<TyperCompetition> typerCompetitions = new ArrayList<>();
 
 
+    public void addTyperCompetition(TyperCompetition typerCompetition) {
+        if (!isAssignedToTyperCompetition(typerCompetition)) {
+            this.typerCompetitions.add(typerCompetition);
+            if (!typerCompetition.getTyperPlayers().contains(this)) {
+                typerCompetition.addTyperPlayer(this);
+            }
+        }
+
+    }
+
+    public void removeTyperCompetition(TyperCompetition typerCompetition) {
+        this.typerCompetitions.remove(typerCompetition);
+        if (typerCompetition.isParticipating(this)) {
+            typerCompetition.removeTyperPlayer(this);
+        }
+
+    }
+
+    public boolean isAssignedToTyperCompetition(TyperCompetition typerCompetition) {
+        return this.typerCompetitions.contains(typerCompetition);
+    }
 }

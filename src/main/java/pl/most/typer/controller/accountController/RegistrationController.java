@@ -26,7 +26,8 @@ public class RegistrationController {
 
 
 
-    public RegistrationController(RegistrationService registrationService, CustomUserDetailsService customUserDetailsService, FootballApiService footballApiService, HeaderCompetitionListDTO headerCompetitionListDTO) {
+    public RegistrationController(RegistrationService registrationService,
+                                  CustomUserDetailsService customUserDetailsService, FootballApiService footballApiService, HeaderCompetitionListDTO headerCompetitionListDTO) {
 
         this.registrationService = registrationService;
         this.customUserDetailsService = customUserDetailsService;

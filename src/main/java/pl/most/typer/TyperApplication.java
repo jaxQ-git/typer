@@ -44,7 +44,8 @@ public class TyperApplication {
             TyperCompetitionRepository typerCompetitionRepository,
             TyperPlayerRepository typerPlayerRepository,
             TyperLeagueStandingRepository typerLeagueStandingRepository,
-            TyperStandingRepository typerStandingRepository
+            TyperStandingRepository typerStandingRepository,
+            TyperCompetitionService typerCompetitionService
     ) {
         return new CommandLineRunner() {
             @Override
@@ -60,21 +61,10 @@ public class TyperApplication {
 
                 TyperCompetition typerCompetition = new TyperCompetition("Liga Testowa");
 
-                List<TyperPlayer> typerPlayers = users.stream().map(user -> getTyperPlayer(user, typerCompetition)).collect(Collectors.toList());
+                List<TyperPlayer> typerPlayers = users.stream().map(user -> getTyperPlayer(user)).collect(Collectors.toList());
+                typerPlayers.stream().forEach(typerPlayer -> typerPlayer.addTyperCompetition(typerCompetition));
 
-                TyperStanding typerStanding = new TyperStanding();
-                typerStanding.setTyperCompetition(typerCompetition);
-
-                List<TyperLeagueStanding> typerLeagueStandings = typerPlayers.stream().map(typerPlayer -> {
-                            TyperLeagueStanding typerLeagueStanding = new TyperLeagueStanding();
-                            typerLeagueStanding.setTyperPlayer(typerPlayer);
-                            typerLeagueStanding.setTyperStanding(typerStanding);
-                            return typerLeagueStanding;
-                        }
-                ).collect(Collectors.toList());
-
-                typerStanding.setTyperLeagueStandings(typerLeagueStandings);
-
+                TyperStanding typerStanding = new TyperStanding(typerCompetition);
 
                 typerPlayerRepository.saveAll(typerPlayers);
                 typerCompetitionRepository.save(typerCompetition);
@@ -82,11 +72,9 @@ public class TyperApplication {
 
             }
 
-            private TyperPlayer getTyperPlayer(User user, TyperCompetition typerCompetition) {
+            private TyperPlayer getTyperPlayer(User user) {
                 TyperPlayer typerPlayer = new TyperPlayer();
                 typerPlayer.setUser(user);
-                typerPlayer.getTyperCompetitions().add(typerCompetition);
-                typerCompetition.getTyperPlayers().add(typerPlayer);
                 return typerPlayer;
             }
 

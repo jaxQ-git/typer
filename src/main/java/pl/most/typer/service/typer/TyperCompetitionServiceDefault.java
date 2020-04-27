@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import pl.most.typer.exceptions.BadResourceException;
 import pl.most.typer.exceptions.ResourceAlreadyExistsException;
+import pl.most.typer.exceptions.ResourceException;
 import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.typer.TyperCompetition;
+import pl.most.typer.model.typer.TyperPlayer;
 import pl.most.typer.model.typer.TyperStanding;
 import pl.most.typer.repository.typerrepo.TyperCompetitionRepository;
 
@@ -21,14 +23,13 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
 
     private TyperCompetitionRepository typerCompetitionRepository;
     private TyperStandingService typerStandingService;
-    private TyperLeagueStandingService typerLeagueStandingService;
-
+    private TyperPlayerServiceDefault typerPlayerServiceDefault;
 
     public TyperCompetitionServiceDefault(TyperCompetitionRepository typerCompetitionRepository,
-                                          TyperStandingService typerStandingService, TyperLeagueStandingService typerLeagueStandingService) {
+                                          TyperStandingService typerStandingService, TyperLeagueStandingService typerLeagueStandingService, TyperPlayerServiceDefault playerServiceDefault) {
         this.typerCompetitionRepository = typerCompetitionRepository;
         this.typerStandingService = typerStandingService;
-        this.typerLeagueStandingService = typerLeagueStandingService;
+        this.typerPlayerServiceDefault = playerServiceDefault;
     }
 
     private boolean existsById(Integer id) {
@@ -75,7 +76,6 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
                 throw ex;
             }
             TyperCompetition competition = typerCompetitionRepository.save(typerCompetition);
-            typerStandingService.saveDefaultStanding(competition);
             return competition;
         }
         else {
@@ -95,7 +95,7 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
                 throw ex;
             }
 
-            else if (existsByName(typerCompetition.getName())){
+            else if (!findById(typerCompetition.getId()).equals(findByName(typerCompetition.getName()))){
                 ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("TyperCompetition with name: \"" + typerCompetition.getName() + "\" already exists");
                 ex.setResource("Competition");
                 ex.setIssue("name");
@@ -105,12 +105,22 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
             typerCompetitionDB.setName(typerCompetition.getName());
             typerCompetitionDB.setCurrentRound(typerCompetition.getCurrentRound());
             typerCompetitionDB.setLastUpdated(typerCompetition.getLastUpdated());
+            typerCompetitionDB.setTyperPlayers(typerCompetition.getTyperPlayers());
             typerCompetitionRepository.save(typerCompetitionDB);
         }
         else {
             BadResourceException exc = new BadResourceException("Failed to save typerCompetition");
             throw exc;
         }
+    }
+
+    private TyperCompetition findByName(String name) {
+        Optional<TyperCompetition> typerCompetitionOptional = typerCompetitionRepository.findByName(name);
+        return typerCompetitionOptional.orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find TyperCompetition with name: " + name);
+            ex.setResource("competition");
+            return ex;
+        });
     }
 
     @Override
@@ -134,13 +144,36 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
 
     @Override
     public void deletePlayerFromCompetition(Integer competitionId, Integer playerId) {
-        if (!existsById(competitionId)) {
-            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find typerCompetition with id: " + competitionId);
-            ex.setIssue("id");
-            throw ex;
+        TyperCompetition typerCompetition = findById(competitionId);
+        TyperPlayer typerPlayer =typerPlayerServiceDefault.findById(playerId);
+        typerCompetition.removeTyperPlayer(typerPlayer);
+        update(typerCompetition);
+        typerPlayerServiceDefault.update(typerPlayer);
+    }
+
+    @Override
+    public void addPlayerToCompetition(Integer competitionId, Integer playerId) {
+        TyperCompetition typerCompetition = findById(competitionId);
+        TyperPlayer typerPlayer =typerPlayerServiceDefault.findById(playerId);
+        typerCompetition.addTyperPlayer(typerPlayer);
+        update(typerCompetition);
+        typerPlayerServiceDefault.update(typerPlayer);
+    }
+
+    @Override
+    public void countRound(Integer competitionId) {
+        TyperCompetition typerCompetition = findById(competitionId);
+        TyperStanding latestStandingByTyperCompetition;
+        try {
+            latestStandingByTyperCompetition = typerStandingService.findLatestStandingByTyperCompetition(typerCompetition);
         }
-        else {
-            typerLeagueStandingService.deleteAllByPlayerAndCompetition(playerId,competitionId);
+        catch (ResourceException ex)
+        {
+            latestStandingByTyperCompetition = null;
         }
+        //TODO policzyc punkty za kolejke i dodac do tabeli -> usunac try catch
+
+        //stworzenie nowej tabeli dla nastepnej kolejki
+        typerStandingService.createNewTyperStanding(typerCompetition, latestStandingByTyperCompetition);
     }
 }

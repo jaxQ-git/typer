@@ -14,7 +14,10 @@ public interface TyperStandingService {
 
     TyperStanding findStandingByTyperCompetition(TyperCompetition typerCompetition, Integer round) throws ResourceNotFoundException;
 
-    void saveDefaultStanding(TyperCompetition typerCompetition);
 
     void deleteAll(List<TyperStanding> typerStandings);
+
+    void saveAll(List<TyperStanding> standings);
+
+    void createNewTyperStanding(TyperCompetition typerCompetition, TyperStanding latestStandingByTyperCompetition);
 }
