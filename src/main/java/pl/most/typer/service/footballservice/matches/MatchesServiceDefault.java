@@ -87,7 +87,7 @@ public class MatchesServiceDefault implements MatchesService {
 
     @Override
     public List<Match> findAllByCompetitionAndStage(Competition competition, String stage) {
-        return matchesRepository.findAllByCompetitionAndStage(competition, stage);
+        return matchesRepository.findAllByCompetitionAndStageOrderByUtcDateDesc(competition, stage);
     }
 
     @Override
