@@ -15,6 +15,6 @@ public interface MatchesRepository extends JpaRepository<Match, Integer> {
 
     Optional<Match> findFirstByCompetition(Competition competiton);
 
-    List<Match> findAllByCompetitionAndStage(Competition competition, String stage);
+    List<Match> findAllByCompetitionAndStageOrderByUtcDateDesc(Competition competition, String stage);
 }
 

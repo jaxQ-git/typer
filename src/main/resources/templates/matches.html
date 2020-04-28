@@ -49,22 +49,27 @@
                                             <span th:text="${#objects.nullSafe('Kolejka: ' + leftMatchValue.matchday, '')}"></span>
                                         </div>
                                     </h4>
-                                    <div class="card-body">
-                                        <div class="row my-auto align-items-center justify-content-center">
-                                            <div class="float-left" style="margin: 20px">
-                                                <img class="img-center"
-                                                     th:src="${#objects.nullSafe(leftMatchValue.homeTeam.crestUrl, '')}"/>
-                                                <div class="text-center" style="width: 110px"th:text="${leftMatchValue.homeTeam.name}"></div>
+                                    <div class="card-body" >
+                                        <div class="row my-auto  justify-content-center">
+                                            <div class="float-left">
+                                                <figure class="my-auto">
+                                                    <img class="img-center"
+                                                         th:src="${#objects.nullSafe(leftMatchValue.homeTeam.crestUrl, '')}"/>
+                                                    <figcaption style="width: 120px;" class="text-center" th:text="${leftMatchValue.homeTeam.name}"></figcaption>
+                                                </figure>
+
                                             </div>
-                                            <div class="text-center">
+                                            <div class="text-center my-auto" style="margin-left: 10px; margin-right: 10px">
                                                 <div style="font-weight: bold" th:text="${mapValue.status}"></div>
                                                 <span style="font-size: 40px" th:text="${#objects.nullSafe(leftMatchValue.score.fullTime.homeTeam, '')} +
                                         ' - ' + ${#objects.nullSafe(leftMatchValue.score.fullTime.awayTeam, '')}"></span>
                                             </div>
-                                            <div class="float-right" style="margin: 20px">
-                                                <img class="img-center"
-                                                     th:src="${#objects.nullSafe(leftMatchValue.awayTeam.crestUrl, '')}"/>
-                                                <div class="text-center" style="width: 110px" th:text="${leftMatchValue.awayTeam.name}"></div>
+                                            <div class="float-right">
+                                                <figure class="my-auto">
+                                                    <img class="img-center"
+                                                         th:src="${#objects.nullSafe(leftMatchValue.awayTeam.crestUrl, '')}"/>
+                                                    <figcaption style="width: 120px;" class="text-center" th:text="${leftMatchValue.awayTeam.name}"></figcaption>
+                                                </figure>
                                             </div>
                                         </div>
                                     </div>
@@ -80,21 +85,25 @@
                                         </div>
                                     </h4>
                                     <div class="card-body">
-                                        <div class="row my-auto align-items-center justify-content-center">
-                                            <div class="float-right" style="margin: 20px">
-                                                <img class="img-center"
-                                                     th:src="${#objects.nullSafe(rightMatchValue.homeTeam.crestUrl, '')}"/>
-                                                <div class="text-center" style="width: 110px" th:text="${rightMatchValue.homeTeam.name}"></div>
+                                        <div class="row my-auto justify-content-center">
+                                            <div class="float-left">
+                                                <figure class="my-auto">
+                                                    <img class="img-center"
+                                                         th:src="${#objects.nullSafe(rightMatchValue.homeTeam.crestUrl, '')}"/>
+                                                    <figcaption style="width: 120px;" class="text-center" th:text="${rightMatchValue.homeTeam.name}"></figcaption>
+                                                </figure>
                                             </div>
-                                            <div class="text-center">
+                                            <div class="text-center my-auto" style="margin-left: 10px; margin-right: 10px">
                                                 <div style="font-weight: bold" th:text="${mapValue.status}"></div>
                                                 <span style="font-size: 40px" th:text="${#objects.nullSafe(rightMatchValue.score.fullTime.homeTeam, '')} +
                                         ' - ' + ${#objects.nullSafe(rightMatchValue.score.fullTime.awayTeam, '')}"></span>
                                             </div>
-                                            <div class="float-right" style="margin: 20px">
-                                                <img class="img-center"
-                                                     th:src="${#objects.nullSafe(rightMatchValue.awayTeam.crestUrl, '')}"/>
-                                                <div class="text-center" style="width: 110px" th:text="${rightMatchValue.awayTeam.name}"></div>
+                                            <div class="float-right">
+                                                <figure class="my-auto">
+                                                    <img class="img-center"
+                                                         th:src="${#objects.nullSafe(rightMatchValue.awayTeam.crestUrl, '')}"/>
+                                                    <figcaption style="width: 120px;" class="text-center" th:text="${rightMatchValue.awayTeam.name}"></figcaption>
+                                                </figure>
                                             </div>
                                         </div>
                                     </div>
