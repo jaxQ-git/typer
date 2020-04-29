@@ -39,9 +39,9 @@
                                 th:text="${match.key}"></th>
                         </th:block>
                     </h2>
-                    <div th:each="mapValue, stat : ${match.value}" th:if="${stat.even}">
+                    <div class="slice" th:each="mapValue, stat : ${match.value}" th:if="${stat.even}">
                         <div class="row">
-                            <div class="col-lg-6 mb-4" th:with="leftMatchValue=${match.value.get(stat.index - 1)}">
+                            <div class="col-lg-6 mb-4 " th:with="leftMatchValue=${match.value.get(stat.index - 1)}">
                                 <div class="card h-100">
                                     <h4 class="card-header" style="text-align: center;">
                                         <span th:text="${#temporals.format(leftMatchValue.utcDate, 'dd-MM-yyyy HH:mm')}"></span>
@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 mb-4" th:if="${stat.index &lt; match.value.size()}"
+                            <div class="col-lg-6 mb-4 " th:if="${stat.index &lt; match.value.size()}"
                                  th:with="rightMatchValue=${match.value.get(stat.index)}">
                                 <div class="card h-100">
                                     <h4 class="card-header" style="text-align: center;">
@@ -111,6 +111,7 @@
                             </div>
                         </div>
                     </div>
+                    <a id="loadMore" class="btn btn-sm btn-primary" href="#">Pokaż więcej meczów</a>
                 </div>
             </div>
             <div class="col-sm-2">
@@ -126,6 +127,8 @@
 <!-- Bootstrap core JavaScript -->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/sample.js"></script>
+
 
 </body>
 

@@ -19,8 +19,38 @@ $(document).ready(function(){
     });
 });
 
+// $(document).ready(function () {
+//     $('select').selectize({
+//         sortField: 'text'
+//     });
+// });
+
 $(document).ready(function () {
-    $('select').selectize({
-        sortField: 'text'
+    console.log("abcd");
+    $(".slice").slice(0, 2).show();
+    $("#loadMore").on('click', function (e) {
+        e.preventDefault();
+        $(".slice:hidden").slice(0, 2).slideDown();
+        if ($(".slice:hidden").length == 0) {
+            $("#loadMore").fadeOut('slow');
+        }
+        $('html,body').animate({
+            scrollTop: $(this).offset().top
+        }, 1500);
     });
 });
+
+// $('a[href=#top]').click(function () {
+//     $('body,html').animate({
+//         scrollTop: 0
+//     }, 600);
+//     return false;
+// });
+//
+// $(window).scroll(function () {
+//     if ($(this).scrollTop() > 50) {
+//         $('.totop a').fadeIn();
+//     } else {
+//         $('.totop a').fadeOut();
+//     }
+// });
