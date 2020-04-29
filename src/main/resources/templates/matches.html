@@ -53,8 +53,10 @@
                                         <div class="row my-auto  justify-content-center">
                                             <div class="float-left">
                                                 <figure class="my-auto">
-                                                    <img class="img-center"
-                                                         th:src="${#objects.nullSafe(leftMatchValue.homeTeam.crestUrl, '')}"/>
+                                                    <img class="img-center team-logo"
+                                                         th:src="${#objects.nullSafe(leftMatchValue.homeTeam.crestUrl, '/img/logo/default.png')}"
+                                                         th:onerror="this.onerror=null;this.src='/img/logo/default.png';"
+                                                            />
                                                     <figcaption style="width: 120px;" class="text-center" th:text="${leftMatchValue.homeTeam.name}"></figcaption>
                                                 </figure>
 
@@ -66,8 +68,9 @@
                                             </div>
                                             <div class="float-right">
                                                 <figure class="my-auto">
-                                                    <img class="img-center"
-                                                         th:src="${#objects.nullSafe(leftMatchValue.awayTeam.crestUrl, '')}"/>
+                                                    <img class="img-center team-logo"
+                                                         th:src="${#objects.nullSafe(leftMatchValue.awayTeam.crestUrl, '/img/logo/default.png')}"
+                                                         th:onerror="this.onerror=null;this.src='/img/logo/default.png';"/>
                                                     <figcaption style="width: 120px;" class="text-center" th:text="${leftMatchValue.awayTeam.name}"></figcaption>
                                                 </figure>
                                             </div>
@@ -88,8 +91,11 @@
                                         <div class="row my-auto justify-content-center">
                                             <div class="float-left">
                                                 <figure class="my-auto">
-                                                    <img class="img-center"
-                                                         th:src="${#objects.nullSafe(rightMatchValue.homeTeam.crestUrl, '')}"/>
+                                                    <img class="img-center team-logo"
+                                                         th:src="${#objects.nullSafe(rightMatchValue.homeTeam.crestUrl, '/img/logo/default.png')}"
+                                                         th:onerror="this.onerror=null;this.src='/img/logo/default.png';"
+                                                    />
+
                                                     <figcaption style="width: 120px;" class="text-center" th:text="${rightMatchValue.homeTeam.name}"></figcaption>
                                                 </figure>
                                             </div>
@@ -100,8 +106,9 @@
                                             </div>
                                             <div class="float-right">
                                                 <figure class="my-auto">
-                                                    <img class="img-center"
-                                                         th:src="${#objects.nullSafe(rightMatchValue.awayTeam.crestUrl, '')}"/>
+                                                    <img class="img-center team-logo"
+                                                         th:src="${#objects.nullSafe(rightMatchValue.awayTeam.crestUrl, '/img/logo/default.png')}"
+                                                         th:onerror="this.onerror=null;this.src='/img/logo/default.png';"/>
                                                     <figcaption style="width: 120px;" class="text-center" th:text="${rightMatchValue.awayTeam.name}"></figcaption>
                                                 </figure>
                                             </div>
@@ -126,6 +133,7 @@
 <!-- Bootstrap core JavaScript -->
 <script src="/vendor/jquery/jquery.min.js"></script>
 <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/js/sample.js"></script>
 
 </body>
 
