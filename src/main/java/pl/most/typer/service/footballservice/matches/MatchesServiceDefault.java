@@ -3,6 +3,7 @@ package pl.most.typer.service.footballservice.matches;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import pl.most.typer.exceptions.ResourceException;
 import pl.most.typer.model.competition.Competition;
 import pl.most.typer.model.competition.Season;
 import pl.most.typer.model.competition.Team;
@@ -53,13 +54,18 @@ public class MatchesServiceDefault implements MatchesService {
         if (responseEntity.getStatusCode().is2xxSuccessful()) {
             MatchDTO matchDTO = responseEntity.getBody();
             if (matchDTO != null) {
-                Competition competition = competitionService.save(matchDTO.getCompetition());
+                Competition competition;
+                try {
+                    competition = competitionService.findByApiId(matchDTO.getCompetition().getApiId());
+                } catch (ResourceException ex) {
+                    competition = competitionService.save(matchDTO.getCompetition());
+                }
                 setCompetitionForMatches(matchDTO, competition);
                 setCompetitionForSeasons(matchDTO, competition);
                 setMatchForScore(matchDTO);
                 setScoreForTeamGoals(matchDTO);
 
-                seasonService.saveAll(getSeasonsFromMatchDTO(matchDTO));
+                seasonService.saveOrUpdateAll(getSeasonsFromMatchDTO(matchDTO));
                 teamService.saveAll(getTeamsFromMatchDTO(matchDTO));
 
                 saveAll(matchDTO.getMatches());

@@ -13,5 +13,5 @@ public interface StandingRepository extends JpaRepository<Standing, Long> {
 
     List<Standing> findAllByCompetition(Competition competition);
 
-    Optional<Standing> findFirstByCompetition(Competition competition);
+
 }

@@ -9,7 +9,7 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long> 
 
     Optional<Competition> findByApiId(Integer apiId);
 
-    boolean existsCompetitionByApiId(Integer apiId);
+    boolean existsByApiId(Integer apiId);
 
 
 }

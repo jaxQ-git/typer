@@ -21,7 +21,7 @@ public class Standing {
     @JsonProperty("group")
     private String groupName;
     @ToString.Exclude
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "standing")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "standing", orphanRemoval = true)
     @JsonProperty("table")
     @OrderBy("position ASC")
     private List<LeagueStanding> leagueStandings;

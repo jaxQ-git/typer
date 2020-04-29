@@ -1,6 +1,9 @@
 package pl.most.typer.service.footballservice.competition;
 
 import org.springframework.stereotype.Service;
+import pl.most.typer.exceptions.ResourceAlreadyExistsException;
+import pl.most.typer.exceptions.ResourceNotFoundException;
+import pl.most.typer.model.competition.Season;
 import pl.most.typer.model.competition.Team;
 import pl.most.typer.repository.footballrepo.TeamRepository;
 
@@ -19,38 +22,59 @@ public class TeamServiceDefault implements TeamService {
     }
 
     @Override
-    public Team save(Team team) {
-        Optional<Team> optionalTeam = teamRepository.findByApiId(team.getApiId());
-        if (optionalTeam.isPresent()) {
-            return optionalTeam.get();
-        } else {
+    public boolean existsByApiId(Integer apiId) {
+        return teamRepository.existsByApiId(apiId);
+    }
+
+    private Team findByApiId(Integer apiId) {
+        Optional<Team> teamOptional = teamRepository.findByApiId(apiId);
+        return teamOptional.orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find Team with id: " + apiId);
+            ex.setResource("team");
+            return ex;
+        });
+    }
+
+    private Team save(Team team) {
+        if (!existsByApiId(team.getApiId())) {
             return teamRepository.save(team);
         }
-    }
-    public void saveTeam(Team team) {
-        if (teamRepository.existsByApiId(team.getApiId())) {
-            return;
+        else {
+            ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("Team with id: " + team.getApiId()
+            );
+            ex.setResource("Team");
+            ex.setIssue("id");
+            throw ex;
         }
-        teamRepository.save(team);
+    }
 
+    @Override
+    public Team saveOrUpdate(Team team) {
+            try {
+                return save(team);
+            } catch (ResourceAlreadyExistsException ex) {
+                return update(team);
+            }
     }
 
     @Override
     public void saveAll(Collection<Team> teams) {
-        teams.stream().distinct().forEach(this::save);
+        teams = teams.stream().distinct().collect(Collectors.toList());
+        for (Team team : teams) {
+            try {
+                save(team);
+            } catch (ResourceAlreadyExistsException ex) {
+                //Do nothing
+            }
+        }
     }
 
-    public void saveTeams(Collection<Team> teams) {
-        List<Team> distinctTeams = getDistinctTeams(teams);
-        List<Team> uniqueTeams = distinctTeams.stream()
-                .filter(team -> !teamRepository.existsByApiId(team.getApiId()))
-                .collect(Collectors.toList());
-        teamRepository.saveAll(uniqueTeams);
+    public Team update(Team team) throws ResourceNotFoundException {
+        Team teamDB = findByApiId(team.getApiId());
+        teamDB.setCrestUrl(teamDB.getCrestUrl());
+        teamDB.setName(teamDB.getName());
+        return teamRepository.save(teamDB);
     }
+    
 
-    private List<Team> getDistinctTeams(Collection<Team> teams) {
-        return teams.stream()
-                .distinct()
-                .collect(Collectors.toList());
-    }
 }

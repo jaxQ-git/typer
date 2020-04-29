@@ -48,7 +48,7 @@ public class MatchController {
     private String getMatchesByStages(@PathVariable("id") Integer id,
                                       @RequestParam(name = "stage", required = false) String stage,
                                       Model model) {
-        Optional<Competition> optionalCompetition = competitionService.getCompetition(id);
+        Optional<Competition> optionalCompetition = Optional.of(competitionService.getCompetition(id));
         Optional<Match> optionalMatch = matchesService.findFirstByCompetition(new Competition(id, null));
 
         if (checkIfCompetitionMatchExist(optionalCompetition, optionalMatch)) {

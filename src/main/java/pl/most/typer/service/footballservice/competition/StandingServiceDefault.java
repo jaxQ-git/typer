@@ -1,7 +1,10 @@
 package pl.most.typer.service.footballservice.competition;
 
 import org.springframework.stereotype.Service;
+import pl.most.typer.exceptions.ResourceAlreadyExistsException;
+import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.competition.Competition;
+import pl.most.typer.model.competition.Season;
 import pl.most.typer.model.competition.Standing;
 import pl.most.typer.repository.footballrepo.LeagueStandingRepository;
 import pl.most.typer.repository.footballrepo.StandingRepository;
@@ -24,12 +27,38 @@ public class StandingServiceDefault implements StandingService {
 
 
     @Override
-    public Standing save(Standing standing) {
-        return standingRepository.save(standing);
+    public boolean existsById(Long id) {
+        return standingRepository.existsById(id);
+    }
+
+    private Standing findById(Long id) {
+        Optional<Standing> standingOptional = standingRepository.findById(id);
+        return standingOptional.orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find Standing with id: " + id);
+            ex.setResource("standing");
+            return ex;
+        });
     }
 
     @Override
-    public void saveAll(List<Standing> standings) {
+    public Standing save(Standing standing) {
+        if (standing.getId()==null || !existsById(standing.getId())) {
+            return standingRepository.save(standing);
+        }
+        else {
+            ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("Standing with id: " + standing.getId()
+            );
+            ex.setResource("Standing");
+            ex.setIssue("id");
+            throw ex;
+        }
+    }
+
+
+
+    @Override
+    public void saveOrUpdateAll(List<Standing> standings) {
+        //before save new standings from external Api delete all existing
         List<Standing> standingDB = standings.stream()
                 .map(standing -> standing.getCompetition())
                 .distinct()
@@ -39,6 +68,7 @@ public class StandingServiceDefault implements StandingService {
         standingRepository.deleteAll(standingDB);
         standings.forEach(this::save);
     }
+
 
 
     /**
@@ -53,10 +83,12 @@ public class StandingServiceDefault implements StandingService {
      * @param competition
      * @return By default it returns all Standings with type TOTAL
      */
+    @Override
     public List<Standing> getStandingsByCompetition(Competition competition) {
         return getStandingsByCompetition(competition, defaultStandingsType);
     }
 
+    @Override
     public List<Standing> getStandingsByCompetition(Competition competition, String standingsType) {
         List<Standing> standings = standingRepository
                 .findAllByCompetitionAndType(
@@ -65,6 +97,7 @@ public class StandingServiceDefault implements StandingService {
         return standings;
     }
 
+    @Override
     public void setStandingInLeagueStanding(List<Standing> standings) {
         standings.forEach(standing -> {
             standing.getLeagueStandings().forEach(leagueStanding -> leagueStanding.setStanding(standing));
@@ -76,10 +109,6 @@ public class StandingServiceDefault implements StandingService {
         standings.forEach(standing -> standing.setCompetition(competition));
     }
 
-    @Override
-    public Optional<Standing> findFirstByCompetiton(Competition competition) {
-        return standingRepository.findFirstByCompetition(competition);
-    }
 
 
 }

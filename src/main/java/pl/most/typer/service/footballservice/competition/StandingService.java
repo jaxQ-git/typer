@@ -1,5 +1,7 @@
 package pl.most.typer.service.footballservice.competition;
 
+import pl.most.typer.exceptions.ResourceAlreadyExistsException;
+import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.competition.Competition;
 import pl.most.typer.model.competition.Standing;
 
@@ -8,9 +10,9 @@ import java.util.Optional;
 
 public interface StandingService {
 
-    Standing save(Standing standing);
+    Standing save(Standing standing) throws ResourceAlreadyExistsException;
 
-    void saveAll(List<Standing> standings);
+    void saveOrUpdateAll(List<Standing> standings);
 
     List<Standing> getStandingsByCompetition(Competition competition);
 
@@ -20,5 +22,5 @@ public interface StandingService {
 
     void setCompetitionInStandings(List<Standing> standings, Competition competition);
 
-    Optional<Standing> findFirstByCompetiton(Competition competition);
+    boolean existsById(Long id);
 }

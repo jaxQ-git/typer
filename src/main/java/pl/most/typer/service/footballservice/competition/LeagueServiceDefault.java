@@ -39,13 +39,27 @@ public class LeagueServiceDefault implements LeagueService {
         if (entity.getStatusCode().is2xxSuccessful()) {
             CompetitionDTO competitionDTO = entity.getBody();
             if (competitionDTO != null) {
-                Competition savedCompetition = competitionService.save(competitionDTO.getCompetition());
-                boolean isCompetitionUpdated = !savedCompetition.getLastUpdated().isEqual(competitionDTO.getCompetition().getLastUpdated());
-                setChildFieldInCompetitionDTO(competitionDTO, savedCompetition);
-                teamService.saveAll(getAllTeamsFromCompetitionDTO(competitionDTO));
-                seasonService.save(competitionDTO.getSeason());
-                standingService.saveAll(competitionDTO.getStandings());
+                Competition competition = competitionDTO.getCompetition();
+                //Jeżeli competition istnieje i nie jest aktualny to update
+                if(competitionService.existsByApiId(competition.getApiId())) {
+                    //
+                    if(!competitionService.isCompetitionInDBUpToDate(competition)) {
+                        Competition savedCompetition = competitionService.update(competition);
+                        setChildFieldInCompetitionDTO(competitionDTO, savedCompetition);
+                        teamService.saveAll(getAllTeamsFromCompetitionDTO(competitionDTO));
+                        seasonService.saveOrUpdate(competitionDTO.getSeason());
+                        standingService.saveOrUpdateAll(competitionDTO.getStandings());
+                    }
 
+                }
+                //Jeżeli nie istnieje to zapisujemy nową ligę
+                else {
+                    Competition savedCompetition = competitionService.save(competition);
+                    setChildFieldInCompetitionDTO(competitionDTO, savedCompetition);
+                    teamService.saveAll(getAllTeamsFromCompetitionDTO(competitionDTO));
+                    seasonService.saveOrUpdate(competitionDTO.getSeason());
+                    standingService.saveOrUpdateAll(competitionDTO.getStandings());
+                }
                 return HttpStatus.CREATED;
             } else {
                 return HttpStatus.BAD_GATEWAY;
