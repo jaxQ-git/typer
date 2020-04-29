@@ -78,6 +78,59 @@ body {
   height: 50px;
 }
 
+.slice {
+  display: none;
+}
+
+#loadMore{
+  float: left;
+  margin: 10px;
+}
+
+#loadLess{
+  display: none;
+  margin: 10px;
+  float: left;
+}
+
+#back-top {
+  display: inline-block;
+  background-color: #007bff;
+  border-color: #007bff;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  border-radius: 4px;
+  position: fixed;
+  bottom: 125px;
+  right: 30px;
+  transition: background-color .3s,
+  opacity .5s, visibility .5s;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+}
+#back-top::after {
+  content: '\005E';
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 2em;
+  line-height: 50px;
+  color: #fff;
+}
+#back-top:hover {
+  cursor: pointer;
+  background-color: #333;
+}
+#back-top:active {
+  background-color: #555;
+}
+#back-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
 
 
 
