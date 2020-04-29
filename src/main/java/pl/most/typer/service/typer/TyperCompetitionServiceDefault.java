@@ -14,6 +14,7 @@ import pl.most.typer.model.typer.TyperPlayer;
 import pl.most.typer.model.typer.TyperStanding;
 import pl.most.typer.repository.typerrepo.TyperCompetitionRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -175,5 +176,7 @@ public class TyperCompetitionServiceDefault implements TyperCompetitionService {
 
         //stworzenie nowej tabeli dla nastepnej kolejki
         typerStandingService.createNewTyperStanding(typerCompetition, latestStandingByTyperCompetition);
+        typerCompetition.setLastUpdated(LocalDateTime.now());
+        update(typerCompetition);
     }
 }

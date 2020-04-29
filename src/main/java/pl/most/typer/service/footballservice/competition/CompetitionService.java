@@ -7,15 +7,19 @@ import java.util.Optional;
 
 public interface CompetitionService {
 
-    Optional<Competition> findByApiId(Integer apiId);
+    Competition findByApiId(Integer apiId);
 
-    boolean existsCompetitionByApiId(Integer apiId);
+    boolean existsByApiId(Integer apiId);
 
     Competition save(Competition competition);
 
-    Optional<Competition> getCompetition(Integer id);
+    Competition update(Competition competition);
+
+    Competition getCompetition(Integer id);
 
     String getCompetitionName(Integer id);
 
     List<Competition> getAll();
+
+    boolean isCompetitionInDBUpToDate(Competition competition);
 }

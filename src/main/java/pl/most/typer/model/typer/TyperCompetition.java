@@ -69,7 +69,7 @@ public class TyperCompetition extends BaseModel {
     }
 
     public Integer incrementedCurrentRound() {
-        this.currentRound =+1;
+        this.currentRound += 1;
         return currentRound;
     }
 }

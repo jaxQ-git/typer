@@ -1,5 +1,7 @@
 package pl.most.typer.service.footballservice.competition;
 
+import pl.most.typer.exceptions.BadResourceException;
+import pl.most.typer.exceptions.ResourceNotFoundException;
 import pl.most.typer.model.competition.Competition;
 import pl.most.typer.model.competition.Season;
 
@@ -9,8 +11,10 @@ public interface SeasonService {
 
     void setCompetitionInSeasons(List<Season> seasons, Competition competition);
 
-    Season save(Season season);
+    Season saveOrUpdate(Season season);
 
-    void saveAll(List<Season> season);
+    void saveOrUpdateAll(List<Season> season);
+
+    boolean existsByApiId(Integer apiId);
 }
 

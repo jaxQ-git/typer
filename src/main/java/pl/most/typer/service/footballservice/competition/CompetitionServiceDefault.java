@@ -1,6 +1,10 @@
 package pl.most.typer.service.footballservice.competition;
 
 import org.springframework.stereotype.Service;
+import pl.most.typer.exceptions.BadResourceException;
+import pl.most.typer.exceptions.ResourceAlreadyExistsException;
+import pl.most.typer.exceptions.ResourceNotFoundException;
+import pl.most.typer.exceptions.UpToDateResourceException;
 import pl.most.typer.model.competition.Competition;
 import pl.most.typer.repository.footballrepo.CompetitionRepository;
 
@@ -18,56 +22,70 @@ public class CompetitionServiceDefault implements CompetitionService {
     }
 
     @Override
-    public Optional<Competition> findByApiId(Integer apiId) {
-        return competitionRepository.findByApiId(apiId);
+    public boolean existsByApiId(Integer apiId) {
+        return competitionRepository.existsByApiId(apiId);
     }
 
     @Override
-    public boolean existsCompetitionByApiId(Integer apiId) {
-        return competitionRepository.existsCompetitionByApiId(apiId);
+    public Competition findByApiId(Integer apiId) {
+        Optional<Competition> competitionOptional = competitionRepository.findByApiId(apiId);
+        return competitionOptional.orElseThrow(() -> {
+            ResourceNotFoundException ex = new ResourceNotFoundException("Cannot find Competition with id: " + apiId);
+            ex.setResource("competition");
+            return ex;
+        });
     }
 
     @Override
     public Competition save(Competition competition) {
-        Optional<Competition> optionalCompetition = competitionRepository.findByApiId(competition.getApiId());
-        //Jeżeli liga w bazie danych istnieje to ją aktualizuję i zwracam ligę zapisaną w bazie danych
-        if (optionalCompetition.isPresent()) {
-            Competition competitionDB = optionalCompetition.get();
-            if(!competitionDB.getLastUpdated().isEqual(competition.getLastUpdated())){
-                competitionDB.setPlan(competition.getPlan());
-                competitionDB.setCode(competition.getCode());
-                competitionDB.setName(competitionDB.getPlan());
-                competitionDB.setLastUpdated(competition.getLastUpdated());
-                competitionRepository.save(competitionDB);
-            }
-            return competitionDB;
-        }
-        // W innym przypadku zapisuje ligę w bazie i ją zwracam
-        else {
+        if (!existsByApiId(competition.getApiId())) {
             return competitionRepository.save(competition);
+        }
+        else {
+            ResourceAlreadyExistsException ex = new ResourceAlreadyExistsException("Competition with id: " + competition.getApiId() +
+                    " and name: " + competition.getName() + " already exists");
+            ex.setResource("Competition");
+            ex.setIssue("id");
+            throw ex;
+        }
+    }
+
+    @Override
+    public Competition update(Competition competition) throws BadResourceException, ResourceNotFoundException {
+        Competition competitionDB = findByApiId(competition.getApiId());
+        if (!competitionDB.getLastUpdated().isEqual(competition.getLastUpdated())) {
+            competitionDB.setPlan(competition.getPlan());
+            competitionDB.setCode(competition.getCode());
+            competitionDB.setName(competitionDB.getPlan());
+            competitionDB.setLastUpdated(competition.getLastUpdated());
+            return competitionRepository.save(competitionDB);
+        } else {
+            UpToDateResourceException exc = new UpToDateResourceException("Competition is up-to-date");
+            throw exc;
         }
     }
 
 
 
-
     @Override
-    public Optional<Competition> getCompetition(Integer id) {
-        return competitionRepository.findByApiId(id);
+    public Competition getCompetition(Integer id) {
+        return findByApiId(id);
     }
 
     @Override
     public String getCompetitionName(Integer id) {
-        Optional<Competition> competition = getCompetition(id);
-        if (competition.isPresent()) {
-            return competition.get().getName();
-        }
-        return null;
+        return findByApiId(id).getName();
     }
 
     @Override
     public List<Competition> getAll() {
-        return (List<Competition>) competitionRepository.findAll();
+        return competitionRepository.findAll();
+    }
+
+    @Override
+    public boolean isCompetitionInDBUpToDate(Competition competition) {
+        Competition competitionDB = findByApiId(competition.getApiId());
+        return competitionDB.getLastUpdated().isEqual(competition.getLastUpdated());
     }
 
 
