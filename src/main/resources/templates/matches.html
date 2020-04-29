@@ -20,6 +20,7 @@
 </head>
 
 <body class="d-flex flex-column">
+<a id="back-top"></a>
 <div id="page-content">
 
     <!-- Navigation -->
@@ -39,9 +40,14 @@
                                 th:text="${match.key}"></th>
                         </th:block>
                     </h2>
-                    <div class="slice" th:each="mapValue, stat : ${match.value}" th:if="${stat.even}">
+
+                    <!--                    TODO dodać w matchcontroler filtrowanie po meczach ze statusem typu postponed itp. i tutaj dolozyc jeszcze jedna petle gdzie jedna przechodzi przez mecze ktore sie zakonczyly juz a druga gdzie ma wyniku i wtedy mozna obie listy rozwijac -->
+
+                    <div th:classappend="${match.key == 'absentGroup' || match.key == 'Regular Season' && match.value.size() > 2} ? slice : userclass"
+                         th:each="mapValue, stat : ${match.value}" th:if="${stat.even}">
                         <div class="row">
-                            <div class="col-lg-6 mb-4 " th:with="leftMatchValue=${match.value.get(stat.index - 1)}">
+                            <div class="col-lg-6 mb-4 "
+                                 th:with="leftMatchValue=${match.value.get(stat.index - 1)}">
                                 <div class="card h-100">
                                     <h4 class="card-header" style="text-align: center;">
                                         <span th:text="${#temporals.format(leftMatchValue.utcDate, 'dd-MM-yyyy HH:mm')}"></span>
@@ -55,11 +61,13 @@
                                                 <figure class="my-auto">
                                                     <img class="img-center"
                                                          th:src="${#objects.nullSafe(leftMatchValue.homeTeam.crestUrl, '')}"/>
-                                                    <figcaption style="width: 120px;" class="text-center" th:text="${leftMatchValue.homeTeam.name}"></figcaption>
+                                                    <figcaption style="width: 120px;" class="text-center"
+                                                                th:text="${leftMatchValue.homeTeam.name}"></figcaption>
                                                 </figure>
 
                                             </div>
-                                            <div class="text-center my-auto" style="margin-left: 10px; margin-right: 10px">
+                                            <div class="text-center my-auto"
+                                                 style="margin-left: 10px; margin-right: 10px">
                                                 <div style="font-weight: bold" th:text="${mapValue.status}"></div>
                                                 <span style="font-size: 40px" th:text="${#objects.nullSafe(leftMatchValue.score.fullTime.homeTeam, '')} +
                                         ' - ' + ${#objects.nullSafe(leftMatchValue.score.fullTime.awayTeam, '')}"></span>
@@ -68,14 +76,15 @@
                                                 <figure class="my-auto">
                                                     <img class="img-center"
                                                          th:src="${#objects.nullSafe(leftMatchValue.awayTeam.crestUrl, '')}"/>
-                                                    <figcaption style="width: 120px;" class="text-center" th:text="${leftMatchValue.awayTeam.name}"></figcaption>
+                                                    <figcaption style="width: 120px;" class="text-center"
+                                                                th:text="${leftMatchValue.awayTeam.name}"></figcaption>
                                                 </figure>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6 mb-4 " th:if="${stat.index &lt; match.value.size()}"
+                            <div class="col-lg-6 mb-4" th:if="${stat.index &lt; match.value.size()}"
                                  th:with="rightMatchValue=${match.value.get(stat.index)}">
                                 <div class="card h-100">
                                     <h4 class="card-header" style="text-align: center;">
@@ -90,10 +99,12 @@
                                                 <figure class="my-auto">
                                                     <img class="img-center"
                                                          th:src="${#objects.nullSafe(rightMatchValue.homeTeam.crestUrl, '')}"/>
-                                                    <figcaption style="width: 120px;" class="text-center" th:text="${rightMatchValue.homeTeam.name}"></figcaption>
+                                                    <figcaption style="width: 120px;" class="text-center"
+                                                                th:text="${rightMatchValue.homeTeam.name}"></figcaption>
                                                 </figure>
                                             </div>
-                                            <div class="text-center my-auto" style="margin-left: 10px; margin-right: 10px">
+                                            <div class="text-center my-auto"
+                                                 style="margin-left: 10px; margin-right: 10px">
                                                 <div style="font-weight: bold" th:text="${mapValue.status}"></div>
                                                 <span style="font-size: 40px" th:text="${#objects.nullSafe(rightMatchValue.score.fullTime.homeTeam, '')} +
                                         ' - ' + ${#objects.nullSafe(rightMatchValue.score.fullTime.awayTeam, '')}"></span>
@@ -102,7 +113,8 @@
                                                 <figure class="my-auto">
                                                     <img class="img-center"
                                                          th:src="${#objects.nullSafe(rightMatchValue.awayTeam.crestUrl, '')}"/>
-                                                    <figcaption style="width: 120px;" class="text-center" th:text="${rightMatchValue.awayTeam.name}"></figcaption>
+                                                    <figcaption style="width: 120px;" class="text-center"
+                                                                th:text="${rightMatchValue.awayTeam.name}"></figcaption>
                                                 </figure>
                                             </div>
                                         </div>
@@ -111,7 +123,12 @@
                             </div>
                         </div>
                     </div>
-                    <a id="loadMore" class="btn btn-sm btn-primary" href="#">Pokaż więcej meczów</a>
+                    <div th:if="${match.value.size() > 2 && match.key == 'absentGroup' || match.key == 'Regular Season'}">
+                        <a id="loadMore" class="btn btn-sm btn-primary" href="#">Pokaż więcej meczów</a>
+                        <div id="loadLess">
+                            <a class="btn btn-sm btn-primary" href="#">Pokaż mniej meczów</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="col-sm-2">
