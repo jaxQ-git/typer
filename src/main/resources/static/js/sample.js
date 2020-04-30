@@ -57,7 +57,7 @@ $(document).ready(function () {
 let btn = $('#back-top');
 
 $(window).scroll(function() {
-    if ($(window).scrollTop() > 800) {
+    if ($(window).scrollTop() > 650) {
         btn.addClass('show');
     } else {
         btn.removeClass('show');
