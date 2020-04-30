@@ -61,7 +61,8 @@
                                                         <img class="img-center team-logo"
                                                              th:src="${#objects.nullSafe(leftMatchValue.homeTeam.crestUrl, '/img/logo/default.png')}"
                                                              th:onerror="this.onerror=null;this.src='/img/logo/default.png';"/>
-                                                        <figcaption style="width: 120px;" class="text-center" th:text="${leftMatchValue.homeTeam.name}"></figcaption>
+                                                        <figcaption style="width: 120px;" class="text-center"
+                                                                    th:text="${leftMatchValue.homeTeam.name}"></figcaption>
                                                     </figure>
                                                 </div>
                                                 <div class="text-center my-auto"
@@ -75,7 +76,8 @@
                                                         <img class="img-center team-logo"
                                                              th:src="${#objects.nullSafe(leftMatchValue.awayTeam.crestUrl, '/img/logo/default.png')}"
                                                              th:onerror="this.onerror=null;this.src='/img/logo/default.png';"/>
-                                                        <figcaption style="width: 120px;" class="text-center" th:text="${leftMatchValue.awayTeam.name}"></figcaption>
+                                                        <figcaption style="width: 120px;" class="text-center"
+                                                                    th:text="${leftMatchValue.awayTeam.name}"></figcaption>
                                                     </figure>
                                                 </div>
                                             </div>
@@ -146,7 +148,8 @@
                                                         <img class="img-center team-logo"
                                                              th:src="${#objects.nullSafe(rightMatchValue.homeTeam.crestUrl, '/img/logo/default.png')}"
                                                              th:onerror="this.onerror=null;this.src='/img/logo/default.png';"/>
-                                                        <figcaption style="width: 120px;" class="text-center" th:text="${rightMatchValue.homeTeam.name}"></figcaption>
+                                                        <figcaption style="width: 120px;" class="text-center"
+                                                                    th:text="${rightMatchValue.homeTeam.name}"></figcaption>
                                                     </figure>
                                                 </div>
                                                 <div class="text-center my-auto"
@@ -154,14 +157,15 @@
                                                     <div style="font-weight: bold" th:text="${mapValue.status}"></div>
                                                     <span style="font-size: 40px" th:text="${#objects.nullSafe(rightMatchValue.score.fullTime.homeTeam, '')} +
                                         ' - ' + ${#objects.nullSafe(rightMatchValue.score.fullTime.awayTeam, '')}"></span>
-                                            </div>
-                                            <div class="float-right">
-                                                <figure class="my-auto">
-                                                    <img class="img-center team-logo"
-                                                         th:src="${#objects.nullSafe(rightMatchValue.awayTeam.crestUrl, '/img/logo/default.png')}"
-                                                         th:onerror="this.onerror=null;this.src='/img/logo/default.png';"/>
-                                                    <figcaption style="width: 120px;" class="text-center" th:text="${rightMatchValue.awayTeam.name}"></figcaption>
-                                                </figure>
+                                                </div>
+                                                <div class="float-right">
+                                                    <figure class="my-auto">
+                                                        <img class="img-center team-logo"
+                                                             th:src="${#objects.nullSafe(rightMatchValue.awayTeam.crestUrl, '/img/logo/default.png')}"
+                                                             th:onerror="this.onerror=null;this.src='/img/logo/default.png';"/>
+                                                        <figcaption style="width: 120px;" class="text-center"
+                                                                    th:text="${rightMatchValue.awayTeam.name}"></figcaption>
+                                                    </figure>
                                                 </div>
                                                 <div class="float-right">
                                                     <figure class="my-auto">
