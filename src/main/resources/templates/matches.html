@@ -59,10 +59,10 @@
                                                 <div class="float-left">
                                                     <figure class="my-auto">
                                                         <img class="img-center team-logo"
-                                                             th:src="${#objects.nullSafe(leftMatchValue.homeTeam.crestUrl, '/img/logo/default.png')}"
+                                                             th:src="${#objects.nullSafe(mapValue.homeTeam.crestUrl, '/img/logo/default.png')}"
                                                              th:onerror="this.onerror=null;this.src='/img/logo/default.png';"/>
                                                         <figcaption style="width: 120px;" class="text-center"
-                                                                    th:text="${leftMatchValue.homeTeam.name}"></figcaption>
+                                                                    th:text="${mapValue.homeTeam.name}"></figcaption>
                                                     </figure>
                                                 </div>
                                                 <div class="text-center my-auto"
@@ -74,10 +74,10 @@
                                                 <div class="float-right">
                                                     <figure class="my-auto">
                                                         <img class="img-center team-logo"
-                                                             th:src="${#objects.nullSafe(leftMatchValue.awayTeam.crestUrl, '/img/logo/default.png')}"
+                                                             th:src="${#objects.nullSafe(mapValue.awayTeam.crestUrl, '/img/logo/default.png')}"
                                                              th:onerror="this.onerror=null;this.src='/img/logo/default.png';"/>
                                                         <figcaption style="width: 120px;" class="text-center"
-                                                                    th:text="${leftMatchValue.awayTeam.name}"></figcaption>
+                                                                    th:text="${mapValue.awayTeam.name}"></figcaption>
                                                     </figure>
                                                 </div>
                                             </div>
